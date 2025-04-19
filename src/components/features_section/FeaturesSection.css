@@ -1,0 +1,12 @@
+.feature {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 10px;
+    transition: all 0.3s ease-in-out;
+}
+  
+.feature:hover {
+    background: #e9ecef;
+    transform: translateY(-5px);
+}
+  

@@ -1,0 +1,13 @@
+.profissional-card {
+    margin: 0 1%;
+    height: auto;
+    width: 292px;
+}
+
+.container-logo-and-title {
+    height: 120px;
+}
+
+.card-title {
+    font-size: 20px;
+}

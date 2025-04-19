@@ -1,0 +1,18 @@
+.ctaSection {
+  width: 100%;
+  background-color: #eafafa;
+  padding: 40px 0;
+}
+
+.ctaButton {
+  background-color: #0d6efd;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 5px;
+  transition: background 0.3s ease-in-out;
+}
+
+.ctaButton:hover {
+  background-color: #0b5ed7;
+}

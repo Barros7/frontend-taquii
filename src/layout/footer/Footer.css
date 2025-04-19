@@ -1,0 +1,9 @@
+.text-footer, .text-footer-link {
+    font-size: 14px;
+    color: #8B96A5;
+}
+
+.paragraph-footer:hover, .text-footer-link:hover {
+    color: #00eeff;
+    cursor: pointer;
+}

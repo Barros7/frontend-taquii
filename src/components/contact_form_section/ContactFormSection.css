@@ -1,0 +1,22 @@
+.contact-form {
+  background: #fff;
+  max-width: 500px;
+  width: 100%;
+  border-radius: 8px;
+}
+
+.contact-form .form-label {
+  color: #333;
+}
+
+.contact-form input,
+.contact-form select {
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  padding: 10px;
+}
+
+.contact-form button {
+  padding: 12px;
+  font-weight: bold;
+}

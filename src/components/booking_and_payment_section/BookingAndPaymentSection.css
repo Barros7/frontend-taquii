@@ -1,0 +1,35 @@
+.booking {
+ background-color: gray;
+ border-radius: 20px;
+ padding: 3rem;
+}
+
+.text-description {
+    font-size: 12px;
+}
+
+.text-period {
+    font-size: 14px;
+}
+
+.button-time {
+    background-color: rgb(62, 60, 60);
+    color: gray;
+    border: 1px solid gray;
+    border-radius: 8px;
+    width: 79.5px;
+    height: 40px;
+}
+
+.button-time:hover {
+    background-color: rgb(62, 60, 60);
+    color: rgb(0, 193, 241);
+    border: 1px solid rgb(0, 193, 241);
+    border-radius: 8px;
+    width: 79.5px;
+    height: 40px;
+}
+
+.schedule {
+
+}
