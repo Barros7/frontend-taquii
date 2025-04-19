@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./BookingAndPaymentSection.css";
 import { FaCalendarAlt } from "react-icons/fa";
 import DatePicker from "react-datepicker";
@@ -13,9 +13,8 @@ const horarios = {
 };
 
 const BookingAndPaymentSection = () => {
-  const [data, setData] = useState("2024-01-10");
   const [horaSelecionada, setHoraSelecionada] = useState("");
-  const [cliente, setCliente] = useState("");
+  //const [cliente, setCliente] = useState("");
   const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
 
   const [agenda, setAgenda] = useState<{ [key: string]: string }>({
@@ -26,16 +25,14 @@ const BookingAndPaymentSection = () => {
     "17:00": "Jaylon Korsgaard",
     "21:00": "Maria Herwitz",
   });
+
+  useEffect(() => {
+    setAgenda({
+      "18:00": "Barros Bongo",
+    });
+    console.log(horaSelecionada);
+  },  [horaSelecionada])
   
-
-  const handleAgendar = () => {
-    if (horaSelecionada && cliente) {
-      setAgenda({ ...agenda, [horaSelecionada]: cliente });
-      setCliente("");
-      setHoraSelecionada("");
-    }
-  };
-
   return (
     <section className="container">
       <div className="row">
@@ -45,19 +42,19 @@ const BookingAndPaymentSection = () => {
           <form>
             <div className="form-group">
               <div className="form-label text-white">Data</div>
-              <div className="relative w-full max-w-sm border rounded-xl border-gray-700 bg-black p-2 flex items-center justify-between">
-      <div className="flex items-center gap-2">
-        <FaCalendarAlt className="text-yellow-600" />
-        <DatePicker
-          selected={selectedDate}
-          onChange={(date) => setSelectedDate(date)}
-          dateFormat="dd/MM/yyyy"
-          className="bg-transparent text-gray-300 focus:outline-none cursor-pointer"
-        />
-      </div>
-      <span className="text-gray-400">▼</span>
-    </div>
-            </div>
+                <div className="relative w-full max-w-sm border rounded-xl border-gray-700 bg-black p-2 flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <FaCalendarAlt className="text-yellow-600" />
+                    <DatePicker
+                      selected={selectedDate}
+                      onChange={(date) => setSelectedDate(date)}
+                      dateFormat="dd/MM/yyyy"
+                      className="bg-transparent text-gray-300 focus:outline-none cursor-pointer"
+                    />
+                  </div>
+                  <span className="text-gray-400">▼</span>
+                </div>
+              </div>
             <div>
               <div className="form-label mt-4 text-white">Horários</div>
               {Object.entries(horarios).map(([periodo, horas]) => (

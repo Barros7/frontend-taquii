@@ -2,6 +2,7 @@
 
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import Image from 'next/image';
 
 const Hero: React.FC = () => {
   return (
@@ -13,7 +14,9 @@ const Hero: React.FC = () => {
           <button className="btn btn-primary">Registar Meu Estabelecimento</button>
         </div>
         <div className="col-md-6 text-center">
-          <img
+          <Image
+            height={100}
+            width={100}
             src="/main.svg"
             alt="Ilustração de tecnologia e agendamento"
             className="img-fluid"
