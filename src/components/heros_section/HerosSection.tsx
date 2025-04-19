@@ -1,5 +1,4 @@
 'use client';
-
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Image from 'next/image';
@@ -15,8 +14,8 @@ const Hero: React.FC = () => {
         </div>
         <div className="col-md-6 text-center">
           <Image
-            height={100}
-            width={100}
+            height={500}
+            width={500}
             src="/main.svg"
             alt="Ilustração de tecnologia e agendamento"
             className="img-fluid"
