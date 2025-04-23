@@ -3,6 +3,7 @@ import { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Image from 'next/image';
 import "./ServiceCatalog.css"
+import Link from 'next/link';
 
 const categories = [
     'Saúde',
@@ -105,9 +106,9 @@ export default function ServiceCatalog() {
                     <p className="text-sm text-gray-600">{pro.location}</p>
                     <span className="text-green-600 font-bold mt-2 me-2 text-success">{pro.rating}</span>
                     <span className="text-green-500 text-sm text-success">Disponível</span>
-                    <button className="btn btn-primary w-100 mt-3 px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
+                    <Link href={"/perfil"} className="btn btn-primary w-100 mt-3 px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
                         Agendar
-                    </button>
+                    </Link>
                 </div>
                 ))}
             </div>

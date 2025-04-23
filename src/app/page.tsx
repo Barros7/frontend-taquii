@@ -10,7 +10,7 @@ import FaqSection from '@/components/faqs_section/FaqsSection';
 
 export default function Home() {
   return (
-    <div className="container-fluid bg-light min-vh-100">
+    <div>
       <Header />
       <Hero />
       <BusinessCategories />
