@@ -67,6 +67,7 @@ const BookingModal: React.FC<BookingModalProps> = ({ service, show, onClose }) =
     if (service && horaSelecionada) {
       alert(`Agendado o serviço "${service.name}" para ${data} às ${horaSelecionada} (${atendimento})`);
       onClose(); // Close the modal after booking
+      setShowModal(false); // Hide the modal
     } else {
       alert('Por favor, selecione um horário.');
     }
@@ -76,13 +77,6 @@ const BookingModal: React.FC<BookingModalProps> = ({ service, show, onClose }) =
   if (!show || !service) {
     return null;
   }
-
-  // Handle backdrop click to close modal
-  const handleBackdropClick = (e: React.MouseEvent<HTMLDivElement>) => {
-      if (e.target === e.currentTarget) {
-          onClose();
-      }
-  };
   
   return (
     <div className="container-booking-modal">
