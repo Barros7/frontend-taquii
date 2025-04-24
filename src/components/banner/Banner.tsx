@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import "./Banner.css";
 import React from 'react';
-import styles from './Navbar.module.css';
+import styles from './NavBar.module.css';
 import ServicesSection from '../company_profile/CompanyProfile';
 import AboutSection from '../about_section/AboutSection';
 import GallerySection from '../galary_section/GallerySection';
