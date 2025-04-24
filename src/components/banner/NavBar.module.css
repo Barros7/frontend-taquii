@@ -1,0 +1,42 @@
+.navbar {
+    background-color: #1a1a2e; /* Dark background color */
+    padding: 0; /* Remove default padding */
+  }
+  
+.navList {
+    list-style: none; /* Remove bullet points */
+    margin: 0; /* Remove default margin */
+    padding: 0; /* Remove default padding */
+    display: flex; /* Arrange items horizontally */
+    justify-content: space-around; /* Distribute space evenly */
+    align-items: center; /* Vertically align items */
+    height: 60px; /* Set a height for the navbar */
+}
+
+.navItem {
+    flex-grow: 1; /* Allow items to grow and fill space */
+    text-align: center; /* Center the text */
+    height: 100%; /* Make the item take the full height */
+    display: flex; /* Use flex to center the link vertically */
+    justify-content: center; /* Center the link horizontally */
+    align-items: center; /* Center the link vertically */
+    transition: background-color 0.3s ease; /* Smooth transition for background */
+}
+
+.navItem.active {
+    background-color: #0056b3; /* Blue background for active item */
+}
+
+.navLink {
+    color: #ffffff; /* White text color */
+    text-decoration: none; /* Remove underline */
+    font-size: 1.1rem; /* Adjust font size as needed */
+    padding: 0 15px; /* Add some horizontal padding */
+    height: 100%; /* Make the link take the full height for clicking */
+    display: flex; /* Use flex to center text within the link */
+    align-items: center; /* Vertically center text */
+}
+
+.navLink:hover {
+    text-decoration: underline; /* Add underline on hover */
+}

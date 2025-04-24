@@ -1,11 +1,11 @@
 "use client";
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './BookingModal.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 type Service = {
   id: string;
-  nome: string;
+  name: string;
   descricao?: string;
 };
 
@@ -31,19 +31,16 @@ const agendaExemplo = {
 };
 
 interface BookingModalProps {
-  service: Service;
+  service: Service | null; // Service can be null initially
+  show: boolean; // Controls if the modal is shown
+  onClose: () => void; // Function to call when the modal should close
 }
 
-const BookingModal: React.FC<BookingModalProps> = ({ service }) => {
+const BookingModal: React.FC<BookingModalProps> = ({ service, show, onClose }) => {
   const [showModal, setShowModal] = useState(true);
   const [data, setData] = useState('2025-04-07');
   const [atendimento, setAtendimento] = useState<'estabelecimento' | 'casa'>('estabelecimento');
   const [horaSelecionada, setHoraSelecionada] = useState('');
-
-  const handleAgendar = () => {
-    alert(`Agendado o serviço "${service.nome}" para ${data} às ${horaSelecionada} (${atendimento})`);
-    setShowModal(false);
-  };
 
   const renderAgenda = (periodo: 'manhã' | 'tarde' | 'noite') => {
     return agendaExemplo['07/04/2025'][periodo].map((item, index) => (
@@ -53,10 +50,53 @@ const BookingModal: React.FC<BookingModalProps> = ({ service }) => {
     ));
   };
 
+  // Effect to handle body scroll when modal is open/closed (optional but good UX)
+  useEffect(() => {
+    if (show) {
+      document.body.classList.add('modal-open');
+    } else {
+      document.body.classList.remove('modal-open');
+    }
+    // Clean up the class when the component unmounts
+    return () => {
+      document.body.classList.remove('modal-open');
+    };
+  }, [show]); // Rerun effect when 'show' changes
+
+  const handleAgendar = () => {
+    if (service && horaSelecionada) {
+      alert(`Agendado o serviço "${service.name}" para ${data} às ${horaSelecionada} (${atendimento})`);
+      onClose(); // Close the modal after booking
+    } else {
+      alert('Por favor, selecione um horário.');
+    }
+  };
+
+  // If service is null or modal is not supposed to be shown, return null
+  if (!show || !service) {
+    return null;
+  }
+
+  // Handle backdrop click to close modal
+  const handleBackdropClick = (e: React.MouseEvent<HTMLDivElement>) => {
+      if (e.target === e.currentTarget) {
+          onClose();
+      }
+  };
+  
   return (
     <div className="container-booking-modal">
       {showModal && (
         <div className="container-booking text-white">
+          <div className="container-booking-header d-flex justify-content-between align-items-center">
+            <p className="title-booking">{service.name}</p>
+            <button
+              type="button"
+              className="btn-close btn-close-white"
+              aria-label="Close"
+              onClick={onClose} // Call the onClose prop when clicked
+            ></button>
+          </div>
           <div className="row">
             <div className="col-5 container-booking-left">
               <div className="p-4 rounded-xl">

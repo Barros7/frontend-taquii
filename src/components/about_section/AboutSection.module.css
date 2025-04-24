@@ -1,0 +1,71 @@
+.aboutSection {
+    padding: 60px 0; /* Add padding top and bottom */
+    background-color: #f8f8f8; /* Light background for contrast */
+    color: #333; /* Dark text color */
+  }
+  
+  .container {
+    max-width: 1200px; /* Max width for content */
+    margin: 0 auto; /* Center the container */
+    padding: 0 20px; /* Add some horizontal padding */
+  }
+  
+  .contentWrapper {
+    display: flex; /* Use flexbox for side-by-side layout */
+    flex-direction: column; /* Stack items vertically by default */
+    align-items: center; /* Center items when stacked */
+    gap: 40px; /* Space between text and image */
+  }
+  
+  @media (min-width: 768px) {
+    .contentWrapper {
+      flex-direction: row; /* Side-by-side on larger screens */
+      text-align: left; /* Align text to the left */
+    }
+  }
+  
+  .textContainer {
+    flex: 1; /* Allow text container to grow */
+  }
+  
+  .title {
+    font-size: 2.5rem; /* Large title font size */
+    margin-bottom: 20px; /* Space below title */
+    color: #1a1a2e; /* Match the dark color from the navbar */
+  }
+  
+  .description {
+    font-size: 1.1rem; /* Readable description font size */
+    line-height: 1.6; /* Improve readability */
+    margin-bottom: 20px; /* Space below description */
+  }
+  
+  .additionalInfo {
+    margin-top: 20px; /* Space above additional info */
+    border-top: 1px solid #ccc; /* Add a subtle line above */
+    padding-top: 20px; /* Add padding above the line */
+  }
+  
+  .additionalInfo ul {
+    list-style: disc; /* Use bullet points for list */
+    padding-left: 20px; /* Add padding for list bullets */
+  }
+  
+  .additionalInfo li {
+    margin-bottom: 10px; /* Space between list items */
+    line-height: 1.5;
+  }
+  
+  .imageContainer {
+    flex: 1; /* Allow image container to grow */
+    max-width: 500px; /* Max width for the image container */
+    width: 100%; /* Ensure it takes full width on small screens */
+    border-radius: 8px; /* Slightly rounded corners for the image container */
+    overflow: hidden; /* Hide overflow from rounded corners */
+  }
+  
+  .image {
+    display: block; /* Ensure the image is a block element */
+    width: 100%; /* Image takes full width of its container */
+    height: auto; /* Maintain aspect ratio */
+  }

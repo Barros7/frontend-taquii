@@ -1,0 +1,45 @@
+/* components/Gallery.module.css */
+
+.gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Responsive grid */
+    gap: 20px; /* Space between grid items */
+    padding: 20px; /* Padding around the gallery */
+    max-width: 1200px; /* Max width for the gallery */
+    margin: 0 auto; /* Center the gallery */
+  }
+  
+  .galleryLink {
+    display: block; /* Make the link fill its container */
+    text-decoration: none; /* Remove underline from the link */
+    color: inherit; /* Inherit text color from parent */
+    transition: transform 0.2s ease-in-out; /* Add a slight hover effect */
+  }
+  
+  .galleryLink:hover {
+    transform: scale(1.03); /* Slightly enlarge on hover */
+  }
+  
+  .galleryThumb {
+    margin: 0; /* Remove default margin on figure */
+    padding: 0; /* Remove default padding on figure */
+    position: relative; /* Needed for object-fit: cover to work well with Image */
+    overflow: hidden; /* Hide overflow, useful if you add border-radius */
+    border-radius: 8px; /* Optional: Add rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: Add a subtle shadow */
+  }
+  
+  .galleryImage {
+    /* Next.js Image component handles basic responsiveness with layout="responsive" */
+    /* Add any additional image specific styles here if needed, e.g., border-radius */
+    display: block; /* Ensure the image behaves like a block */
+    /* border-radius: 8px; /* Match figure border-radius if applied */
+  }
+  
+  .galleryCaption {
+    padding: 10px; /* Padding around the caption text */
+    text-align: center; /* Center the caption text */
+    font-size: 0.9rem; /* Smaller font size for caption */
+    color: #555; /* Slightly muted text color */
+    background-color: #fff; /* White background for caption */
+  }

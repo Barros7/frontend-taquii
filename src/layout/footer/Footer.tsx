@@ -1,4 +1,3 @@
-// components/Footer.tsx
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -10,7 +9,6 @@ const Footer: React.FC = () => {
       <footer className="container-fluid bg-dark text-white py-5">
         <div className="container">
             <div className="row">
-
               {/* Primeira coluna */}
               <div className="col-xs-12 col-sm-12 col-md-3">
                 <div className="col-xs-12 col-md-12 col-md-12">
@@ -44,34 +42,70 @@ const Footer: React.FC = () => {
                 <div className="row">
                   <div className="xs-sm-12 col-sm-12 col-md-3">
                     <div className="row">
-                      <div className="col-xs-12 col-sm-12 col-md-12"><p className='text-white'>Contactos</p></div>
-                      <div className="col-xs-12 col-sm-12 col-md-12"><span className='text-footer'>(+244) 937315418</span></div>
-                      <div className="col-xs-12 col-sm-12 col-md-12"><span className='text-footer'>info@taqui.com</span></div>
-                      <div className="col-xs-12 col-sm-12 col-md-12"><span className='text-footer'>Rua Principal da Seta Nova, Benguela.</span></div>
+                      <div className="col-xs-12 col-sm-12 col-md-12">
+                        <p className='text-white'>Contactos</p>
+                      </div>
+                      <div className="col-xs-12 col-sm-12 col-md-12">
+                        <span className='text-footer'>(+244) 937315418</span>
+                      </div>
+                      <div className="col-xs-12 col-sm-12 col-md-12">
+                        <span className='text-footer'>info@taqui.com</span>
+                      </div>
+                      <div className="col-xs-12 col-sm-12 col-md-12">
+                        <span className='text-footer'>Rua Principal da Seta Nova, Benguela.</span>
+                      </div>
                     </div>
                   </div>
                   <div className="col-xs-12 col-sm-12 col-md-3">
                     <div className="row">
-                      <div className="col-xs-12 col-sm-12 col-md-12"><p className='paragraph-footer'>Central de Ajuda</p></div>
-                      <div className="col-xs-12 col-sm-12 col-md-12"><span className='text-footer-link'>Registar Estabelecimento</span></div>
-                      <div className="col-xs-12 col-sm-12 col-md-12"><span className='text-footer-link'>Encontrar Serviços</span></div>
-                      <div className="col-xs-12 col-sm-12 col-md-12"><span className='text-footer-link'>FAQ</span></div>
+                      <div className="col-xs-12 col-sm-12 col-md-12">
+                        <p className='paragraph-footer'>Central de Ajuda</p>
+                      </div>
+                      <div className="col-xs-12 col-sm-12 col-md-12">
+                        <span className='text-footer-link'>Registar Estabelecimento</span>
+                      </div>
+                      <div className="col-xs-12 col-sm-12 col-md-12">
+                        <span className='text-footer-link'>Encontrar Serviços</span>
+                      </div>
+                      <div className="col-xs-12 col-sm-12 col-md-12">
+                        <span className='text-footer-link'>FAQ</span>
+                      </div>
                     </div>
                   </div>
                   <div className="xs-sm-12 col-sm-12 col-md-3">
                     <div className="row">
-                      <div className="col-xs-12 col-md-12"><p className='paragraph-footer'>Sobre o Taqui</p></div>
-                      <div className="col-xs-12 col-md-12"><span className='text-footer-link'><Link href={"/termsAndConditions"}>Termos e Condições</Link></span></div>
-                      <div className="col-xs-12 col-md-12"><span className='text-footer-link'><Link href={"/privacyPolicy"}>Politica de Privacidade</Link></span></div>
-                      <div className="col-xs-12 col-md-12"><span className='text-footer-link'>Empregos</span></div>
-                      <div className="col-xs-12 col-md-12"><span className='text-footer-link'>Blog</span></div>
+                      <div className="col-xs-12 col-md-12">
+                        <p className='paragraph-footer'>Sobre o Taqui</p>
+                      </div>
+                      <div className="col-xs-12 col-md-12">
+                        <span className='text-footer-link'>
+                          <Link href={"/termos-de-responsabilidades"}>Termos e Condições</Link>
+                        </span>
+                      </div>
+                      <div className="col-xs-12 col-md-12">
+                        <span className='text-footer-link'>
+                          <Link href={"/politicas-de-privacidade"}>Politica de Privacidade</Link>
+                        </span>
+                      </div>
+                      <div className="col-xs-12 col-md-12">
+                        <span className='text-footer-link'>Empregos</span>
+                      </div>
+                      <div className="col-xs-12 col-md-12">
+                        <span className='text-footer-link'>Blog</span>
+                      </div>
                     </div>
                   </div>
                   <div className="xs-sm-12 col-sm-12 col-md-3">
                     <div className="row">
-                      <div className="col-xs-12 col-sm-12 col-md-12"><p className='paragraph-footer'>Pagamentos</p></div>
-                      <div className="col-xs-12 col-sm-12 col-md-12"><span className='text-footer-link'>Dicas de segurança</span></div>
-                      <div className="col-xs-12 col-sm-12 col-md-12"><span className='text-footer-link'>Pontos de Distribuição</span></div>
+                      <div className="col-xs-12 col-sm-12 col-md-12">
+                        <p className='paragraph-footer'>Pagamentos</p>
+                      </div>
+                      <div className="col-xs-12 col-sm-12 col-md-12">
+                        <span className='text-footer-link'>Dicas de segurança</span>
+                      </div>
+                      <div className="col-xs-12 col-sm-12 col-md-12">
+                        <span className='text-footer-link'>Pontos de Distribuição</span>
+                      </div>
                     </div>
                   </div>
               </div>

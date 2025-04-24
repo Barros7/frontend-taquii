@@ -3,20 +3,26 @@ import { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 export default function FaqSection() {
-    const [activeSection, setActiveSection] = useState<boolean[]>(Array(10).fill(false));
+    const [openSections, setOpenSections] = useState<Set<number>>(new Set());
 
     const toggleSection = (index: number) => {
-        setActiveSection((prevState) => {
-            const newState = [...prevState];
-            newState[index] = !newState[index];
-            return newState;
+        setOpenSections(prevOpenSections => {
+            const newOpenSections = new Set(prevOpenSections); // Create a copy of the current open sections
+            if (newOpenSections.has(index)) {
+                newOpenSections.delete(index); // If the section is open, close it (remove from Set)
+            } else {
+                newOpenSections.add(index); // If the section is closed, open it (add to Set)
+            }
+            return newOpenSections; // Return the new Set to update state
         });
     };
 
+    // Your FAQ data
     const sections = [
         {
             title: 'Como faço para registar o meu estabelecimento e começar a usar o Taqui?',
-            content: 'Para fazer o registo no Taqui, basta apenas '
+            // Make sure to complete the content here
+            content: 'Para fazer o registo no Taqui, basta apenas visitar a nossa página de registo para estabelecimentos e seguir os passos indicados para criar o seu perfil e configurar os seus serviços.'
         },
         {
             title: 'Posso utilizar o Taqui de graça?',
@@ -49,22 +55,59 @@ export default function FaqSection() {
     ];
 
     return (
-        <div className="container mt-4">
+        <div className="container my-5">
             <section className="faq-section">
-               {sections.map((section, index) => (
-                    <div 
-                        key={index} 
-                        className="alert my-3" 
-                        role="alert" 
-                        onClick={() => toggleSection(index)}
-                    >
-                        <h6 className="alert-heading">{section.title}</h6>
-                        <div className={activeSection[index] ? "showContent" : "hideContent"}>
-                            <hr />
-                            <p>{section.content}</p>
-                        </div>
-                    </div>
-                ))}
+                {/* Optional: Add a main heading for the FAQ section */}
+                <h2>Perguntas Frequentes</h2>
+
+                {/* Use a container for the FAQ items, though not strictly required by Bootstrap collapse if not using accordion behavior */}
+                <div>
+                    {sections.map((section, index) => {
+                        // Determine if the current section is open
+                        const isExpanded = openSections.has(index);
+                        // Create a unique ID for the collapsible content
+                        const collapseId = `faq-collapse-${index}`;
+
+                        return (
+                            // Use a div for each FAQ item, applying Bootstrap classes for accordion items if desired for styling
+                            <div className="card mb-2" key={index}> {/* Using card for visual separation like your original alert */}
+                                <div className="card-header" id={`faq-heading-${index}`}> {/* Card header for the question */}
+                                    <h5 className="mb-0">
+                                        {/* Use a button for the question title - better for accessibility */}
+                                        <button
+                                            className={`btn btn-link ${isExpanded ? '' : 'collapsed'}`} // Bootstrap classes for button styling and state
+                                            type="button"
+                                            onClick={() => toggleSection(index)} // Toggle the section state on click
+                                            aria-expanded={isExpanded} // ARIA attribute: true if expanded, false if collapsed
+                                            aria-controls={collapseId} // ARIA attribute linking button to the collapsible content
+                                            style={{ textDecoration: 'none', color: 'inherit' }} // Optional: Remove default button link styling
+                                        >
+                                            {section.title}
+                                        </button>
+                                    </h5>
+                                </div>
+
+                                {/* The collapsible content */}
+                                <div
+                                    id={collapseId}
+                                    // Apply Bootstrap collapse classes and the 'show' class conditionally
+                                    className={`collapse ${isExpanded ? 'show' : ''}`}
+                                    aria-labelledby={`faq-heading-${index}`} // ARIA attribute linking content back to its heading
+                                    // Removed data-bs-parent attribute to allow multiple items to be open simultaneously
+                                >
+                                    <div className="card-body"> {/* Card body for the answer */}
+                                        {/* Content is typically in a paragraph */}
+                                        <p>{section.content}</p>
+                                        {/* If there's a link mentioned in content, ensure it's an actual <a> tag */}
+                                        {index === 7 && ( // Example for the support question
+                                            <p><a href="#" className="alert-link">Clique aqui para o chat com o nosso suporte.</a></p>
+                                        )}
+                                    </div>
+                                </div>
+                            </div>
+                        );
+                    })}
+                </div>
             </section>
         </div>
     );
