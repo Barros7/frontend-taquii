@@ -52,14 +52,14 @@ export const Banner = () => {
                                     Galeria
                                 </div>
                             </li>
-                            {/*<li
+                            <li
                                 className={`${styles.navItem} ${activeLink === 'contactos' ? styles.active : ''}`}
                                 onClick={() => handleLinkClick('contactos')}
                             >
                                 <div className={styles.navLink}>
                                     Contactos
                                 </div>
-                            </li>*/}
+                            </li>
                         </ul>
                     </nav>
                 </div>
