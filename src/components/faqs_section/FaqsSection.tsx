@@ -55,8 +55,8 @@ export default function FaqSection() {
     ];
 
     return (
-        <div className="container my-5">
-            <section className="faq-section">
+        <section id="faqs" className="container my-5">
+            <div className="faq-section">
                 {/* Optional: Add a main heading for the FAQ section */}
                 <h2>Perguntas Frequentes</h2>
 
@@ -108,7 +108,7 @@ export default function FaqSection() {
                         );
                     })}
                 </div>
-            </section>
-        </div>
+            </div>
+        </section>
     );
 }

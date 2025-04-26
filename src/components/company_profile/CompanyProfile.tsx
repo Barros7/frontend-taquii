@@ -66,7 +66,7 @@ const ServiceCard: React.FC<{ service: Service; onBookClick: (service: Service) 
                 onClick={() => onBookClick(service)} // Call the passed function on click
                 disabled={service.status === 'Indisponível'} // Optionally disable if unavailable
               >
-                Agendar
+                Selecionar Serviço
               </button>
             </div>
           </div>

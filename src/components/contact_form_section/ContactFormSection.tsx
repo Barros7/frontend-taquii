@@ -20,7 +20,7 @@ const ContactFormSection: React.FC = () => {
   };
 
   return (
-    <div className="container d-flex flex-column align-items-center justify-content-center my-5">
+    <section id="contatos" className="container d-flex flex-column align-items-center justify-content-center my-5">
       <h2 className="text-center fw-bold">Contato</h2>
       <p className="text-muted text-center mb-4">
         Fale conosco para transformar seu estabelecimento junto com a gente!
@@ -75,7 +75,7 @@ const ContactFormSection: React.FC = () => {
           Enviar
         </button>
       </form>
-    </div>
+    </section>
   );
 };
 

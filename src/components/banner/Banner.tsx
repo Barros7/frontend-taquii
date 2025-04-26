@@ -29,14 +29,6 @@ export const Banner = () => {
                     <nav className={styles.navbar}>
                         <ul className={styles.navList}>
                             <li
-                                className={`${styles.navItem} ${activeLink === 'sobre' ? styles.active : ''}`}
-                                onClick={() => handleLinkClick('sobre')}
-                            >
-                                <div className={styles.navLink}>
-                                    Sobre
-                                </div>
-                            </li>
-                            <li
                                 className={`${styles.navItem} ${activeLink === 'servicos' ? styles.active : ''}`}
                                 onClick={() => handleLinkClick('servicos')}
                             >
@@ -50,6 +42,14 @@ export const Banner = () => {
                             >
                                 <div className={styles.navLink}>
                                     Galeria
+                                </div>
+                            </li>
+                            <li
+                                className={`${styles.navItem} ${activeLink === 'sobre' ? styles.active : ''}`}
+                                onClick={() => handleLinkClick('sobre')}
+                            >
+                                <div className={styles.navLink}>
+                                    Sobre
                                 </div>
                             </li>
                             <li

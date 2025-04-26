@@ -92,7 +92,7 @@ const BookingModal: React.FC<BookingModalProps> = ({ service, show, onClose }) =
             ></button>
           </div>
           <div className="row">
-            <div className="col-5 container-booking-left">
+            <div className="col-xs-12 col-sm-5 container-booking-left">
               <div className="p-4 rounded-xl">
                 <h2 className="title-booking text-lg mb-1">Agende o seu atendimento</h2>
                 <p className="subtitle-booking">Selecione a data, hora e o local de atendimento.</p>
@@ -159,12 +159,12 @@ const BookingModal: React.FC<BookingModalProps> = ({ service, show, onClose }) =
                   onClick={handleAgendar}
                   className="buttons-booking buttons-booking-confirm w-100 my-3"
                 >
-                  Agendar
+                  Confirmar Agenda
                 </button>
               </div>
             </div>
 
-            <div className="col-7">
+            <div className="col-xs-12 col-sm-7">
               <div className="bg-[#1B263B] p-4 rounded-xl">
                 <h2 className="title-container-my-booking">Sua agenda</h2>
                 <p className="description-container-my-bookings">Consulte aqui toda sua agenda</p>

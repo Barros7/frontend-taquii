@@ -1,0 +1,133 @@
+.pricingSection {
+    text-align: center;
+    padding: 40px 20px;
+    background-color: #f8f8f8; /* Cor de fundo suave */
+  }
+  
+  .sectionTitle {
+    font-size: 2.5em;
+    margin-bottom: 10px;
+    color: #333;
+  }
+  
+  .sectionSubtitle {
+    font-size: 1.2em;
+    color: #666;
+    margin-bottom: 40px;
+  }
+  
+  .plansContainer {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  .planCard {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 30px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform 0.3s ease-in-out;
+    border-top: 4px solid #007bff; /* Cor da borda superior */
+  }
+  
+  .planCard:hover {
+    transform: translateY(-10px);
+  }
+  
+  .planName {
+    font-size: 1.8em;
+    margin-bottom: 10px;
+    color: #333;
+  }
+  
+  .planDescription {
+    font-size: 1em;
+    color: #777;
+    margin-bottom: 20px;
+    min-height: 40px; /* Garante altura mínima para alinhar cards */
+  }
+  
+  .planPrice {
+    margin-bottom: 20px;
+  }
+  
+  .priceValue {
+    font-size: 2.5em;
+    font-weight: bold;
+    color: #007bff; /* Cor do preço */
+  }
+  
+  .priceUnit {
+    font-size: 1em;
+    color: #666;
+    margin-left: 5px;
+  }
+  
+  .featuresList {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 30px;
+    flex-grow: 1; /* Permite que a lista ocupe o espaço disponível */
+  }
+  
+  .featuresList li {
+    margin-bottom: 10px;
+    text-align: left;
+    font-size: 0.95em;
+    color: #555;
+    display: flex;
+    align-items: center;
+  }
+  
+  .featureIncluded .featureIcon {
+    color: #28a745; /* Verde para incluído */
+    margin-right: 10px;
+  }
+  
+  .featureExcluded .featureIcon {
+    color: #dc3545; /* Vermelho para excluído */
+    margin-right: 10px;
+  }
+  
+  .startButton {
+    display: inline-block;
+    background-color: #007bff; /* Cor de fundo do botão */
+    color: #fff;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    text-decoration: none; /* Caso seja um link */
+    text-align: center;
+  }
+  
+  .startButton:hover {
+    background-color: #0056b3; /* Cor mais escura no hover */
+  }
+  
+  /* Responsividade */
+  @media (max-width: 768px) {
+    .plansContainer {
+      grid-template-columns: 1fr; /* Uma coluna em telas menores */
+    }
+  
+    .planCard {
+      padding: 20px;
+    }
+  
+    .sectionTitle {
+      font-size: 2em;
+    }
+  
+    .sectionSubtitle {
+      font-size: 1em;
+    }
+  }
