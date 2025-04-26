@@ -7,3 +7,8 @@
     color: #00eeff;
     cursor: pointer;
 }
+
+#copyright-text {
+    font-size: 14px;
+    color: #8B96A5;
+}

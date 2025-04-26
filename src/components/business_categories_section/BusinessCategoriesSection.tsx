@@ -53,7 +53,7 @@ const businessTypes = () => {
   ];
 
   return (
-    <section className='container section-business-category text-center'>
+    <section id="servicos" className='container section-business-category text-center'>
       <h2 className={"title"}>Para todo tipo de empresa</h2>
       <p className={"subtitle"}>Temos a solução para todo tipo de estabelecimento</p>
       <div className='row py-3'>

@@ -7,9 +7,9 @@ import AboutSection from '../about_section/AboutSection';
 import GallerySection from '../galary_section/GallerySection';
 
 export const Banner = () => {
-    const [activeLink, setActiveLink] = React.useState<'sobre' | 'servicos' | 'galeria' | 'contactos'>('sobre');
+    const [activeLink, setActiveLink] = React.useState< 'servicos' | 'sobre' | 'galeria' | 'contactos'>('servicos');
 
-    const handleLinkClick = (link: 'sobre' | 'servicos' | 'galeria' | 'contactos') => {
+    const handleLinkClick = (link: 'servicos' | 'sobre' | 'galeria' | 'contactos') => {
         setActiveLink(link);
     };
 

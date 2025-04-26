@@ -62,14 +62,14 @@
 
 /* Radio Group - Parece bom, pouca necessidade de mudança aqui */
 .radio-group {
-display: flex;
-justify-content: space-between;
-width: 100%;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
 }
 
 .radio-item {
-display: flex;
-align-items: center; /* Ok */
+  display: flex;
+  align-items: center;
 }
 
 /* Avalie se display: flex e align-items: center são necessários aqui
@@ -85,58 +85,58 @@ margin-right: 8px;
 
 /* Buttons - Geralmente bem definidos, mas considere font-weight */
 .buttons-booking {
-background-color: #3A69B4;
-border: none;
-border-radius: 4px; /* Pode usar rem: 0.25rem */
-box-sizing: border-box; /* Já está aqui, bom! */
-color: #FFFFFF;
-cursor: pointer;
-direction: ltr;
-display: inline-block; /* Geralmente buttons são inline-block ou block */
-/* Ajustar a família de fontes se necessário */
-font-family: "SF Pro Text", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif; /* Adicionado fallbacks mais comuns */
-font-size: 0.875rem; /* Exemplo usando rem (14px / 16px base) */
-font-weight: 400; /* Considere um font-weight mais alto (ex: 400) para melhor legibilidade */
-letter-spacing: -.022em;
-line-height: 1.47059;
-min-width: 30px;
-overflow: visible;
-padding: 4px 14px; /* Pode usar rem ou manter px/em */
-text-align: center;
-vertical-align: baseline;
-user-select: none;
--webkit-user-select: none;
-touch-action: manipulation;
-white-space: nowrap;
+  background-color: #3A69B4;
+  border: none;
+  border-radius: 4px; /* Pode usar rem: 0.25rem */
+  box-sizing: border-box; /* Já está aqui, bom! */
+  color: #FFFFFF;
+  cursor: pointer;
+  direction: ltr;
+  display: inline-block; /* Geralmente buttons são inline-block ou block */
+  /* Ajustar a família de fontes se necessário */
+  font-family: "SF Pro Text", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif; /* Adicionado fallbacks mais comuns */
+  font-size: 0.875rem; /* Exemplo usando rem (14px / 16px base) */
+  font-weight: 400; /* Considere um font-weight mais alto (ex: 400) para melhor legibilidade */
+  letter-spacing: -.022em;
+  line-height: 1.47059;
+  min-width: 30px;
+  overflow: visible;
+  padding: 4px 14px; /* Pode usar rem ou manter px/em */
+  text-align: center;
+  vertical-align: baseline;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  white-space: nowrap;
 }
 
 .buttons-booking:disabled {
-cursor: default;
-opacity: .3;
+  cursor: default;
+  opacity: .3;
 }
 
 .buttons-booking:hover {
-background-image: linear-gradient(#51A9EE, #147BCD);
-border-color: #1482D0;
-text-decoration: none;
+  background-image: linear-gradient(#51A9EE, #147BCD);
+  border-color: #1482D0;
+  text-decoration: none;
 }
 
 .buttons-booking:active {
-background-image: linear-gradient(#3D94D9, #0067B9);
-border-color: #006DBC;
-outline: none;
+  background-image: linear-gradient(#3D94D9, #0067B9);
+  border-color: #006DBC;
+  outline: none;
 }
 
 .buttons-booking:focus {
-box-shadow: rgba(131, 192, 253, 0.5) 0 0 0 3px;
-outline: none;
+  box-shadow: rgba(131, 192, 253, 0.5) 0 0 0 3px;
+  outline: none;
 }
 
 .buttons-booking-confirm {
-background-color: #0242DF;
-font-size: 1.125rem; /* Exemplo usando rem (18px / 16px base) */
-/* Adicionar !important se precisar garantir a sobreposição do background-color */
-/* background-color: #0242DF !important; */
+  background-color: #0242DF;
+  font-size: 1.125rem; /* Exemplo usando rem (18px / 16px base) */
+  /* Adicionar !important se precisar garantir a sobreposição do background-color */
+  /* background-color: #0242DF !important; */
 }
 
 /* Container My Bookings */
@@ -152,4 +152,43 @@ font-size: 1.125rem; /* Exemplo usando rem (18px / 16px base) */
   /* Use px, rem ou em para margens verticais */
   margin-bottom: 1.5rem; /* Exemplo usando rem */
   /* margin-bottom: 24px; */ /* Exemplo usando px */
+}
+
+/* Por padrão, comporta-se como container-fluid */
+/* Aplica o comportamento de container a partir do breakpoint 'md' (768px) */
+@media (max-width: 768px) {
+  .container-booking-modal {
+    border-radius: 0;
+    width: 100%;
+    padding-right: var(--bs-gutter-x,.75rem); /* Mantém o padding do container */
+    padding-left: var(--bs-gutter-x,.75rem);  /* Mantém o padding do container */
+    margin-right: auto; /* Para centralizar se necessário em alguns casos, embora com width: 100% não faça diferença */
+    margin-left: auto;  /* Para centralizar se necessário em alguns casos */
+  }
+}
+
+/* Aplica o comportamento de container a partir do breakpoint 'md' (768px) */
+@media (min-width: 768px) {
+  .my-responsive-container {
+    max-width: 720px; /* Largura máxima para md e acima, ajuste conforme os breakpoints do seu Bootstrap */
+  }
+}
+
+/* Aplica a largura máxima do container para breakpoints maiores */
+@media (min-width: 992px) {
+  .my-responsive-container {
+    max-width: 960px; /* Largura máxima para lg e acima */
+  }
+}
+
+@media (min-width: 1200px) {
+  .my-responsive-container {
+    max-width: 1140px; /* Largura máxima para xl e acima */
+  }
+}
+
+@media (min-width: 1400px) {
+  .my-responsive-container {
+    max-width: 1320px; /* Largura máxima para xxl e acima */
+  }
 }

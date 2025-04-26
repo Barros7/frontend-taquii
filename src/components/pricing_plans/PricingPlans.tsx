@@ -1,5 +1,5 @@
 import React from 'react';
-import { Plan, plans } from '../../types/PlanTypes';
+import { plans } from '../../types/PlanTypes';
 import styles from './PricingPlans.module.css';
 import { FaCheckCircle, FaTimesCircle } from 'react-icons/fa';
 

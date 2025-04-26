@@ -1,7 +1,6 @@
 "use client";
 import React, { useEffect, useState } from 'react';
 import './BookingModal.css';
-import 'bootstrap/dist/css/bootstrap.min.css';
 
 type Service = {
   id: string;
@@ -79,7 +78,7 @@ const BookingModal: React.FC<BookingModalProps> = ({ service, show, onClose }) =
   }
   
   return (
-    <div className="container-booking-modal">
+    <div className="container-booking-modal my-responsive-container">
       {showModal && (
         <div className="container-booking text-white">
           <div className="container-booking-header d-flex justify-content-between align-items-center">
@@ -165,7 +164,7 @@ const BookingModal: React.FC<BookingModalProps> = ({ service, show, onClose }) =
             </div>
 
             <div className="col-xs-12 col-sm-7">
-              <div className="bg-[#1B263B] p-4 rounded-xl">
+              <div className="p-4 rounded-xl">
                 <h2 className="title-container-my-booking">Sua agenda</h2>
                 <p className="description-container-my-bookings">Consulte aqui toda sua agenda</p>
                 <hr />

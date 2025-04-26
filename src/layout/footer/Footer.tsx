@@ -35,6 +35,9 @@ const Footer: React.FC = () => {
                     </svg>
                   </div>
                 </div>
+                <div className="py-3">
+                  <p id="copyright-text" className="copyright-text">&copy; {new Date().getFullYear()} J2B CODE. Todos os direitos reservados.</p>
+                </div>
               </div>
 
               {/* Outras colunas */}
