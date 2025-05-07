@@ -1,64 +1,178 @@
 'use client';
-import React, { useState } from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
 
-const Login: React.FC = () => {
+import React, { useState } from 'react';
+import { signIn } from 'next-auth/react';
+import "./register.css";
+
+const LoginForm: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const [formData, setFormData] = useState({
+    username: '',
+    phone: '',
+    email: '',
+    password: ''
+  });
+  const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
 
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError('');
+    setIsLoading(true);
+
+    try {
+      if (!formData.email || !formData.password) {
+        throw new Error('Todos os campos são obrigatórios');
+      }
+
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(formData.email)) {
+        throw new Error('Email inválido');
+      }
+
+      const result = await signIn('credentials', {
+        username: formData.username,
+        phone: formData.phone,
+        email: formData.email,
+        password: formData.password,
+        redirect: false,
+      });
+
+      if (result?.error) {
+        throw new Error(result.error);
+      }
+
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Erro ao fazer o registro');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
-    <div className="container d-flex justify-content-center align-items-center vh-100">
-      <div className="card p-4 shadow-lg" style={{ maxWidth: '400px', width: '100%' }}>
-        <h5 className="text-center mb-4">Taqui a Sua Solução!</h5>
-        <form>
-          <div className="mb-3">
-            <label className="form-label" htmlFor="email">Telefone</label>
-            <div className="input-group">
-              <input type="tel" className="form-control" id="phoneNumber" placeholder="Introduz o número de telefone" required />
-              <span className="input-group-text">
-                <i className="fas fa-envelope" aria-hidden="true"></i>
-              </span>
+    <div className="container container-register my-5">
+      <div className="card">
+        <div className="card-body p-5">
+          <h2 className="text-center mb-4">Registrar</h2>
+          <form onSubmit={handleSubmit}>
+            {error && (
+              <div className="alert alert-danger" role="alert">
+                {error}
+              </div>
+            )}
+
+            <div className="row">
+              <div className="col-md-12 mb-3">
+                <input
+                  type="text"
+                  className="form-control"
+                  id="username"
+                  name="username"
+                  value={formData.username}
+                  onChange={handleChange}
+                  placeholder="Nome de utilizador"
+                  required
+                />
+              </div>
+              <div className="col-md-5 mb-3">
+                <input
+                  type="phone"
+                  className="form-control"
+                  id="phone"
+                  name="phone"
+                  value={formData.phone}
+                  onChange={handleChange}
+                  placeholder="Telefone"
+                  required
+                />
+              </div>
+              <div className="col-md-7 mb-3">
+                <input
+                  type="email"
+                  className="form-control"
+                  id="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  placeholder="E-mail"
+                  required
+                />
+              </div>
+              <div className="col-md-6 mb-3">
+                <input
+                  type="password"
+                  className="form-control"
+                  id="password"
+                  name="password"
+                  value={formData.password}
+                  onChange={handleChange}
+                  placeholder="Senha"
+                  required
+                />
+              </div>
+              <div className="col-md-6 mb-3">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  className="form-control"
+                  id="password"
+                  name="password"
+                  value={formData.password}
+                  onChange={handleChange}
+                  placeholder="Confirmar senha"
+                  required
+                />
+                <span 
+                  className="input-group-text" 
+                  onClick={togglePasswordVisibility} 
+                  role="button" 
+                  style={{ cursor: 'pointer' }}
+                >
+                  <i className={`fas ${showPassword ? "fa-eye-slash" : "fa-eye"}`}></i>
+                </span>
+              </div>
             </div>
-          </div>
 
-          <div className="mb-3">
-            <label className="form-label" htmlFor="email">E-mail</label>
-            <div className="input-group">
-              <input type="email" className="form-control" id="email" placeholder="Introduz o seu endereço de E-mail" required />
-              <span className="input-group-text">
-                <i className="fas fa-envelope" aria-hidden="true"></i>
-              </span>
+            <button 
+              type="submit" 
+              className="btn btn-primary w-100" 
+              disabled={isLoading}
+            >
+              {isLoading ? 'Registrando...' : 'Registrar'}
+            </button>
+            {/*
+              <div className="text-center my-3">
+                <span>ou continue com</span>
+              </div>
+
+              <div className="d-flex gap-2">
+                <button type="button" className="btn btn-outline-danger flex-grow-1">
+                  <i className="fab fa-google me-2"></i> Google
+                </button>
+                <button type="button" className="btn btn-outline-primary flex-grow-1">
+                  <i className="fab fa-facebook-f me-2"></i> Facebook
+                </button>
+              </div>
+            */}
+            <div className="text-center mt-3">
+              Já tem uma conta? <a href="/login" className="text-decoration-none">Entre agora!</a>
             </div>
-          </div>
-
-          <div className="mb-3">
-            <label className="form-label" htmlFor="password">Password</label>
-            <div className="input-group">
-              <input
-                type={showPassword ? "text" : "password"}
-                className="form-control"
-                id="password"
-                placeholder=""
-                required
-              />
-              <span className="input-group-text password-toggle" onClick={togglePasswordVisibility} role="button" aria-label="Toggle password visibility">
-                <i className={showPassword ? "fas fa-eye-slash" : "fas fa-eye"}></i>
-              </span>
-            </div>
-          </div>
-
-          <button type="submit" className="btn btn-primary w-100 mt-3">Registar</button>
-
-          <div className="text-center mt-3">
-            Já tem uma conta? <a href="/login" className="text-decoration-none">Entrar agora!</a>
-          </div>
-        </form>
+          </form>
+        </div>
       </div>
     </div>
   );
 };
 
-export default Login;
+export default LoginForm; 

@@ -1,0 +1,210 @@
+'use client';
+
+import React, { useState, useEffect } from 'react';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
+import styles from './profile.module.css';
+
+interface UserProfile {
+  id: string;
+  name: string;
+  email: string;
+  phone: string;
+  address: string;
+  city: string;
+  state: string;
+  zipCode: string;
+}
+
+export default function ProfilePage() {
+  const { data: session, status } = useSession();
+  const router = useRouter();
+  const [profile, setProfile] = useState<UserProfile | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
+
+  useEffect(() => {
+    if (status === 'unauthenticated') {
+      router.push('/login');
+    } else if (status === 'authenticated') {
+      fetchProfile();
+    }
+  }, [status, router]);
+
+  const fetchProfile = async () => {
+    try {
+      const response = await fetch('http://localhost:8000/api/users/profile', {
+        credentials: 'include'
+      });
+      
+      if (!response.ok) {
+        throw new Error('Failed to fetch profile');
+      }
+
+      const data = await response.json();
+      setProfile(data);
+    } catch (err) {
+      setError('Erro ao carregar perfil');
+      console.error('Error fetching profile:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setLoading(true);
+    setError('');
+    setSuccess('');
+
+    try {
+      const formData = new FormData(e.currentTarget);
+      const data = {
+        name: formData.get('name'),
+        phone: formData.get('phone'),
+        address: formData.get('address'),
+        city: formData.get('city'),
+        state: formData.get('state'),
+        zipCode: formData.get('zipCode')
+      };
+
+      const response = await fetch('http://localhost:8000/api/users/profile', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        credentials: 'include',
+        body: JSON.stringify(data)
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to update profile');
+      }
+
+      setSuccess('Perfil atualizado com sucesso!');
+      fetchProfile();
+    } catch (err) {
+      setError('Erro ao atualizar perfil');
+      console.error('Error updating profile:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className={styles.container}>
+        <div className={styles.loading}>Carregando...</div>
+      </div>
+    );
+  }
+
+  return (
+    <div className={styles.container}>
+      <div className={styles.profileCard}>
+        <h1 className={styles.title}>Meu Perfil</h1>
+
+        {error && <div className={styles.error}>{error}</div>}
+        {success && <div className={styles.success}>{success}</div>}
+
+        <form onSubmit={handleSubmit} className={styles.form}>
+          <div className={styles.formGroup}>
+            <label htmlFor="name">Nome Completo</label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              defaultValue={profile?.name}
+              required
+              className={styles.input}
+            />
+          </div>
+
+          <div className={styles.formGroup}>
+            <label htmlFor="email">E-mail</label>
+            <input
+              type="email"
+              id="email"
+              value={profile?.email}
+              disabled
+              className={`${styles.input} ${styles.disabled}`}
+            />
+          </div>
+
+          <div className={styles.formGroup}>
+            <label htmlFor="phone">Telefone</label>
+            <input
+              type="tel"
+              id="phone"
+              name="phone"
+              defaultValue={profile?.phone}
+              required
+              className={styles.input}
+            />
+          </div>
+
+          <div className={styles.formGroup}>
+            <label htmlFor="address">Endereço</label>
+            <input
+              type="text"
+              id="address"
+              name="address"
+              defaultValue={profile?.address}
+              required
+              className={styles.input}
+            />
+          </div>
+
+          <div className={styles.formRow}>
+            <div className={styles.formGroup}>
+              <label htmlFor="city">Cidade</label>
+              <input
+                type="text"
+                id="city"
+                name="city"
+                defaultValue={profile?.city}
+                required
+                className={styles.input}
+              />
+            </div>
+
+            <div className={styles.formGroup}>
+              <label htmlFor="state">Estado</label>
+              <input
+                type="text"
+                id="state"
+                name="state"
+                defaultValue={profile?.state}
+                required
+                className={styles.input}
+              />
+            </div>
+
+            <div className={styles.formGroup}>
+              <label htmlFor="zipCode">CEP</label>
+              <input
+                type="text"
+                id="zipCode"
+                name="zipCode"
+                defaultValue={profile?.zipCode}
+                required
+                className={styles.input}
+              />
+            </div>
+          </div>
+
+          <div className={styles.buttonGroup}>
+            <button
+              type="submit"
+              disabled={loading}
+              className={styles.submitButton}
+            >
+              {loading ? 'Salvando...' : 'Salvar Alterações'}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+} 

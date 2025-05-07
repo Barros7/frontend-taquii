@@ -1,0 +1,214 @@
+.reportsPage {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding: 2rem;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.filters {
+  display: flex;
+  gap: 1rem;
+}
+
+.dateRangeSelect {
+  padding: 0.75rem 1rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  background-color: white;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+
+.dateRangeSelect:focus {
+  outline: none;
+  border-color: #4f46e5;
+}
+
+.metricsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.5rem;
+}
+
+.metricCard {
+  background: white;
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.metricCard:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.metricCard.selected {
+  border: 2px solid #4f46e5;
+}
+
+.metricCard h3 {
+  margin: 0;
+  font-size: 1rem;
+  color: #64748b;
+  margin-bottom: 0.5rem;
+}
+
+.metricValue {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 0.5rem;
+}
+
+.metricChange {
+  font-size: 0.875rem;
+  font-weight: 500;
+  padding: 0.25rem 0.5rem;
+  border-radius: 1rem;
+  display: inline-block;
+}
+
+.up {
+  background-color: #dcfce7;
+  color: #166534;
+}
+
+.down {
+  background-color: #fee2e2;
+  color: #991b1b;
+}
+
+.chartsSection {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 1.5rem;
+}
+
+.chartCard {
+  background: white;
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.chartCard h2 {
+  margin: 0;
+  font-size: 1.25rem;
+  color: #1e293b;
+  margin-bottom: 1.5rem;
+}
+
+.chartContent {
+  min-height: 300px;
+}
+
+.serviceBar {
+  margin-bottom: 1.5rem;
+}
+
+.serviceInfo {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.serviceName {
+  font-weight: 500;
+  color: #1e293b;
+}
+
+.serviceRevenue {
+  color: #64748b;
+}
+
+.barContainer {
+  height: 8px;
+  background-color: #f1f5f9;
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 0.25rem;
+}
+
+.bar {
+  height: 100%;
+  background-color: #4f46e5;
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+.appointments {
+  font-size: 0.875rem;
+  color: #64748b;
+}
+
+.retentionChart {
+  display: flex;
+  align-items: flex-end;
+  gap: 1rem;
+  height: 200px;
+  padding-bottom: 2rem;
+  position: relative;
+}
+
+.retentionBar {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.retentionValue {
+  width: 100%;
+  background-color: #4f46e5;
+  border-radius: 4px 4px 0 0;
+  transition: height 0.3s ease;
+}
+
+.monthLabel {
+  font-size: 0.875rem;
+  color: #64748b;
+}
+
+.retentionLabels {
+  position: absolute;
+  left: -2rem;
+  top: 0;
+  bottom: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  color: #64748b;
+  font-size: 0.75rem;
+}
+
+.exportSection {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1rem;
+}
+
+.exportButton {
+  padding: 0.75rem 1.5rem;
+  background-color: #4f46e5;
+  color: white;
+  border: none;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.exportButton:hover {
+  background-color: #4338ca;
+} 

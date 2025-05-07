@@ -1,0 +1,71 @@
+.container {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  padding: 2rem;
+  margin-top: 2rem;
+}
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+.title {
+  font-size: 1.5rem;
+  color: #2c3e50;
+  font-weight: 600;
+}
+.button {
+  background: #3498db;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 0.6rem 1.2rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.button:hover {
+  background: #217dbb;
+}
+.container table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+.container th, .container td {
+  padding: 0.75rem 1rem;
+  text-align: left;
+}
+.container th {
+  background: #f5f6fa;
+  color: #2c3e50;
+  font-weight: 500;
+}
+.container tbody tr {
+  border-bottom: 1px solid #f0f0f0;
+}
+.container tbody tr:last-child {
+  border-bottom: none;
+}
+.container td {
+  color: #444;
+}
+.status {
+  padding: 0.3rem 0.8rem;
+  border-radius: 12px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  background: #eaf6ff;
+  color: #3498db;
+  display: inline-block;
+}
+.status.pago {
+  background: #d4edda;
+  color: #218838;
+}
+.status.pendente {
+  background: #fff3cd;
+  color: #b8860b;
+} 

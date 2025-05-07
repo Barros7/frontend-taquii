@@ -1,57 +1,67 @@
-import Link from "next/link";
-import React from 'react';
+'use client';
 
-const Header: React.FC = () => {
+import { useState } from 'react';
+import Link from 'next/link';
+import styles from '@/styles/design-system.module.css';
+import UserMenu from './UserMenu';
+
+export default function Header() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
   return (
-    <nav className="navbar navbar-expand-lg navbar-light bg-light border-bottom py-3">
+    <nav className={styles.navbar}>
       <div className="container">
-        {/* Brand/Logo */}
-        <Link href="/" className="navbar-brand text-primary fw-bold">
-          Taquii!
-        </Link>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '1rem 0' }}>
+          <Link href="/" className={styles.brand}>
+            Taqui
+          </Link>
 
-        {/* Botão Toggler (Hambúrguer) para telas pequenas */}
-        {/* data-bs-toggle e data-bs-target controlam o colapso */}
-        <button
-          className="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarNav" // ID do elemento que será colapsado
-          aria-controls="navbarNav"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span className="navbar-toggler-icon"></span>
-        </button>
+          <button 
+            className={styles.menuToggle} 
+            onClick={toggleMenu}
+            aria-label="Toggle menu"
+          >
+            <span className={styles.menuIcon} />
+          </button>
 
-        {/* Conteúdo que será colapsado (Links de Navegação) */}
-        {/* Adicione w-100 para que o menu colapsado ocupe a largura total se necessário */}
-        <div className="collapse navbar-collapse w-100" id="navbarNav">
-          <ul className="navbar-nav ms-auto align-items-center"> {/* ms-auto para alinhar à direita */}
-            <li className="nav-item">
-              <Link href={'/'} className="nav-link text-dark text-decoration-none">Home</Link>
-            </li>
-            <li className="nav-item">
-              <Link href={'/#servicos'} className="nav-link text-dark text-decoration-none">Serviços</Link>
-            </li>
-            <li className="nav-item">
-              <Link href={'/#planos'} className="nav-link text-dark text-decoration-none">Planos</Link>
-            </li>
-            <li className="nav-item">
-              <Link href={'/#faqs'} className="nav-link text-dark text-decoration-none">FAQ</Link> {/* Ajustei para #faq */}
-            </li>
-            <li className="nav-item">
-              <Link href={'/#contatos'} className="nav-link text-dark text-decoration-none">Contato</Link> {/* Ajustei para #contato */}
-            </li>
-            {/* O link Entrar como botão */}
-            <li className="nav-item">
-              <Link href={'/login'} className="btn btn-primary ms-lg-3">Entrar</Link>
-            </li>
-          </ul>
+          <div className={`${styles.menu} ${isMenuOpen ? styles.menuOpen : ''}`}>
+            <ul className={styles.menuList}>
+              <li className={styles.menuItem}>
+                <Link href="/" className={styles.menuLink}>
+                  Home
+                </Link>
+              </li>
+              <li className={styles.menuItem}>
+                <Link href="/#sobre" className={styles.menuLink}>
+                  Sobre
+                </Link>
+              </li>
+              <li className={styles.menuItem}>
+                <Link href="/#contatos" className={styles.menuLink}>
+                  Contacto
+                </Link>
+              </li>
+              <li className={styles.menuItem}>
+                <Link href="/#planos" className={styles.menuLink}>
+                  Planos
+                </Link>
+              </li>
+              <li className={styles.menuItem}>
+                <Link href="/#faqs" className={styles.menuLink}>
+                  FAQs
+                </Link>
+              </li>
+              <li className={styles.menuItem}>
+                <UserMenu />
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
     </nav>
   );
-};
-
-export default Header;
+}
