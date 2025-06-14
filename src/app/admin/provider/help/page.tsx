@@ -3,11 +3,18 @@
 import React, { useState } from 'react';
 import styles from './help.module.css';
 
+type CategoryKey = 'general' | 'scheduling' | 'clients' | 'services' | 'payments' | 'account';
+
+interface FAQ {
+  question: string;
+  answer: string;
+}
+
 const HelpPage = () => {
-  const [activeCategory, setActiveCategory] = useState('general');
+  const [activeCategory, setActiveCategory] = useState<CategoryKey>('general');
   const [searchQuery, setSearchQuery] = useState('');
 
-  const categories = {
+  const categories: Record<CategoryKey, string> = {
     general: 'Geral',
     scheduling: 'Agendamentos',
     clients: 'Clientes',
@@ -16,7 +23,7 @@ const HelpPage = () => {
     account: 'Conta'
   };
 
-  const faqs = {
+  const faqs: Record<CategoryKey, FAQ[]> = {
     general: [
       {
         question: 'Como começar a usar o sistema?',
@@ -105,7 +112,7 @@ const HelpPage = () => {
             <button
               key={key}
               className={`${styles.categoryButton} ${activeCategory === key ? styles.active : ''}`}
-              onClick={() => setActiveCategory(key)}
+              onClick={() => setActiveCategory(key as CategoryKey)}
             >
               {label}
             </button>

@@ -13,7 +13,7 @@ interface ServiceFormProps {
     duration: number;
     category: string;
   };
-  onSubmit: (data: any) => Promise<void>;
+  onSubmit: (data: object) => Promise<void>;
   isEditing?: boolean;
 }
 

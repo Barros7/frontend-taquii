@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react'; // Adicionado useCallback
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import styles from './schedule.module.css';
@@ -32,11 +32,8 @@ const SchedulePage = () => {
   const [selectedAppointment, setSelectedAppointment] = useState<Appointment | null>(null);
   const [currentMonth, setCurrentMonth] = useState(new Date());
 
-  useEffect(() => {
-    fetchAppointments();
-  }, [selectedDate]);
-
-  const fetchAppointments = async () => {
+  // Função fetchAppointments memoizada com useCallback
+  const fetchAppointments = useCallback(async () => {
     try {
       const response = await fetch(
         `http://localhost:8000/api/appointments?providerId=${session?.user?.id}&date=${selectedDate}`,
@@ -49,7 +46,12 @@ const SchedulePage = () => {
     } catch (error) {
       console.error('Error fetching appointments:', error);
     }
-  };
+  }, [session?.user?.id, selectedDate]); // As dependências da função fetchAppointments
+
+  // useEffect que depende da função fetchAppointments memoizada
+  useEffect(() => {
+    fetchAppointments();
+  }, [fetchAppointments]); // Apenas a função memoizada é a dependência
 
   const handleStatusUpdate = async (appointmentId: string, newStatus: Appointment['status']) => {
     try {
@@ -376,4 +378,4 @@ const SchedulePage = () => {
   );
 };
 
-export default SchedulePage; 
+export default SchedulePage;

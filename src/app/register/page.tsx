@@ -1,17 +1,18 @@
 'use client';
 
 import React, { useState } from 'react';
-import { signIn } from 'next-auth/react';
 import "./register.css";
 
-const LoginForm: React.FC = () => {
+const RegisterForm: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
-    username: '',
+    name: '',
     phone: '',
     email: '',
-    password: ''
+    password: '',
+    confirmPassword: ''
   });
+  
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
@@ -32,28 +33,43 @@ const LoginForm: React.FC = () => {
     setError('');
     setIsLoading(true);
 
+
+    if (!formData.email || !formData.password) {
+      throw new Error('Todos os campos são obrigatórios');
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email)) {
+      throw new Error('Email inválido');
+    }
+
+    const userData = {
+      name: formData.name,
+      phone: formData.phone,
+      email: formData.email,
+      password: formData.password,
+      confirmPassword: formData.confirmPassword,
+    };
+
     try {
-      if (!formData.email || !formData.password) {
-        throw new Error('Todos os campos são obrigatórios');
-      }
-
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!emailRegex.test(formData.email)) {
-        throw new Error('Email inválido');
-      }
-
-      const result = await signIn('credentials', {
-        username: formData.username,
-        phone: formData.phone,
-        email: formData.email,
-        password: formData.password,
-        redirect: false,
+      const res = await fetch('http://localhost:8000/api/auth/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(userData),
       });
 
-      if (result?.error) {
-        throw new Error(result.error);
+      const data = await res.json();
+
+      if (!res.ok) {
+        console.error('Register failed:', data);
+        throw new Error('Credenciais inválidas');
       }
 
+      if (data.user) {
+        console.log('Register successful, user data:', data.user);
+      }
+      
+      return null;
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Erro ao fazer o registro');
     } finally {
@@ -78,9 +94,9 @@ const LoginForm: React.FC = () => {
                 <input
                   type="text"
                   className="form-control"
-                  id="username"
-                  name="username"
-                  value={formData.username}
+                  id="name"
+                  name="name"
+                  value={formData.name}
                   onChange={handleChange}
                   placeholder="Nome de utilizador"
                   required
@@ -124,11 +140,11 @@ const LoginForm: React.FC = () => {
               </div>
               <div className="col-md-6 mb-3">
                 <input
-                  type={showPassword ? "text" : "password"}
+                  type="password"
                   className="form-control"
-                  id="password"
-                  name="password"
-                  value={formData.password}
+                  id="confirmPassword"
+                  name="confirmPassword"
+                  value={formData.confirmPassword}
                   onChange={handleChange}
                   placeholder="Confirmar senha"
                   required
@@ -175,4 +191,4 @@ const LoginForm: React.FC = () => {
   );
 };
 
-export default LoginForm; 
+export default RegisterForm; 

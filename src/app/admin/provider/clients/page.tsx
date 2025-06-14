@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './clients.module.css';
 
 interface Client {
@@ -15,39 +15,7 @@ interface Client {
 }
 
 const ClientsPage = () => {
-  const [clients, setClients] = useState<Client[]>([
-    {
-      id: 1,
-      name: 'Maria Silva',
-      email: 'maria@email.com',
-      phone: '+244 912 345 678',
-      totalAppointments: 12,
-      lastVisit: '2024-03-15',
-      favoriteServices: ['Corte de Cabelo', 'Manicure'],
-      status: 'ativo'
-    },
-    {
-      id: 2,
-      name: 'João Santos',
-      email: 'joao@email.com',
-      phone: '+244 923 456 789',
-      totalAppointments: 8,
-      lastVisit: '2024-03-18',
-      favoriteServices: ['Barba'],
-      status: 'ativo'
-    },
-    {
-      id: 3,
-      name: 'Ana Oliveira',
-      email: 'ana@email.com',
-      phone: '+244 934 567 890',
-      totalAppointments: 5,
-      lastVisit: '2024-03-10',
-      favoriteServices: ['Manicure', 'Pedicure'],
-      status: 'inativo'
-    }
-  ]);
-
+  const [clients, setClients] = useState<Client[]>();
   const [selectedClient, setSelectedClient] = useState<Client | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -60,6 +28,16 @@ const ClientsPage = () => {
     setSelectedClient(null);
     setIsModalOpen(false);
   };
+
+  useEffect(() => {
+    const fetchClients = async () => {
+      const response = await fetch('http://localhost:8000/api/clients');
+      const data = await response.json();
+      setClients(data);
+    };
+
+    fetchClients();
+  }, []);
 
   return (
     <div className={styles.clientsPage}>
@@ -75,7 +53,7 @@ const ClientsPage = () => {
       </div>
 
       <div className={styles.clientsGrid}>
-        {clients.map(client => (
+        {clients?.map(client => (
           <div key={client.id} className={styles.clientCard}>
             <div className={styles.clientHeader}>
               <h3>{client.name}</h3>

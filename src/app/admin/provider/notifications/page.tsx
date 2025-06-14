@@ -3,9 +3,20 @@
 import React, { useState } from 'react';
 import styles from './notifications.module.css';
 
+type NotificationType = 'appointment' | 'reminder' | 'review' | 'system' | 'payment';
+
+interface Notification {
+  id: number;
+  type: NotificationType;
+  title: string;
+  message: string;
+  time: string;
+  read: boolean;
+}
+
 const NotificationsPage = () => {
-  const [activeFilter, setActiveFilter] = useState('all');
-  const [notifications, setNotifications] = useState([
+  const [activeFilter, setActiveFilter] = useState<NotificationType | 'all'>('all');
+  const [notifications, setNotifications] = useState<Notification[]>([
     {
       id: 1,
       type: 'appointment',
@@ -48,7 +59,7 @@ const NotificationsPage = () => {
     }
   ]);
 
-  const filters = {
+  const filters: Record<NotificationType | 'all', string> = {
     all: 'Todas',
     appointment: 'Agendamentos',
     reminder: 'Lembretes',
@@ -57,7 +68,7 @@ const NotificationsPage = () => {
     payment: 'Pagamentos'
   };
 
-  const handleMarkAsRead = (id) => {
+  const handleMarkAsRead = (id: number) => {
     setNotifications(prev =>
       prev.map(notification =>
         notification.id === id
@@ -96,7 +107,7 @@ const NotificationsPage = () => {
           <button
             key={key}
             className={`${styles.filterButton} ${activeFilter === key ? styles.active : ''}`}
-            onClick={() => setActiveFilter(key)}
+            onClick={() => setActiveFilter(key as NotificationType | 'all')}
           >
             {label}
           </button>

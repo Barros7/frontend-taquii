@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { usePathname } from 'next/navigation';
-import styles from './provider.module.css';
+import styles from './provider-layout.module.css';
 import { MenuItem } from '@/types/admin';
 import Link from 'next/link';
 
@@ -21,7 +21,7 @@ const ProviderLayout = ({ children }: { children: React.ReactNode }) => {
   ];
 
   return (
-    <div className={styles.adminLayout}>
+    <div className={styles.providerLayout}>
       <aside className={styles.sidebar}>
         <div className={styles.logo}>
           <h2>Taqui Provider</h2>

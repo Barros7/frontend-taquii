@@ -32,21 +32,18 @@ export default function ProfilePage() {
     }
   }, [status, router]);
 
+  if(!session?.user?.id) {
+    console.log("Não tem sessão iniciada.");
+  };
+
   const fetchProfile = async () => {
     try {
-      const response = await fetch('http://localhost:8000/api/users/profile', {
-        credentials: 'include'
-      });
-      
-      if (!response.ok) {
-        throw new Error('Failed to fetch profile');
-      }
-
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/users/profile`);
       const data = await response.json();
       setProfile(data);
-    } catch (err) {
+    } catch (error) {
+      console.error('Erro ao carregar perfil:', error);
       setError('Erro ao carregar perfil');
-      console.error('Error fetching profile:', err);
     } finally {
       setLoading(false);
     }
@@ -69,21 +66,18 @@ export default function ProfilePage() {
         zipCode: formData.get('zipCode')
       };
 
-      const response = await fetch('http://localhost:8000/api/users/profile', {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/users/profile`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json'
         },
-        credentials: 'include',
         body: JSON.stringify(data)
       });
-
-      if (!response.ok) {
-        throw new Error('Failed to update profile');
-      }
-
+      
+      if (!response.ok) throw new Error('Failed to update profile');
+      
       setSuccess('Perfil atualizado com sucesso!');
-      fetchProfile();
+      await fetchProfile();
     } catch (err) {
       setError('Erro ao atualizar perfil');
       console.error('Error updating profile:', err);

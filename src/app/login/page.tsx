@@ -21,8 +21,6 @@ export default function LoginPage() {
 
     if (session?.user) {
       const userType = session.user.userType;
-      console.log('Session detected:', session);
-
       // Se o usuário já está autenticado, redirecionar para a dashboard apropriada
       switch (userType) {
         case 'ADMIN':
@@ -43,9 +41,31 @@ export default function LoginPage() {
     }
   }, [session, status, router]);
 
-  if (status === 'loading') {
-    return <div>Carregando...</div>;
-  }
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setError('');
+
+    try {
+      const result = await signIn('credentials', {
+        email: formData.email,
+        password: formData.password,
+        redirect: false
+      });
+
+      if (result?.error) {
+        setError(result.error);
+        return;
+      }
+
+      // O redirecionamento será feito pelo useEffect quando a sessão for atualizada
+    } catch (err) {
+      console.error('Login error:', err);
+      setError('Ocorreu um erro ao tentar fazer login. Por favor, tente novamente.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -55,112 +75,61 @@ export default function LoginPage() {
     }));
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError('');
-    setIsLoading(true);
-
-    try {
-      if (!formData.email || !formData.password) {
-        throw new Error('Todos os campos são obrigatórios');
-      }
-
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!emailRegex.test(formData.email)) {
-        throw new Error('Email inválido');
-      }
-
-      const result = await signIn('credentials', {
-        email: formData.email,
-        password: formData.password,
-        redirect: false,
-      });
-
-      if (result?.error) {
-        throw new Error(result.error);
-      }
-
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Erro ao fazer login');
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  if (status === 'loading') {
+    return <div>Carregando...</div>;
+  }
 
   return (
-    <div className="container container-login">
-      <div className="card">
-        <div className="card-body p-5">
-          <h2 className="text-center mb-4">Login</h2>
-          <form onSubmit={handleSubmit}>
-            {error && (
-              <div className="alert alert-danger" role="alert">
-                {error}
-              </div>
-            )}
+    <div className="container">
+      <div className="row justify-content-center align-items-center min-vh-100">
+        <div className="col-md-6 col-lg-4">
+          <div className="card shadow">
+            <div className="card-body p-5">
+              <h2 className="text-center mb-4">Login</h2>
+              
+              {error && (
+                <div className="alert alert-danger" role="alert">
+                  {error}
+                </div>
+              )}
 
-            <div className="row">
-              <div className="col-md-12 mb-3">
-                <input
-                  type="email"
-                  className="form-control"
-                  id="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  placeholder="E-mail"
-                  required
-                />
-              </div>
-              <div className="col-md-12 mb-3">
-                <input
-                  type="password"
-                  className="form-control"
-                  id="password"
-                  name="password"
-                  value={formData.password}
-                  onChange={handleChange}
-                  placeholder="Senha"
-                  required
-                />
-              </div>
-            </div>
+              <form onSubmit={handleSubmit}>
+                <div className="mb-3">
+                  <label htmlFor="email" className="form-label">Email</label>
+                  <input
+                    type="email"
+                    className="form-control"
+                    id="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
 
-            <div className="d-flex justify-content-between align-items-center mb-3">
-              <div className="form-check">
-                <input type="checkbox" className="form-check-input" id="remember" />
-                <label className="form-check-label" htmlFor="remember">Lembrar-me</label>
-              </div>
-              <a href="#" className="text-decoration-none">Esqueceu a senha?</a>
-            </div>
+                <div className="mb-3">
+                  <label htmlFor="password" className="form-label">Senha</label>
+                  <input
+                    type="password"
+                    className="form-control"
+                    id="password"
+                    name="password"
+                    value={formData.password}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
 
-            <button 
-              type="submit" 
-              className="btn btn-primary w-100" 
-              disabled={isLoading}
-            >
-              {isLoading ? 'Entrando...' : 'Entrar'}
-            </button>
-
-            {/*
-              <div className="text-center my-3">
-                <span>ou continue com</span>
-              </div>
-
-              <div className="d-flex gap-2">
-                <button type="button" className="btn btn-outline-danger flex-grow-1">
-                  <i className="fab fa-google me-2"></i> Google
+                <button
+                  type="submit"
+                  className="btn btn-primary w-100"
+                  disabled={isLoading}
+                >
+                  {isLoading ? 'Entrando...' : 'Entrar'}
                 </button>
-                <button type="button" className="btn btn-outline-primary flex-grow-1">
-                  <i className="fab fa-facebook-f me-2"></i> Facebook
-                </button>
-              </div>
-            */}
-
-            <div className="text-center mt-3">
-              Não tem uma conta? <a href="/register" className="text-decoration-none">Registre-se agora!</a>
+              </form>
             </div>
-          </form>
+          </div>
         </div>
       </div>
     </div>

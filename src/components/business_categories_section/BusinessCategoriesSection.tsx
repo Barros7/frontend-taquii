@@ -1,90 +1,83 @@
-'use client';
+// components/BusinessCategoriesSection.tsx (ou o nome do seu arquivo)
 import React from 'react';
 import Image from 'next/image';
-import './BusinessCategoriesSection.css';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
 import Link from 'next/link';
+import './BusinessCategoriesSection.css';
 
-const businessTypes = () => {
+interface Category {
+  id: string;
+  name: string;
+  description?: string;
+  iconUrl?: string;
+}
 
-  const products = [
-    {
-      image_url: "/hospital.jpg",
-      category: "Saúde",
-    },
-    {
-      image_url: "/education.jpg",
-      category: "Educação",
-    },
-    {
-      image_url: "/beauty.png",
-      category: "Beleza Feminina",
-    },
-    {
-      image_url: "/barber.webp",
-      category: "Beleza Masculina",
-    },
-    {
-      image_url: "/hotel.png",
-      category: "Hotelaria",
-    },
-    {
-      image_url: "/rent_a_car.jpg",
-      category: "Rent a Car",
-    },
-    {
-      image_url: "/ball.jpg",
-      category: "Desporto",
-    },
-    {
-      image_url: "/travel.jpg",
-      category: "Viagem",
-    },
-    {
-      image_url: "/body_guard.jpg",
-      category: "Serviços de Segurança",
-    },
-    {
-      image_url: "/photo.jpg",
-      category: "Fotógrafos",
-    },
-  ];
+const BusinessCategoriesSection = async () => {
+  let categories: Category[] = [];
+  const apiUrl = process.env.API_BASE_URL || 'http://localhost:8000';
+
+  try {
+    const response = await fetch(`${apiUrl}/api/categories`, {
+      cache: 'no-store', // Garante que os dados sejam sempre buscados e não cacheados pelo Next.js (útil durante o desenvolvimento)
+      // next: { revalidate: 3600 } // Opcional: Revalidar a cada hora em produção
+    });
+
+    if (!response.ok) {
+      console.error(`Erro ao buscar categorias: ${response.status} ${response.statusText}`);
+      // Lançar um erro aqui faria com que o Next.js renderizasse um error.tsx se você o tiver.
+      // throw new Error(`Failed to fetch categories: ${response.statusText}`);
+    } else {
+      categories = await response.json();
+    }
+  } catch (error) {
+    console.error('Erro de rede ou busca de categorias:', error);
+    // Em caso de erro de rede, categories permanecerá como um array vazio,
+    // ou você pode retornar um componente de fallback.
+  }
 
   return (
     <section id="servicos" className='container section-business-category text-center'>
       <h2 className={"title"}>Para todo tipo de empresa</h2>
       <p className={"subtitle"}>Temos a solução para todo tipo de estabelecimento</p>
       <div className='row py-3'>
-        {products.map((product, idx) => (
-          <div className="col-4 col-sm-2 col-md-2 py-2" key={idx}>
-            <Link
-              href={`/empresas?search=${encodeURIComponent(product.category)}`}
-              className="hiperlink card card-custom d-flex flex-column align-items-center justify-content-center"
-            >
-              {product.image_url && (
-                <Image
-                  height={100}
-                  width={100}
-                  src={product.image_url}
-                  alt={product.category}
-                  className="card-img-top image-product mb-3"
-                  style={{ maxWidth: '50%', overflow: 'hidden' }}
-                />
-              )}
-              <p
-                className="card-title text-center card-title-custom"
-                style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '90%' }}
+        {categories.length > 0 ? (
+          categories.map((category) => ( // Removido 'idx' pois 'category.id' é mais estável como key
+            <div className="col-4 col-sm-2 col-md-2 py-2" key={category.id}>
+              <Link
+                href={`/empresas?search=${encodeURIComponent(category.name)}`}
+                className="hiperlink card card-custom d-flex flex-column align-items-center justify-content-center"
               >
-                {product.category}
-              </p>
-            </Link>
-          </div>
-        ))}
+                {category.iconUrl && ( // Usamos iconUrl. Certifique-se de que sua API fornece isso.
+                  <Image
+                    height={100}
+                    width={100}
+                    src={category.iconUrl}
+                    alt={category.name}
+                    className="card-img-top image-product mb-3"
+                    style={{ maxWidth: '50%', overflow: 'hidden' }}
+                  />
+                )}
+                {/* Se a API não fornecer iconUrl, você pode ter um fallback ou usar um ícone genérico */}
+                {!category.iconUrl && (
+                  <div className="placeholder-icon mb-3">
+                    {/* Exemplo de ícone de fallback ou texto */}
+                    <span style={{ fontSize: '2em' }}>💼</span>
+                  </div>
+                )}
+                <p
+                  className="card-title text-center card-title-custom"
+                  style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '90%' }}
+                >
+                  {category.name}
+                </p>
+              </Link>
+            </div>
+          ))
+        ) : (
+          <p className="col-12">Nenhuma categoria encontrada ou erro ao carregar.</p>
+        )}
       </div>
     </section>
   );
 };
 
-export default businessTypes;
+export default BusinessCategoriesSection;

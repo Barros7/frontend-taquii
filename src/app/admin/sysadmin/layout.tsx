@@ -1,14 +1,13 @@
 "use client"
 
 import React from 'react';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import styles from './sysadmin.module.css';
 import { MenuItem } from '@/types/admin';
 import Link from 'next/link';
 import LogoutButton from '@/components/dashboard/LogoutButton';
 
 export default function SysAdminLayout({ children }: { children: React.ReactNode }) {
-  const router = useRouter();
   const pathname = usePathname();
 
   const menuItems: MenuItem[] = [
@@ -23,11 +22,6 @@ export default function SysAdminLayout({ children }: { children: React.ReactNode
     { path: '/admin/sysadmin/logs', label: 'Logs', icon: '📝' },
     { path: '/admin/sysadmin/support', label: 'Suporte', icon: '❓' },
   ];
-
-  const handleLogout = () => {
-    // Implementar lógica de logout
-    router.push('/login');
-  };
 
   return (
     <div className={styles.adminLayout}>

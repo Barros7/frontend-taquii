@@ -1,71 +1,113 @@
+/* AboutSection.module.css */
+
 .aboutSection {
-    padding: 60px 0; /* Add padding top and bottom */
-    background-color: #f8f8f8; /* Light background for contrast */
-    color: #333; /* Dark text color */
-  }
-  
-  .container {
-    max-width: 1200px; /* Max width for content */
-    margin: 0 auto; /* Center the container */
-    padding: 0 20px; /* Add some horizontal padding */
-  }
-  
+  padding: 80px 0; /* Espaçamento superior e inferior generoso */
+  background-color: #f9f9f9; /* Uma cor de fundo suave para destacar a seção */
+  color: #333; /* Cor de texto principal */
+  font-family: 'Arial', sans-serif; /* Fonte padrão, considere uma fonte do Google Fonts */
+}
+
+.container {
+  max-width: 1200px; /* Largura máxima para o conteúdo */
+  margin: 0 auto; /* Centraliza o container */
+  padding: 0 20px; /* Espaçamento interno nas laterais para telas menores */
+}
+
+.contentWrapper {
+  display: flex;
+  flex-direction: column; /* Colunas por padrão (mobile-first) */
+  gap: 40px; /* Espaçamento entre as colunas */
+  align-items: center; /* Centraliza verticalmente o conteúdo */
+}
+
+@media (min-width: 768px) {
   .contentWrapper {
-    display: flex; /* Use flexbox for side-by-side layout */
-    flex-direction: column; /* Stack items vertically by default */
-    align-items: center; /* Center items when stacked */
-    gap: 40px; /* Space between text and image */
+    flex-direction: row; /* Linhas em telas maiores */
+    justify-content: space-between; /* Espaço entre os itens */
+    align-items: flex-start; /* Alinha o conteúdo ao topo */
   }
-  
-  @media (min-width: 768px) {
-    .contentWrapper {
-      flex-direction: row; /* Side-by-side on larger screens */
-      text-align: left; /* Align text to the left */
-    }
-  }
-  
+}
+
+.textContainer {
+  flex: 1; /* Permite que o container de texto ocupe o espaço disponível */
+  max-width: 100%; /* Garante que não exceda a largura em telas pequenas */
+}
+
+@media (min-width: 768px) {
   .textContainer {
-    flex: 1; /* Allow text container to grow */
+    max-width: 55%; /* Ocupa cerca de 55% da largura em telas maiores */
   }
-  
-  .title {
-    font-size: 2.5rem; /* Large title font size */
-    margin-bottom: 20px; /* Space below title */
-    color: #1a1a2e; /* Match the dark color from the navbar */
-  }
-  
-  .description {
-    font-size: 1.1rem; /* Readable description font size */
-    line-height: 1.6; /* Improve readability */
-    margin-bottom: 20px; /* Space below description */
-  }
-  
-  .additionalInfo {
-    margin-top: 20px; /* Space above additional info */
-    border-top: 1px solid #ccc; /* Add a subtle line above */
-    padding-top: 20px; /* Add padding above the line */
-  }
-  
-  .additionalInfo ul {
-    list-style: disc; /* Use bullet points for list */
-    padding-left: 20px; /* Add padding for list bullets */
-  }
-  
-  .additionalInfo li {
-    margin-bottom: 10px; /* Space between list items */
-    line-height: 1.5;
-  }
-  
+}
+
+.title {
+  font-size: 2.8em; /* Tamanho do título maior */
+  color: #0056b3; /* Uma cor de destaque para o título */
+  margin-bottom: 25px;
+  line-height: 1.2;
+  font-weight: 700; /* Negrito para o título */
+}
+
+.description {
+  font-size: 1.15em; /* Tamanho da fonte da descrição um pouco maior */
+  line-height: 1.8; /* Espaçamento entre linhas para melhor legibilidade */
+  margin-bottom: 25px;
+}
+
+.additionalInfo {
+  margin-top: 30px;
+  padding: 20px;
+  background-color: #e0f2f7; /* Cor de fundo suave para informações adicionais */
+  border-left: 5px solid #007bff; /* Borda esquerda colorida para destaque */
+  border-radius: 5px; /* Bordas levemente arredondadas */
+}
+
+.additionalInfo p {
+  font-size: 1em;
+  line-height: 1.6;
+  margin: 0; /* Remove margem padrão de parágrafos dentro de additionalInfo */
+}
+
+.additionalInfo ul {
+  list-style: none; /* Remove os marcadores de lista padrão */
+  padding: 0;
+  margin: 0;
+}
+
+.additionalInfo li {
+  font-size: 1em;
+  line-height: 1.6;
+  margin-bottom: 10px;
+  position: relative;
+  padding-left: 25px; /* Espaço para o ícone customizado */
+}
+
+.additionalInfo li::before {
+  content: '✓'; /* Ícone de checkmark como marcador customizado */
+  color: #28a745; /* Cor verde para o checkmark */
+  font-weight: bold;
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.imageContainer {
+  flex: 1; /* Permite que o container da imagem ocupe o espaço disponível */
+  max-width: 100%;
+  display: flex;
+  justify-content: center; /* Centraliza a imagem horizontalmente */
+  align-items: center; /* Centraliza a imagem verticalmente */
+  border-radius: 10px; /* Bordas arredondadas para a imagem */
+  overflow: hidden; /* Garante que a imagem respeite o border-radius */
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1); /* Sombra sutil para profundidade */
+}
+
+@media (min-width: 768px) {
   .imageContainer {
-    flex: 1; /* Allow image container to grow */
-    max-width: 500px; /* Max width for the image container */
-    width: 100%; /* Ensure it takes full width on small screens */
-    border-radius: 8px; /* Slightly rounded corners for the image container */
-    overflow: hidden; /* Hide overflow from rounded corners */
+    max-width: 40%; /* Ocupa cerca de 40% da largura em telas maiores */
   }
-  
-  .image {
-    display: block; /* Ensure the image is a block element */
-    width: 100%; /* Image takes full width of its container */
-    height: auto; /* Maintain aspect ratio */
-  }
+}
+
+.image {
+  border-radius: 10px; /* Garante que a imagem em si tenha bordas arredondadas */
+  /* O layout="responsive" do Next.js e objectFit="cover" já cuidam da responsividade */
+}

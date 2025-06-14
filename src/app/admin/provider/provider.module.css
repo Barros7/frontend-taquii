@@ -3,6 +3,7 @@
   flex-direction: column;
   gap: 2rem;
   padding: 2rem;
+  background-color: #f5f6fa;
 }
 
 .welcomeSection {
@@ -119,17 +120,21 @@
 }
 
 .timeColumn {
+  text-align: center;
   min-width: 80px;
 }
 
 .time {
-  font-weight: 600;
+  font-size: 1.1rem;
+  font-weight: 500;
   color: #2c3e50;
 }
 
 .detailsColumn h4 {
   margin: 0;
   color: #2c3e50;
+  font-size: 1rem;
+  font-weight: 500;
 }
 
 .detailsColumn p {
@@ -138,21 +143,30 @@
   font-size: 0.9rem;
 }
 
+.statusColumn {
+  min-width: 100px;
+}
+
 .status {
   padding: 0.25rem 0.75rem;
-  border-radius: 20px;
-  font-size: 0.875rem;
-  text-transform: capitalize;
+  border-radius: 1rem;
+  font-size: 0.85rem;
+  font-weight: 500;
 }
 
-.status.confirmado {
-  background-color: #2ecc71;
-  color: white;
+.confirmado {
+  background-color: #e8f5e9;
+  color: #2e7d32;
 }
 
-.status.pendente {
-  background-color: #f1c40f;
-  color: #2c3e50;
+.pendente {
+  background-color: #fff3e0;
+  color: #f57c00;
+}
+
+.cancelado {
+  background-color: #ffebee;
+  color: #c62828;
 }
 
 .quickActions {

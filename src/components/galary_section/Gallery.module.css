@@ -1,45 +1,79 @@
-/* components/Gallery.module.css */
+/* Gallery.module.css */
 
 .gallery {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Responsive grid */
-    gap: 20px; /* Space between grid items */
-    padding: 20px; /* Padding around the gallery */
-    max-width: 1200px; /* Max width for the gallery */
-    margin: 0 auto; /* Center the gallery */
+  display: grid;
+  /* Define colunas responsivas:
+     - minmax(250px, 1fr) garante que cada coluna tenha no mínimo 250px e ocupe o espaço restante.
+     - auto-fit tenta encaixar o máximo de colunas possível.
+  */
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px; /* Espaçamento entre os itens da galeria */
+  padding: 40px 20px; /* Preenchimento geral para a seção da galeria */
+  max-width: 1200px; /* Largura máxima para o container da galeria */
+  margin: 0 auto; /* Centraliza a galeria na página */
+  background-color: #f8f8f8; /* Um fundo suave para a seção */
+}
+
+.galleryLink {
+  text-decoration: none; /* Remove sublinhado dos links */
+  color: inherit; /* Herda a cor do texto */
+  display: block; /* Garante que o link ocupe todo o espaço do item da grade */
+  border-radius: 8px; /* Bordas arredondadas para o item completo */
+  overflow: hidden; /* Garante que a imagem respeite o border-radius */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Sombra suave para profundidade */
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out; /* Transição suave ao passar o mouse */
+}
+
+.galleryLink:hover {
+  transform: translateY(-5px); /* Efeito de elevação ao passar o mouse */
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15); /* Sombra mais pronunciada ao passar o mouse */
+}
+
+.galleryThumb {
+  margin: 0; /* Remove margem padrão de figure */
+  padding: 0; /* Remove padding padrão de figure */
+  display: flex;
+  flex-direction: column;
+  height: 100%; /* Garante que a figura preencha a altura disponível */
+}
+
+.galleryImage {
+  width: 100%; /* A imagem preencherá a largura do container */
+  height: 250px; /* Altura fixa para as imagens da galeria. Você pode ajustar. */
+  /* layout="responsive" do Next.js + objectFit="cover" já faz muito do trabalho. */
+  /* Esta altura fixa combinada com objectFit="cover" garantirá que todas as imagens
+     tenham a mesma altura visual, o que é ótimo para galerias. */
+  border-bottom: 1px solid #eee; /* Linha sutil abaixo da imagem */
+}
+
+.galleryCaption {
+  padding: 15px;
+  background-color: #ffffff; /* Fundo branco para a legenda */
+  color: #333;
+  font-size: 0.95em;
+  text-align: center;
+  font-weight: 500;
+  flex-grow: 1; /* Permite que a legenda ocupe o espaço restante */
+  display: flex;
+  align-items: center; /* Centraliza verticalmente o texto na legenda */
+  justify-content: center; /* Centraliza horizontalmente o texto na legenda */
+  min-height: 50px; /* Altura mínima para a legenda, útil se algumas legendas forem curtas */
+}
+
+/* Responsividade (já tratada em grande parte pelo grid, mas podemos ajustar breakpoints se necessário) */
+@media (max-width: 600px) {
+  .gallery {
+    grid-template-columns: 1fr; /* Em telas muito pequenas, uma única coluna */
+    padding: 20px 15px;
   }
-  
-  .galleryLink {
-    display: block; /* Make the link fill its container */
-    text-decoration: none; /* Remove underline from the link */
-    color: inherit; /* Inherit text color from parent */
-    transition: transform 0.2s ease-in-out; /* Add a slight hover effect */
-  }
-  
-  .galleryLink:hover {
-    transform: scale(1.03); /* Slightly enlarge on hover */
-  }
-  
-  .galleryThumb {
-    margin: 0; /* Remove default margin on figure */
-    padding: 0; /* Remove default padding on figure */
-    position: relative; /* Needed for object-fit: cover to work well with Image */
-    overflow: hidden; /* Hide overflow, useful if you add border-radius */
-    border-radius: 8px; /* Optional: Add rounded corners */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: Add a subtle shadow */
-  }
-  
+
   .galleryImage {
-    /* Next.js Image component handles basic responsiveness with layout="responsive" */
-    /* Add any additional image specific styles here if needed, e.g., border-radius */
-    display: block; /* Ensure the image behaves like a block */
-    /* border-radius: 8px; /* Match figure border-radius if applied */
+    height: 200px; /* Ajusta a altura da imagem para telas menores */
   }
-  
-  .galleryCaption {
-    padding: 10px; /* Padding around the caption text */
-    text-align: center; /* Center the caption text */
-    font-size: 0.9rem; /* Smaller font size for caption */
-    color: #555; /* Slightly muted text color */
-    background-color: #fff; /* White background for caption */
+}
+
+@media (min-width: 1024px) {
+  .gallery {
+    gap: 30px; /* Mais espaço entre os itens em telas maiores */
   }
+}

@@ -1,57 +1,96 @@
 "use client"
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import styles from './provider.module.css';
+import { adminService } from '@/services/adminService';
+import { useSession } from 'next-auth/react';
 
 const ProviderDashboard = () => {
-  // Mock data - In a real application, this would come from an API
-  const businessStats = {
-    todayAppointments: 8,
-    weeklyAppointments: 45,
-    monthlyRevenue: '45.990 Kz',
-    customerRating: 4.8,
-  };
+  const { data: session } = useSession();
+  const [stats, setStats] = useState({
+    todayAppointments: 0,
+    weeklyAppointments: 0,
+    monthlyRevenue: '0 Kz',
+    customerRating: 0
+  });
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  const todaySchedule = [
-    { id: 1, time: '09:00', client: 'Maria Silva', service: 'Corte de Cabelo', status: 'confirmado' },
-    { id: 2, time: '10:30', client: 'João Santos', service: 'Barba', status: 'pendente' },
-    { id: 3, time: '13:00', client: 'Ana Oliveira', service: 'Manicure', status: 'confirmado' },
-  ];
+  useEffect(() => {
+    const fetchProviderStats = async () => {
+      if (!session?.user?.id) return;
+
+      try {
+        setLoading(true);
+        const statsData = await adminService.getProviderStats(session.user.id);
+        setStats(statsData);
+      } catch (err) {
+        setError('Erro ao carregar dados do dashboard. Tente novamente mais tarde.');
+        console.error('Error fetching provider stats:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProviderStats();
+  }, [session]);
+
+  if (loading) {
+    return (
+      <div className={styles.dashboard}>
+        <div className="d-flex justify-content-center align-items-center" style={{ height: '50vh' }}>
+          <div className="spinner-border text-primary" role="status">
+            <span className="visually-hidden">Carregando...</span>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className={styles.dashboard}>
+        <div className="alert alert-danger" role="alert">
+          {error}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className={styles.dashboard}>
       <div className={styles.welcomeSection}>
-        <h1>Bem-vindo(a), Estabelecimento</h1>
-        <p>Gerencie seus agendamentos e serviços de forma eficiente</p>
+        <h1>Bem-vindo, {session?.user?.name || 'Prestador'}</h1>
+        <p>Gerencie seus serviços e agendamentos</p>
       </div>
 
       <div className={styles.statsGrid}>
         <div className={styles.statCard}>
           <h3>Agendamentos Hoje</h3>
-          <p className={styles.statValue}>{businessStats.todayAppointments}</p>
-          <Link href="/provider/schedule" className={styles.statLink}>
+          <p className={styles.statValue}>{stats.todayAppointments}</p>
+          <Link href="/admin/provider/schedule" className={styles.statLink}>
             Ver agenda →
           </Link>
         </div>
         <div className={styles.statCard}>
           <h3>Agendamentos da Semana</h3>
-          <p className={styles.statValue}>{businessStats.weeklyAppointments}</p>
-          <Link href="/provider/schedule" className={styles.statLink}>
+          <p className={styles.statValue}>{stats.weeklyAppointments}</p>
+          <Link href="/admin/provider/schedule" className={styles.statLink}>
             Ver agenda →
           </Link>
         </div>
         <div className={styles.statCard}>
           <h3>Receita Mensal</h3>
-          <p className={styles.statValue}>{businessStats.monthlyRevenue}</p>
-          <Link href="/provider/financial" className={styles.statLink}>
+          <p className={styles.statValue}>{stats.monthlyRevenue}</p>
+          <Link href="/admin/provider/financial" className={styles.statLink}>
             Ver detalhes →
           </Link>
         </div>
         <div className={styles.statCard}>
           <h3>Avaliação dos Clientes</h3>
-          <p className={styles.statValue}>{businessStats.customerRating} ⭐</p>
-          <Link href="/provider/reviews" className={styles.statLink}>
+          <p className={styles.statValue}>{stats.customerRating} ⭐</p>
+          <Link href="/admin/provider/reviews" className={styles.statLink}>
             Ver avaliações →
           </Link>
         </div>
@@ -59,47 +98,12 @@ const ProviderDashboard = () => {
 
       <div className={styles.scheduleSection}>
         <div className={styles.sectionHeader}>
-          <h2>Agenda de Hoje</h2>
-          <Link href="/provider/schedule/new" className={styles.newButton}>
+          <h2>Próximos Agendamentos</h2>
+          <Link href="/admin/provider/schedule/new" className={styles.newButton}>
             Novo Agendamento
           </Link>
         </div>
-        <div className={styles.scheduleList}>
-          {todaySchedule.map((appointment) => (
-            <div key={appointment.id} className={styles.scheduleItem}>
-              <div className={styles.timeColumn}>
-                <span className={styles.time}>{appointment.time}</span>
-              </div>
-              <div className={styles.detailsColumn}>
-                <h4>{appointment.client}</h4>
-                <p>{appointment.service}</p>
-              </div>
-              <div className={styles.statusColumn}>
-                <span className={`${styles.status} ${styles[appointment.status]}`}>
-                  {appointment.status}
-                </span>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <div className={styles.quickActions}>
-        <h2>Ações Rápidas</h2>
-        <div className={styles.actionButtons}>
-          <Link href="/provider/services" className={styles.actionButton}>
-            Gerenciar Serviços
-          </Link>
-          <Link href="/provider/profile" className={styles.actionButton}>
-            Editar Perfil
-          </Link>
-          <Link href="/provider/schedule" className={styles.actionButton}>
-            Ver Agenda Completa
-          </Link>
-          <Link href="/provider/reports" className={styles.actionButton}>
-            Relatórios
-          </Link>
-        </div>
+        {/* Add your schedule list component here */}
       </div>
     </div>
   );

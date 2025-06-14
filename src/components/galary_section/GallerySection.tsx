@@ -2,14 +2,10 @@ import React from 'react';
 import Image from 'next/image';
 import styles from './Gallery.module.css';
 
-// Import the interface if it's in a separate file
-// import { GalleryItem } from '../types/gallery';
-
 interface GalleryItem {
-  link: string;
-  imageUrl: string;
-  imageAlt: string;
+  id: string;
   caption: string;
+  imageUrl: string;
 }
 
 interface GalleryProps {
@@ -18,25 +14,24 @@ interface GalleryProps {
 
 const GallerySection: React.FC<GalleryProps> = ({ items }) => {
   return (
-    <section className={`${styles.gallery} my-4`}>
-      {items.map((item, index) => (
+    <section className={styles.gallery}> {/* Removi 'my-4' se for uma classe externa, para manter o estilo no CSS Module */}
+      {items.map((item) => ( // Use item.id como key, se disponível. Se não, index ainda é uma opção.
         <a
-          key={index} // Using index as key. Ideally, use a unique ID if available in your data.
-          href={item.link}
+          key={item.id || item.imageUrl} // Preferível usar item.id. Se não tiver, imageUrl pode servir como um fallback melhor que index.
+          href={item.imageUrl}
           target="_blank"
-          rel="noopener noreferrer" // Recommended for security when using target="_blank"
+          rel="noopener noreferrer"
           className={styles.galleryLink}
         >
           <figure className={styles.galleryThumb}>
-            {/* Using Next.js Image component */}
             <Image
               src={item.imageUrl}
-              alt={item.imageAlt}
-              layout="responsive" // Makes the image responsive within its container
-              width={400} // Provide a base width (used for aspect ratio with responsive)
-              height={400} // Provide a base height (used for aspect ratio with responsive)
-              objectFit="cover" // How the image should fit within the provided dimensions
-              className={styles.galleryImage} // Apply CSS module class for additional styling if needed
+              alt={item.caption}
+              layout="responsive"
+              width={500}
+              height={500}
+              objectFit="cover"
+              className={styles.galleryImage}
             />
             <figcaption className={styles.galleryCaption}>
               {item.caption}

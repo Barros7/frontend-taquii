@@ -3,9 +3,45 @@
 import React, { useState } from 'react';
 import styles from './settings.module.css';
 
+// 1. Definição das Interfaces para os estados
+interface WorkingHours {
+  monday: { start: string; end: string; };
+  tuesday: { start: string; end: string; };
+  wednesday: { start: string; end: string; };
+  thursday: { start: string; end: string; };
+  friday: { start: string; end: string; };
+  saturday: { start: string; end: string; };
+  sunday: { start: string; end: string; };
+}
+
+interface BusinessProfile {
+  name: string;
+  email: string;
+  phone: string;
+  address: string;
+  description: string;
+  workingHours: WorkingHours;
+}
+
+interface Notifications {
+  emailNotifications: boolean;
+  smsNotifications: boolean;
+  appointmentReminders: boolean;
+  marketingEmails: boolean;
+  newClientAlerts: boolean;
+}
+
+interface PaymentSettings {
+  currency: string;
+  taxRate: number;
+  allowOnlinePayments: boolean;
+  paymentMethods: string[];
+}
+
+
 const SettingsPage = () => {
   const [activeTab, setActiveTab] = useState('profile');
-  const [businessProfile, setBusinessProfile] = useState({
+  const [businessProfile, setBusinessProfile] = useState<BusinessProfile>({
     name: 'Salão da Maria',
     email: 'contato@salaodamaria.com',
     phone: '+244 912 345 678',
@@ -22,7 +58,7 @@ const SettingsPage = () => {
     }
   });
 
-  const [notifications, setNotifications] = useState({
+  const [notifications, setNotifications] = useState<Notifications>({
     emailNotifications: true,
     smsNotifications: true,
     appointmentReminders: true,
@@ -30,21 +66,22 @@ const SettingsPage = () => {
     newClientAlerts: true
   });
 
-  const [paymentSettings, setPaymentSettings] = useState({
+  const [paymentSettings, setPaymentSettings] = useState<PaymentSettings>({
     currency: 'AOA',
     taxRate: 14,
     allowOnlinePayments: true,
     paymentMethods: ['cash', 'card', 'transfer']
   });
 
-  const handleProfileChange = (field, value) => {
+  // Tipagem explícita para field e value
+  const handleProfileChange = <K extends keyof BusinessProfile>(field: K, value: BusinessProfile[K]) => {
     setBusinessProfile(prev => ({
       ...prev,
       [field]: value
     }));
   };
 
-  const handleWorkingHoursChange = (day, field, value) => {
+  const handleWorkingHoursChange = (day: keyof WorkingHours, field: 'start' | 'end', value: string) => {
     setBusinessProfile(prev => ({
       ...prev,
       workingHours: {
@@ -57,14 +94,15 @@ const SettingsPage = () => {
     }));
   };
 
-  const handleNotificationChange = (setting) => {
+  const handleNotificationChange = (setting: keyof Notifications) => {
     setNotifications(prev => ({
       ...prev,
       [setting]: !prev[setting]
     }));
   };
 
-  const handlePaymentChange = (field, value) => {
+  // Tipagem explícita para field e value em paymentSettings
+  const handlePaymentChange = <K extends keyof PaymentSettings>(field: K, value: PaymentSettings[K]) => {
     setPaymentSettings(prev => ({
       ...prev,
       [field]: value
@@ -153,14 +191,14 @@ const SettingsPage = () => {
                       <input 
                         type="time"
                         value={hours.start}
-                        onChange={(e) => handleWorkingHoursChange(day, 'start', e.target.value)}
+                        onChange={(e) => handleWorkingHoursChange(day as keyof WorkingHours, 'start', e.target.value)}
                         disabled={day === 'sunday'}
                       />
                       <span>até</span>
                       <input 
                         type="time"
                         value={hours.end}
-                        onChange={(e) => handleWorkingHoursChange(day, 'end', e.target.value)}
+                        onChange={(e) => handleWorkingHoursChange(day as keyof WorkingHours, 'end', e.target.value)}
                         disabled={day === 'sunday'}
                       />
                     </div>
@@ -179,8 +217,8 @@ const SettingsPage = () => {
                     <label>
                       <input 
                         type="checkbox"
-                        checked={value}
-                        onChange={() => handleNotificationChange(setting)}
+                        checked={value as boolean} // Casting to boolean as Object.entries returns [string, unknown]
+                        onChange={() => handleNotificationChange(setting as keyof Notifications)}
                       />
                       <span>{setting.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())}</span>
                     </label>
@@ -284,4 +322,4 @@ const SettingsPage = () => {
   );
 };
 
-export default SettingsPage; 
+export default SettingsPage;

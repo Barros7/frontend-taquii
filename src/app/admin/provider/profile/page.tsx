@@ -3,8 +3,20 @@
 import React, { useState } from 'react';
 import styles from './profile.module.css';
 
+type DayOfWeek = 'monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday' | 'saturday' | 'sunday';
+
+interface Profile {
+  name: string;
+  email: string;
+  phone: string;
+  role: string;
+  bio: string;
+  specialties: string[];
+  availability: Record<DayOfWeek, boolean>;
+}
+
 const ProfilePage = () => {
-  const [profile, setProfile] = useState({
+  const [profile, setProfile] = useState<Profile>({
     name: 'Maria Silva',
     email: 'maria@email.com',
     phone: '+244 912 345 678',
@@ -23,16 +35,16 @@ const ProfilePage = () => {
   });
 
   const [isEditing, setIsEditing] = useState(false);
-  const [editedProfile, setEditedProfile] = useState(profile);
+  const [editedProfile, setEditedProfile] = useState<Profile>(profile);
 
-  const handleInputChange = (field, value) => {
+  const handleInputChange = (field: keyof Profile, value: string | string[]) => {
     setEditedProfile(prev => ({
       ...prev,
       [field]: value
     }));
   };
 
-  const handleAvailabilityChange = (day) => {
+  const handleAvailabilityChange = (day: DayOfWeek) => {
     setEditedProfile(prev => ({
       ...prev,
       availability: {
@@ -183,8 +195,8 @@ const ProfilePage = () => {
                       <label>
                         <input 
                           type="checkbox"
-                          checked={editedProfile.availability[day]}
-                          onChange={() => handleAvailabilityChange(day)}
+                          checked={editedProfile.availability[day as DayOfWeek]}
+                          onChange={() => handleAvailabilityChange(day as DayOfWeek)}
                         />
                         <span>{day.charAt(0).toUpperCase() + day.slice(1)}</span>
                       </label>

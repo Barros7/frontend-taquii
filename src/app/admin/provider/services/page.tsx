@@ -11,6 +11,7 @@ interface Service {
   price: number;
   duration: number;
   averageRating: number;
+  providerId: string;
 }
 
 const ServicesPage = () => {
@@ -26,18 +27,18 @@ const ServicesPage = () => {
   });
 
   useEffect(() => {
-    fetchServices();
-  }, []);
+    const fetchServices = async () => {
+      try {
+        const response = await fetch(`http://localhost:8000/api/services?providerId=${session?.user?.id}`);
+        const data = await response.json();
+        setServices(data);
+      } catch (error) {
+        console.error('Error fetching services:', error);
+      }
+    };
 
-  const fetchServices = async () => {
-    try {
-      const response = await fetch(`http://localhost:8000/api/services?providerId=${session?.user?.id}`);
-      const data = await response.json();
-      setServices(data);
-    } catch (error) {
-      console.error('Error fetching services:', error);
-    }
-  };
+    fetchServices();
+  }, [session?.user?.id]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -63,12 +64,11 @@ const ServicesPage = () => {
         body: JSON.stringify(serviceData),
         credentials: 'include'
       });
-
+      
       if (!response.ok) {
         throw new Error('Failed to save service');
       }
 
-      await fetchServices();
       handleCloseModal();
     } catch (error) {
       console.error('Error saving service:', error);
@@ -101,7 +101,6 @@ const ServicesPage = () => {
         throw new Error('Failed to delete service');
       }
 
-      await fetchServices();
     } catch (error) {
       console.error('Error deleting service:', error);
     }

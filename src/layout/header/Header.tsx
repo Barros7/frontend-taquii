@@ -10,7 +10,7 @@ const Header: React.FC = () => {
     <header className={styles.header}>
       <div className={styles.container}>
         <Link href="/" className={styles.logo}>
-          Taqui
+          Taqui Serviço
         </Link>
         
         <nav className={styles.nav}>
