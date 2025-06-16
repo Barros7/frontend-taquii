@@ -27,6 +27,7 @@ const BusinessCategoriesSection = async () => {
     });
 
     if (!response.ok) {
+      console.log(response) 
       console.error(`Erro ao buscar categorias: ${response.status} ${response.statusText}`);
       return null;
     }
