@@ -21,13 +21,12 @@ const BusinessCategoriesSection = async () => {
       return null;
     }
 
-    const response = await fetch(`${apiUrl}/categories`, {
+    const response = await fetch(`${apiUrl}categories`, {
       next: { revalidate: 3600 }, // Revalidate every hour
       cache: 'force-cache' // Use cached data during build
     });
 
     if (!response.ok) {
-      console.log(response) 
       console.error(`Erro ao buscar categorias: ${response.status} ${response.statusText}`);
       return null;
     }
