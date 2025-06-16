@@ -21,7 +21,7 @@ const BusinessCategoriesSection = async () => {
       return null;
     }
 
-    const response = await fetch(`${apiUrl}/categories`, {
+    const response = await fetch(`${apiUrl}/api/categories`, {
       next: { revalidate: 3600 }, // Revalidate every hour
       cache: 'force-cache' // Use cached data during build
     });
