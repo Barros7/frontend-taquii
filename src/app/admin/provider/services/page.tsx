@@ -40,7 +40,7 @@ const ServicesPage = () => {
     };
 
     fetchServices();
-  }, [session?.user?.id]);
+  }, [session?.user?.id, apiUrl]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

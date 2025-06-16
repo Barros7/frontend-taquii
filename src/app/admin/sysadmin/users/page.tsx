@@ -42,7 +42,7 @@ export default function UsersPage() {
     } finally {
       setLoading(false);
     }
-  }, [filter]); // A função só será recriada se 'filter' mudar
+  }, [filter, apiUrl]); // Added apiUrl to dependencies
 
   // O useEffect agora depende apenas da versão memoizada de fetchUsers
   useEffect(() => {

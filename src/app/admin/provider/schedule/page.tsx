@@ -48,7 +48,7 @@ const SchedulePage = () => {
     } catch (error) {
       console.error('Error fetching appointments:', error);
     }
-  }, [session?.user?.id, selectedDate]); // As dependências da função fetchAppointments
+  }, [session?.user?.id, selectedDate, apiUrl]); // Added apiUrl to dependencies
 
   // useEffect que depende da função fetchAppointments memoizada
   useEffect(() => {
