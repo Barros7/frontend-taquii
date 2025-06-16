@@ -32,11 +32,13 @@ const SchedulePage = () => {
   const [selectedAppointment, setSelectedAppointment] = useState<Appointment | null>(null);
   const [currentMonth, setCurrentMonth] = useState(new Date());
 
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL; // Acessível aqui também
+
   // Função fetchAppointments memoizada com useCallback
   const fetchAppointments = useCallback(async () => {
     try {
       const response = await fetch(
-        `http://localhost:8000/api/appointments?providerId=${session?.user?.id}&date=${selectedDate}`,
+        `${apiUrl}/appointments?providerId=${session?.user?.id}&date=${selectedDate}`,
         {
           credentials: 'include'
         }
@@ -55,7 +57,7 @@ const SchedulePage = () => {
 
   const handleStatusUpdate = async (appointmentId: string, newStatus: Appointment['status']) => {
     try {
-      const response = await fetch(`http://localhost:8000/api/appointments/${appointmentId}/status`, {
+      const response = await fetch(`${apiUrl}/appointments/${appointmentId}/status`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -80,7 +82,7 @@ const SchedulePage = () => {
     }
 
     try {
-      const response = await fetch(`http://localhost:8000/api/appointments/${appointmentId}/cancel`, {
+      const response = await fetch(`${apiUrl}/appointments/${appointmentId}/cancel`, {
         method: 'PUT',
         credentials: 'include'
       });

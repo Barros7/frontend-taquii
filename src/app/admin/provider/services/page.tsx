@@ -19,6 +19,8 @@ const ServicesPage = () => {
   const [services, setServices] = useState<Service[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedService, setSelectedService] = useState<Service | null>(null);
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+
   const [formData, setFormData] = useState({
     title: '',
     description: '',
@@ -29,7 +31,7 @@ const ServicesPage = () => {
   useEffect(() => {
     const fetchServices = async () => {
       try {
-        const response = await fetch(`http://localhost:8000/api/services?providerId=${session?.user?.id}`);
+        const response = await fetch(`${apiUrl}/services?providerId=${session?.user?.id}`);
         const data = await response.json();
         setServices(data);
       } catch (error) {
@@ -51,8 +53,8 @@ const ServicesPage = () => {
       };
 
       const url = selectedService 
-        ? `http://localhost:8000/api/services/${selectedService.id}`
-        : 'http://localhost:8000/api/services';
+        ? `${apiUrl}/services/${selectedService.id}`
+        : '${apiUrl}/services';
       
       const method = selectedService ? 'PUT' : 'POST';
 
@@ -92,7 +94,7 @@ const ServicesPage = () => {
     }
 
     try {
-      const response = await fetch(`http://localhost:8000/api/services/${id}`, {
+      const response = await fetch(`${apiUrl}/services/${id}`, {
         method: 'DELETE',
         credentials: 'include'
       });

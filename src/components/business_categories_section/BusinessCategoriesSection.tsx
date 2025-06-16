@@ -13,10 +13,10 @@ interface Category {
 
 const BusinessCategoriesSection = async () => {
   let categories: Category[] = [];
-  const apiUrl = process.env.API_BASE_URL || 'http://localhost:8000';
 
   try {
-    const response = await fetch(`${apiUrl}/api/categories`, {
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+    const response = await fetch(`${apiUrl}/categories`, {
       cache: 'no-store', // Garante que os dados sejam sempre buscados e não cacheados pelo Next.js (útil durante o desenvolvimento)
       // next: { revalidate: 3600 } // Opcional: Revalidar a cada hora em produção
     });

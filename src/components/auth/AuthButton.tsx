@@ -18,7 +18,8 @@ const AuthButton: React.FC = () => {
       });
 
       // Chamar o endpoint de logout do backend
-      await fetch('http://localhost:8000/api/auth/logout', {
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+      await fetch(`${apiUrl}/auth/logout`, {
         method: 'POST',
         credentials: 'include',
       });

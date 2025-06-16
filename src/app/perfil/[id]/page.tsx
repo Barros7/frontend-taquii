@@ -26,6 +26,7 @@ export default function ProfilePage() {
   const providerId = params?.id;
   const [providerData, setProviderData] = useState<ProviderData | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
   useEffect(() => {
     if (!providerId) {
@@ -35,7 +36,7 @@ export default function ProfilePage() {
 
     const fetchProviderDetails = async () => {
         try {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/users/providers?id=${providerId}`);
+            const response = await fetch(`${apiUrl}/users/providers?id=${providerId}`);
             if (!response.ok) {
                 if (response.status === 404) {
                   throw new Error("Profissional não encontrado.");

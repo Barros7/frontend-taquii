@@ -24,12 +24,13 @@ export default function UsersPage() {
   const [selectedUser, setSelectedUser] = useState<User | undefined>();
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
   const [userToDelete, setUserToDelete] = useState<User | null>(null);
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
   // Use useCallback para memoizar a função fetchUsers
   const fetchUsers = useCallback(async () => {
     try {
       setLoading(true);
-      const endpoint = filter === 'all' ? '/api/users' : `/api/users/${filter}s`;
+      const endpoint = filter === 'all' ? `${apiUrl}/users` : `${apiUrl}/users/${filter}s`;
       const response = await fetch(endpoint);
       if (!response.ok) {
         throw new Error('Falha ao carregar usuários');
@@ -50,7 +51,7 @@ export default function UsersPage() {
 
   const handleCreateUser = async (userData: Partial<User>) => {
     try {
-      const response = await fetch('/api/users', {
+      const response = await fetch(`${apiUrl}/users`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -72,7 +73,7 @@ export default function UsersPage() {
     if (!selectedUser) return;
 
     try {
-      const response = await fetch(`/api/users/${selectedUser.email}`, {
+      const response = await fetch(`${apiUrl}/users/${selectedUser.email}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -92,7 +93,7 @@ export default function UsersPage() {
 
   const handleDeleteUser = async (user: User) => {
     try {
-      const response = await fetch(`/api/users/${user.email}`, {
+      const response = await fetch(`${apiUrl}/users/${user.email}`, {
         method: 'DELETE',
       });
 

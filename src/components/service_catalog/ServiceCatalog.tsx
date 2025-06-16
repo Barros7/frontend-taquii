@@ -69,7 +69,8 @@ export default function ServiceCatalog({ categoryName, categoryDescription }: Se
 
       // Constrói a URL final
       const queryString = params.toString();
-      const url = `${process.env.NEXT_PUBLIC_API_URL}/users/providers${queryString ? `?${queryString}` : ''}`;
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+      const url = `${apiUrl}/users/providers${queryString ? `?${queryString}` : ''}`;
 
       const response = await fetch(url);
 

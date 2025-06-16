@@ -40,6 +40,7 @@ const BookingModal: React.FC<BookingModalProps> = ({ service, show, onClose }) =
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [bookedSlots, setBookedSlots] = useState<string[]>([]); // Array de horários ocupados ('HH:MM')
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
   // Exemplo de como obter o ID do cliente (adaptar para sua solução de autenticação)
   // const { data: session } = useSession();
@@ -54,7 +55,7 @@ const BookingModal: React.FC<BookingModalProps> = ({ service, show, onClose }) =
     setError(null);
     try {
       // Passa providerId e date como query params para GET
-      const response = await fetch(`http://localhost:8000/api/appointments/booked-slots?providerId="877f630b-fc53-4ca3-afba-b2d482dd93ed"&date=${data}`);
+      const response = await fetch(`${apiUrl}/appointments/booked-slots?providerId="877f630b-fc53-4ca3-afba-b2d482dd93ed"&date=${data}`);
       
       if (!response.ok) {
         throw new Error(`Erro ao buscar horários: ${response.statusText}`);
@@ -113,7 +114,7 @@ const BookingModal: React.FC<BookingModalProps> = ({ service, show, onClose }) =
         amount: service.price
       };
 
-      const response = await fetch('http://localhost:8000/api/appointments', {
+      const response = await fetch(`${apiUrl}/appointments`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
