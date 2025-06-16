@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import axios from 'axios';
 import Image from 'next/image';
 import './ServiceCard.css';
 import { Card, Button } from 'react-bootstrap';
@@ -22,10 +21,24 @@ const ServiceCard = () => {
   const [product, setProduct] = useState<Product | null>(null);
 
   useEffect(() => {
-    axios.get('/api/service') // Endpoint fictício para simular a obtenção dos dados
-      .then(response => setProduct(response.data))
-      .catch(error => console.error('Erro ao buscar produto:', error));
-  }, []);
+    async function getServiceData() {
+      try {
+        const response = await fetch('/api/service');
+
+        if (!response.ok) {
+          throw new Error(`Erro de rede: ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        setProduct(data);
+      } catch (error) {
+        console.error('Erro ao buscar produto:', error);
+      }
+    }
+
+    getServiceData();
+  }, [product]);
 
   if (!product) return <p className="text-center">Carregando...</p>;
 

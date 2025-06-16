@@ -1,6 +1,5 @@
-import axios from 'axios';
 
-const API_URL = 'http://localhost:8000/api';
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export interface AdminStats {
   totalAppointments: number;
@@ -20,26 +19,56 @@ export interface RecentActivity {
 }
 
 export const adminService = {
-  // Get admin dashboard statistics
+  // Obter estatísticas do dashboard de admin
   getStats: async (): Promise<AdminStats> => {
-    const response = await axios.get(`${API_URL}/admin/stats`);
-    return response.data;
+    try {
+      const response = await fetch(`${API_URL}/admin/stats`); // Use API_URL aqui
+
+      if (!response.ok) {
+        const errorDetail = await response.json().catch(() => ({ message: response.statusText || 'Erro desconhecido' }));
+        throw new Error(`Erro ao buscar estatísticas do admin: ${response.status} - ${errorDetail.message}`);
+      }
+      return await response.json();
+    } catch (error) {
+      console.error('Erro em getStats:', error);
+      throw error; // Re-lança o erro para ser tratado pelo chamador
+    }
   },
 
-  // Get recent activities
+  // Obter atividades recentes
   getRecentActivities: async (): Promise<RecentActivity[]> => {
-    const response = await axios.get(`${API_URL}/admin/activities`);
-    return response.data;
+    try {
+      const response = await fetch(`${API_URL}/admin/activities`); // Use API_URL aqui
+
+      if (!response.ok) {
+        const errorDetail = await response.json().catch(() => ({ message: response.statusText || 'Erro desconhecido' }));
+        throw new Error(`Erro ao buscar atividades recentes: ${response.status} - ${errorDetail.message}`);
+      }
+      return await response.json();
+    } catch (error) {
+      console.error('Erro em getRecentActivities:', error);
+      throw error;
+    }
   },
 
-  // Get provider dashboard statistics
+  // Obter estatísticas do dashboard do provedor
   getProviderStats: async (providerId: string): Promise<{
     todayAppointments: number;
     weeklyAppointments: number;
     monthlyRevenue: string;
     customerRating: number;
   }> => {
-    const response = await axios.get(`${API_URL}/admin/provider/${providerId}/stats`);
-    return response.data;
+    try {
+      const response = await fetch(`${API_URL}/admin/provider/${providerId}/stats`); // Use API_URL aqui
+
+      if (!response.ok) {
+        const errorDetail = await response.json().catch(() => ({ message: response.statusText || 'Erro desconhecido' }));
+        throw new Error(`Erro ao buscar estatísticas do provedor ${providerId}: ${response.status} - ${errorDetail.message}`);
+      }
+      return await response.json();
+    } catch (error) {
+      console.error('Erro em getProviderStats:', error);
+      throw error;
+    }
   }
-}; 
+};
