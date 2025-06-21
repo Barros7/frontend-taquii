@@ -1,6 +1,6 @@
-'use client'; // Mantemos como Client Component pois ele tem estado interno e interações do usuário
+'use client';
 
-import { useEffect, useState, useCallback } from 'react'; // Adicionado useCallback
+import { useEffect, useState, useCallback } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Image from 'next/image';
 import "./ServiceCatalog.css";
@@ -34,20 +34,19 @@ interface IProvider {
   profileImage: string;
   addresses?: { city: string; country: string; }[];
   services?: { averageRating?: number; }[];
-  // Adicione outras propriedades relevantes que vêm da sua API de provedores
 }
 
 interface ServiceCatalogProps {
-  categoryName?: string; // Nome da categoria passada pelo pai (opcional)
-  categoryDescription?: string; // Descrição da categoria passada pelo pai (opcional)
+  categoryName?: string;
+  categoryDescription?: string;
 }
 
 export default function ServiceCatalog({ categoryName, categoryDescription }: ServiceCatalogProps) {
-  const [search, setSearch] = useState(''); // Estado para o campo de busca de texto
-  const [selectedProvince, setSelectedProvince] = useState(''); // Estado para o select de província
-  const [professionals, setProfessionals] = useState<IProvider[]>([]); // Estado para armazenar os profissionais
-  const [loading, setLoading] = useState(true); // Estado para controlar o carregamento
-  const [error, setError] = useState<string | null>(null); // Estado para erros na busca
+  const [search, setSearch] = useState('');
+  const [selectedProvince, setSelectedProvince] = useState('');
+  const [professionals, setProfessionals] = useState<IProvider[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   const fetchProfessionals = useCallback(async () => {
     setLoading(true);
@@ -79,11 +78,12 @@ export default function ServiceCatalog({ categoryName, categoryDescription }: Se
       }
 
       const data = await response.json();
+      console.log(data);
       setProfessionals(data);
     } catch (error) {
       console.error('Erro ao buscar profissionais:', error);
       setError('Não foi possível carregar os profissionais. Tente novamente mais tarde.');
-      setProfessionals([]); // Limpa os profissionais em caso de erro
+      setProfessionals([]);
     } finally {
       setLoading(false);
     }
@@ -140,13 +140,13 @@ export default function ServiceCatalog({ categoryName, categoryDescription }: Se
             {/* Se quiser que eles filtrem, você precisaria de um estado para a sub-categoria selecionada */}
             {/* e adicioná-la aos parâmetros da URL no fetchProfessionals */}
             {/*
-            <div className="d-flex flex-wrap gap-2">
-                {subCategories.map((cat) => (
-                    <button key={cat} className="btn btn-outline-secondary btn-sm">
-                        {cat}
-                    </button>
-                ))}
-            </div>
+              <div className="d-flex flex-wrap gap-2">
+                  {subCategories.map((cat) => (
+                      <button key={cat} className="btn btn-outline-secondary btn-sm">
+                          {cat}
+                      </button>
+                  ))}
+              </div>
             */}
           </div>
         </div>

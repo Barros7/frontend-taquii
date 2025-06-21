@@ -1,4 +1,3 @@
-// components/BusinessCategoriesSection.tsx (ou o nome do seu arquivo)
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -22,8 +21,8 @@ const BusinessCategoriesSection = async () => {
     }
 
     const response = await fetch(`${apiUrl}/categories`, {
-      next: { revalidate: 3600 }, // Revalidate every hour
-      cache: 'force-cache' // Use cached data during build
+      next: { revalidate: 3600 },
+      cache: 'force-cache'
     });
 
     if (!response.ok) {
