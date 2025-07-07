@@ -5,6 +5,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Image from 'next/image';
 import "./ServiceCatalog.css";
 import Link from 'next/link';
+import ServiceCatalogSkeleton from '../service_catalog_skeleton/ServiceCatalogSkeleton';
 
 // Lista das províncias de Angola
 const angolanProvinces = [
@@ -68,7 +69,7 @@ export default function ServiceCatalog({ categoryName, categoryDescription }: Se
 
       // Constrói a URL final
       const queryString = params.toString();
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:8000/api';
       const url = `${apiUrl}/users/providers${queryString ? `?${queryString}` : ''}`;
 
       const response = await fetch(url);
@@ -78,7 +79,6 @@ export default function ServiceCatalog({ categoryName, categoryDescription }: Se
       }
 
       const data = await response.json();
-      console.log(data);
       setProfessionals(data);
     } catch (error) {
       console.error('Erro ao buscar profissionais:', error);
@@ -152,7 +152,7 @@ export default function ServiceCatalog({ categoryName, categoryDescription }: Se
         </div>
 
         {/* Lista de profissionais */}
-        {loading && <p className="text-center">Carregando profissionais...</p>}
+        {loading && <ServiceCatalogSkeleton categoryName={categoryName} categoryDescription={categoryDescription} />}
         {error && <p className="text-center text-danger">{error}</p>}
         {!loading && !error && professionals.length === 0 && (
           <p className="text-center">Nenhum profissional encontrado com os filtros aplicados.</p>

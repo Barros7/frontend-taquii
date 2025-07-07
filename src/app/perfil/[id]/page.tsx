@@ -1,5 +1,6 @@
 "use client"
 import { useEffect, useState } from 'react';
+import ServiceCatalogSkeleton from '../../../components/service_catalog_skeleton/ServiceCatalogSkeleton';
 import { ProviderDetails } from '../../../components/provider_details/ProviderDetails';
 import Header from '../../../components/header/Header';
 import { useParams } from 'next/navigation';
@@ -26,7 +27,7 @@ export default function ProfilePage() {
   const providerId = params?.id;
   const [providerData, setProviderData] = useState<ProviderData | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:8000/api';
 
   useEffect(() => {
     if (!providerId) {
@@ -59,16 +60,26 @@ export default function ProfilePage() {
 
     fetchProviderDetails();
 
-}, [providerId]);
+}, [providerId, apiUrl]);
 
-if (!providerData) {
-  return <div className="container mt-4">Profissional não encontrado.{error}</div>;
+if (!providerData && !error) {
+  return (
+    <div className="container-fluid bg-light min-vh-100 m-0 p-0">
+      <Header />
+      <ServiceCatalogSkeleton />
+    </div>
+  );
 }
+
+if (error) {
+  return <div className="container mt-4 text-danger">{error}</div>;
+}
+
 
 return (
     <div className="container-fluid bg-light min-vh-100 m-0 p-0">
       <Header />
-      <ProviderDetails provider={providerData} />
+      {providerData && <ProviderDetails provider={providerData} />}
     </div>
   );
 }

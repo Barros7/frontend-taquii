@@ -11,7 +11,7 @@ interface User {
   status: string;
 }
 
-type UserType = 'all' | 'client' | 'provider';
+type UserType = 'all' | 'user' | 'provider';
 
 export default function UsersPage() {
   const [users, setUsers] = useState<User[]>([]);

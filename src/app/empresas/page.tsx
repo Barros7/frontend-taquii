@@ -1,7 +1,7 @@
 // app/empresas/page.tsx
-'use client'; // Mantém como Client Component porque usa hooks de cliente
+'use client';
 
-import { useSearchParams } from 'next/navigation'; // Importa o hook
+import { useSearchParams } from 'next/navigation';
 import Header from '@/components/header/Header';
 import ServiceCatalog from '@/components/service_catalog/ServiceCatalog';
 

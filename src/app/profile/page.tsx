@@ -1,7 +1,7 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import { useSession } from 'next-auth/react';
+import React, { useState, useEffect, useCallback } from 'react';
+import { useAuth } from '@/context/AuthContext';
 import { useRouter } from 'next/navigation';
 import styles from './profile.module.css';
 
@@ -17,7 +17,7 @@ interface UserProfile {
 }
 
 export default function ProfilePage() {
-  const { data: session, status } = useSession();
+  const { user } = useAuth();
   const router = useRouter();
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
@@ -25,19 +25,7 @@ export default function ProfilePage() {
   const [success, setSuccess] = useState('');
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
   
-  useEffect(() => {
-    if (status === 'unauthenticated') {
-      router.push('/login');
-    } else if (status === 'authenticated') {
-      fetchProfile();
-    }
-  }, [status, router]);
-
-  if(!session?.user?.id) {
-    console.log("Não tem sessão iniciada.");
-  };
-
-  const fetchProfile = async () => {
+  const fetchProfile = useCallback(async () => {
     try {
       const response = await fetch(`${apiUrl}/users/profile`);
       const data = await response.json();
@@ -48,7 +36,19 @@ export default function ProfilePage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [apiUrl]);
+  
+  useEffect(() => {
+    if (!user) {
+      router.push('/login');
+    } else {
+      fetchProfile();
+    }
+  }, [user, router, fetchProfile]);
+
+  if(!user) {
+    console.log("Não tem sessão iniciada.");
+  }
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

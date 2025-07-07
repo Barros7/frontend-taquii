@@ -1,0 +1,89 @@
+"use client";
+import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+
+type User = { id: string; name: string; email: string; userType: string; emailVerified: boolean; };
+
+type AuthContextType = {
+  user: User | null;
+  loading: boolean;
+  error: string | null;
+  login: (email: string, password: string) => Promise<boolean>;
+  logout: () => Promise<void>;
+  refresh: () => Promise<void>;
+};
+
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
+
+export const AuthProvider = ({ children }: { children: ReactNode }) => {
+  const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => { refresh(); }, []);
+
+  const login = async (email: string, password: string) => {
+    setLoading(true);
+    setError(null);
+    try {
+      const res = await fetch('http://localhost:8000/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({ email, password }),
+      });
+      if (!res.ok) {
+        setError('E-mail ou Palavra-passe inválidos!');
+        setLoading(false);
+        return false;
+      }
+      await refresh();
+      setLoading(false);
+      return true;
+    } catch {
+      setError('Erro ao autenticar.');
+      setLoading(false);
+      return false;
+    }
+  };
+
+  const refresh = async () => {
+    setLoading(true);
+    try {
+      const res = await fetch('http://localhost:8000/api/auth/me', {
+        credentials: 'include',
+      });
+      if (res.ok) {
+        const data = await res.json();
+        if (data && data.id && data.name && data.email && data.userType) {
+          setUser(data);
+        } else if (data && data.user && data.user.id && data.user.name && data.user.email && data.user.userType) {
+          setUser(data.user);
+        } else {
+          setUser(null);
+        }
+      } else {
+        setUser(null);
+      }
+    } catch {
+      setUser(null);
+    }
+    setLoading(false);
+  };
+
+  const logout = async () => {
+    await fetch('http://localhost:8000/api/auth/logout', { method: 'POST', credentials: 'include' });
+    setUser(null);
+  };
+
+  return (
+    <AuthContext.Provider value={{ user, loading, error, login, logout, refresh }}>
+      {children}
+    </AuthContext.Provider>
+  );
+};
+
+export const useAuth = () => {
+  const ctx = useContext(AuthContext);
+  if (!ctx) throw new Error('useAuth deve ser usado dentro de AuthProvider');
+  return ctx;
+};

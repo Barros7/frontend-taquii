@@ -10,6 +10,7 @@ import FaqSection from '@/components/faqs_section/FaqsSection';
 import PricingPlans from '@/components/pricing_plans/PricingPlans';
 
 export default function Home() {
+
   return (
     <div>
       <Header />

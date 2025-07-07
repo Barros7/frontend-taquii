@@ -1,0 +1,51 @@
+/* ServiceCatalog.css (ou um arquivo CSS global) */
+
+.skeleton-line {
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: loading 1.5s infinite;
+    border-radius: 4px;
+  }
+  
+  .skeleton-heading {
+    height: 28px; /* Altura aproximada para h4 */
+    margin-bottom: 8px;
+  }
+  
+  .skeleton-text {
+    height: 20px; /* Altura aproximada para p */
+    margin-bottom: 8px;
+  }
+  
+  .skeleton-input {
+    height: 38px; /* Altura de um input/select padrão do Bootstrap */
+    border-radius: 8px;
+  }
+  
+  .skeleton-circle {
+    border-radius: 50%;
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: loading 1.5s infinite;
+  }
+  
+  .skeleton-button {
+    height: 38px; /* Altura de um botão padrão do Bootstrap */
+    border-radius: 8px;
+  }
+  
+  .skeleton-card {
+    background-color: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  
+  @keyframes loading {
+    0% {
+      background-position: 200% 0;
+    }
+    100% {
+      background-position: -200% 0;
+    }
+  }

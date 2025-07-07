@@ -1,12 +1,12 @@
 'use client';
 
 import React from 'react';
-import { useSession, signOut } from 'next-auth/react';
+import { useAuth } from '@/context/AuthContext';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
 const AuthButton: React.FC = () => {
-  const { data: session, status } = useSession();
+  const { user } = useAuth();
   const router = useRouter();
 
   const handleLogout = async () => {
@@ -38,7 +38,7 @@ const AuthButton: React.FC = () => {
     );
   }
 
-  if (session) {
+  if (user) {
     return (
       <button 
         onClick={handleLogout}

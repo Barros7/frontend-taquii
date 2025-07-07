@@ -1,81 +1,61 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { useRouter } from 'next/navigation';
-import { signIn, useSession } from 'next-auth/react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { useAuth } from '@/context/AuthContext';
 import "./login.css";
 
 export default function LoginPage() {
-  const { data: session, status } = useSession();
+  const { login, user, error, loading } = useAuth();
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const next = searchParams?.get('next');
 
   const [formData, setFormData] = useState({
     email: '',
     password: ''
   });
-  const [error, setError] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
+
+  const [formError, setFormError] = useState('');
 
   useEffect(() => {
-    if (status === 'loading') return;
-
-    if (session?.user) {
-      const userType = session.user.userType;
-      // Se o usuário já está autenticado, redirecionar para a dashboard apropriada
-      switch (userType) {
-        case 'ADMIN':
-          console.log('Redirecting to admin dashboard');
-          router.replace('/admin/sysadmin');
-          break;
-        case 'PROVIDER':
-          console.log('Redirecting to provider dashboard');
-          router.replace('/admin/provider');
-          break;
-        case 'CLIENT':
-          console.log('Redirecting to client area');
-          router.replace('/');
-          break;
-        default:
-          router.replace('/login');
+    if (user) {
+      if (next) {
+        router.replace(next);
+      } else {
+        // fluxo padrão por tipo de usuário
+        switch (user.userType) {
+          case 'ADMIN':
+            router.replace('/admin/sysadmin');
+            break;
+          case 'PROVIDER':
+            router.replace('/admin/provider');
+            break;
+          case 'USER':
+            router.replace('/');
+            break;
+          default:
+            router.replace('/login');
+        }
       }
     }
-  }, [session, status, router]);
+  }, [user, router, next]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsLoading(true);
-    setError('');
-
+    setFormError('');
     try {
-      const result = await signIn('credentials', {
-        email: formData.email,
-        password: formData.password,
-        redirect: false
-      });
-
-      if (result?.error) {
-        setError(result.error);
-        return;
+      const success = await login(formData.email, formData.password);
+      console.log("Resultado do Sucesso: ", success);
+      if (!success) {
+        setFormError('E-mail ou Palavra-passe inválidos!');
       }
-
-      // O redirecionamento será feito pelo useEffect quando a sessão for atualizada
-    } catch (err) {
-      console.error('Login error:', err);
-      setError('Ocorreu um erro ao tentar fazer login. Por favor, tente novamente.');
-    } finally {
-      setIsLoading(false);
+    } catch {
+      setFormError('Erro ao tentar fazer login.');
     }
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
-  };
-
-  if (status === 'loading') {
+  if (loading) {
     return <div>Carregando...</div>;
   }
 
@@ -86,13 +66,11 @@ export default function LoginPage() {
           <div className="card shadow">
             <div className="card-body p-5">
               <h2 className="text-center mb-4">Login</h2>
-              
-              {error && (
+              {(formError || error) && (
                 <div className="alert alert-danger" role="alert">
-                  {error}
+                  {formError || error}
                 </div>
               )}
-
               <form onSubmit={handleSubmit}>
                 <div className="mb-3">
                   <label htmlFor="email" className="form-label">Email</label>
@@ -102,11 +80,10 @@ export default function LoginPage() {
                     id="email"
                     name="email"
                     value={formData.email}
-                    onChange={handleChange}
+                    onChange={e => setFormData({ ...formData, email: e.target.value })}
                     required
                   />
                 </div>
-
                 <div className="mb-3">
                   <label htmlFor="password" className="form-label">Senha</label>
                   <input
@@ -115,17 +92,16 @@ export default function LoginPage() {
                     id="password"
                     name="password"
                     value={formData.password}
-                    onChange={handleChange}
+                    onChange={e => setFormData({ ...formData, password: e.target.value })}
                     required
                   />
                 </div>
-
                 <button
                   type="submit"
                   className="btn btn-primary w-100"
-                  disabled={isLoading}
+                  disabled={loading}
                 >
-                  {isLoading ? 'Entrando...' : 'Entrar'}
+                  {loading ? 'Entrando...' : 'Entrar'}
                 </button>
               </form>
             </div>

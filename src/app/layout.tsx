@@ -3,12 +3,10 @@ import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from "next/font/google";
 import Footer from "@/layout/footer/Footer";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/lib/auth';
 import { Toaster } from 'react-hot-toast';
 import { AuthStatus } from '@/components/AuthStatus';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
-import { NextAuthProvider } from '@/components/providers/NextAuthProvider';
+import { AuthProvider } from '@/context/AuthContext';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -25,23 +23,21 @@ export const metadata: Metadata = {
   description: 'Plataforma de agendamento de serviços para estabelecimentos',
 };
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const session = await getServerSession(authOptions);
-
   return (
     <html lang="pt">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <ErrorBoundary>
-          <NextAuthProvider session={session}>
+          <AuthProvider>
             <AuthStatus />
             {children}
             <Toaster position="bottom-right" />
             <Footer />
-          </NextAuthProvider>
+          </AuthProvider>
         </ErrorBoundary>
       </body>
     </html>

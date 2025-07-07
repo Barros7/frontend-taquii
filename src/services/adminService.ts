@@ -1,4 +1,3 @@
-
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export interface AdminStats {
@@ -22,7 +21,9 @@ export const adminService = {
   // Obter estatísticas do dashboard de admin
   getStats: async (): Promise<AdminStats> => {
     try {
-      const response = await fetch(`${API_URL}/admin/stats`); // Use API_URL aqui
+      const response = await fetch(`${API_URL}/admin/stats`, {
+        credentials: 'include',
+      });
 
       if (!response.ok) {
         const errorDetail = await response.json().catch(() => ({ message: response.statusText || 'Erro desconhecido' }));
@@ -38,7 +39,9 @@ export const adminService = {
   // Obter atividades recentes
   getRecentActivities: async (): Promise<RecentActivity[]> => {
     try {
-      const response = await fetch(`${API_URL}/admin/activities`); // Use API_URL aqui
+      const response = await fetch(`${API_URL}/admin/activities`, {
+        credentials: 'include',
+      });
 
       if (!response.ok) {
         const errorDetail = await response.json().catch(() => ({ message: response.statusText || 'Erro desconhecido' }));
@@ -59,7 +62,9 @@ export const adminService = {
     customerRating: number;
   }> => {
     try {
-      const response = await fetch(`${API_URL}/admin/provider/${providerId}/stats`); // Use API_URL aqui
+      const response = await fetch(`${API_URL}/admin/provider/${providerId}/stats`, {
+        credentials: 'include',
+      });
 
       if (!response.ok) {
         const errorDetail = await response.json().catch(() => ({ message: response.statusText || 'Erro desconhecido' }));

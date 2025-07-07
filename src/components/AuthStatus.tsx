@@ -1,80 +1,50 @@
 'use client';
 
-import { useSession } from 'next-auth/react';
+import { useAuth } from '@/context/AuthContext';
 import { Spinner } from './Spinner';
 import { toast } from 'react-hot-toast';
 import { useEffect } from 'react';
 
 export function AuthStatus() {
-  const { data: session, status } = useSession();
+  const { user, loading } = useAuth();
 
   useEffect(() => {
-    if (status === 'authenticated') {
-      toast.success(`Bem-vindo, ${session.user?.name}!`);
-    } else if (status === 'unauthenticated') {
+    if (user) {
+      toast.success(`Bem-vindo, ${user.name}!`);
+    } else {
       toast.error('Sessão expirada. Por favor, faça login novamente.');
     }
-  }, [status, session]);
+  }, [user]);
 
-  if (status === 'loading') {
+  if (loading) {
     return (
       <div className="fixed top-0 left-0 w-full h-1">
-        <div className="h-full bg-blue-500 animate-pulse"></div>
-      </div>
-    );
-  }
-
-  return null;
-}
-
-export function AuthGuard({ children }: { children: React.ReactNode }) {
-  const { status } = useSession();
-  
-  if (status === 'loading') {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
         <Spinner />
       </div>
     );
   }
-  
-  if (status === 'unauthenticated') {
-    window.location.href = '/login';
-    return null;
+
+  if (!user) return null;
+}
+
+export function AuthGuard({ children }: { children: React.ReactNode }) {
+  const { loading, user } = useAuth();
+  if (loading) {
+    return <Spinner />;
   }
-  
+  if (!user) {
+    return <div>Você precisa estar autenticado para acessar esta página.</div>;
+  }
   return <>{children}</>;
 }
 
-export function RoleGuard({ 
-  children, 
-  allowedRoles 
-}: { 
-  children: React.ReactNode;
-  allowedRoles: string[];
-}) {
-  const { data: session } = useSession();
-  
-  if (!session?.user?.userType || !allowedRoles.includes(session.user.userType)) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <h2 className="text-2xl font-bold text-red-600 mb-4">
-            Acesso Negado
-          </h2>
-          <p className="text-gray-600">
-            Você não tem permissão para acessar esta página.
-          </p>
-          <button
-            onClick={() => window.location.href = '/'}
-            className="mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors"
-          >
-            Voltar ao Início
-          </button>
-        </div>
-      </div>
-    );
+export function RoleGuard({ children, allowedRoles }: { children: React.ReactNode; allowedRoles: string[] }) {
+  const { user, loading } = useAuth();
+  if (loading) {
+    return <Spinner />;
   }
-  
+  if (!user || !allowedRoles.includes(user.userType)) {
+    return <div>Acesso não autorizado.</div>;
+  }
   return <>{children}</>;
 } 
