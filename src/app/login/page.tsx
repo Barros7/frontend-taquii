@@ -1,11 +1,11 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, Suspense } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
 import "./login.css";
 
-export default function LoginPage() {
+function LoginForm() {
   const { login, user, error, loading } = useAuth();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -15,7 +15,6 @@ export default function LoginPage() {
     email: '',
     password: ''
   });
-
   const [formError, setFormError] = useState('');
 
   useEffect(() => {
@@ -109,5 +108,13 @@ export default function LoginPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={<div>Carregando...</div>}>
+      <LoginForm />
+    </Suspense>
   );
 }

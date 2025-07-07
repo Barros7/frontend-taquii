@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
-import { useSession } from 'next-auth/react';
+import { useAuth } from '@/context/AuthContext';
 import Header from '@/components/header/Header';
 import { apiService, Appointment, PaymentQRCodeResponse } from '@/services/apiService';
 import Image from 'next/image';
@@ -15,7 +15,7 @@ const metodos = [
 
 export default function PagamentoPage({ params }: { params: Promise<{ appointmentId: string }> }) {
   const router = useRouter();
-  const { status } = useSession();
+  const { user, loading: authLoading } = useAuth();
   const [metodo, setMetodo] = useState<'referencia' | 'qrcode' | 'express'>('qrcode');
   const [step, setStep] = useState(1);
   const [dadosPagamento, setDadosPagamento] = useState<{
@@ -46,14 +46,14 @@ export default function PagamentoPage({ params }: { params: Promise<{ appointmen
 
   // Verificar se usuário está autenticado
   useEffect(() => {
-    if (status === 'unauthenticated') {
+    if (!authLoading && !user) {
       router.push('/login');
     }
-  }, [status, router]);
+  }, [authLoading, user, router]);
 
   // Buscar dados do agendamento
   useEffect(() => {
-    if (status === 'loading' || !appointmentId) return; // Aguardar autenticação e appointmentId
+    if (authLoading || !appointmentId) return; // Aguardar autenticação e appointmentId
     
     const fetchAppointment = async () => {
       try {
@@ -85,7 +85,7 @@ export default function PagamentoPage({ params }: { params: Promise<{ appointmen
     };
 
     fetchAppointment();
-  }, [appointmentId, status]);
+  }, [appointmentId, authLoading]);
 
   // Gerar QR Code quando método for selecionado
   const generateQRCode = useCallback(async () => {
@@ -179,7 +179,7 @@ export default function PagamentoPage({ params }: { params: Promise<{ appointmen
     }
   };
 
-  if (status === 'loading' || loading) {
+  if (authLoading || loading) {
     return (
       <>
         <Header />

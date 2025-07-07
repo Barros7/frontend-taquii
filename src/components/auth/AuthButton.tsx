@@ -6,23 +6,16 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
 const AuthButton: React.FC = () => {
-  const { user } = useAuth();
+  const { user, logout, loading } = useAuth();
   const router = useRouter();
 
   const handleLogout = async () => {
     try {
-      // Primeiro, fazer logout do NextAuth com callbackUrl
-      await signOut({ 
-        redirect: true,
-        callbackUrl: '/'
-      });
-
-      // Chamar o endpoint de logout do backend
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-      await fetch(`${apiUrl}/auth/logout`, {
-        method: 'POST',
-        credentials: 'include',
-      });
+      // Fazer logout usando o contexto próprio
+      await logout();
+      
+      // Redirecionar para a página inicial
+      router.push('/');
     } catch (error) {
       console.error('Logout error:', error);
       // Em caso de erro, forçar redirecionamento
@@ -30,7 +23,7 @@ const AuthButton: React.FC = () => {
     }
   };
 
-  if (status === 'loading') {
+  if (loading) {
     return (
       <button className="btn btn-outline-primary" disabled>
         Carregando...

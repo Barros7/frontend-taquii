@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useState, useEffect, useCallback } from 'react'; // Adicionado useCallback
-import { useSession } from 'next-auth/react';
+import { useAuth } from '@/context/AuthContext';
 import Link from 'next/link';
 import styles from './schedule.module.css';
 
@@ -24,7 +24,7 @@ interface Appointment {
 }
 
 const SchedulePage = () => {
-  const { data: session } = useSession();
+  const { user } = useAuth();
   const [appointments, setAppointments] = useState<Appointment[]>([]);
   const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
   const [view, setView] = useState('day'); // 'day', 'week', 'month'
@@ -37,8 +37,10 @@ const SchedulePage = () => {
   // Função fetchAppointments memoizada com useCallback
   const fetchAppointments = useCallback(async () => {
     try {
+      if (!user?.id) return;
+      
       const response = await fetch(
-        `${apiUrl}/appointments?providerId=${session?.user?.id}&date=${selectedDate}`,
+        `${apiUrl}/appointments?providerId=${user.id}&date=${selectedDate}`,
         {
           credentials: 'include'
         }
@@ -48,12 +50,13 @@ const SchedulePage = () => {
     } catch (error) {
       console.error('Error fetching appointments:', error);
     }
-  }, [session?.user?.id, selectedDate, apiUrl]); // Added apiUrl to dependencies
+  }, [user?.id, selectedDate, apiUrl]);
 
   // useEffect que depende da função fetchAppointments memoizada
   useEffect(() => {
+    if (!user?.id) return;
     fetchAppointments();
-  }, [fetchAppointments]); // Apenas a função memoizada é a dependência
+  }, [fetchAppointments, user?.id]); // Adicionar user?.id como dependência
 
   const handleStatusUpdate = async (appointmentId: string, newStatus: Appointment['status']) => {
     try {

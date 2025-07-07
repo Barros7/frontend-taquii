@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useState, useEffect } from 'react';
-import { useSession } from 'next-auth/react';
+import { useAuth } from '@/context/AuthContext';
 import styles from './services.module.css';
 
 interface Service {
@@ -15,7 +15,7 @@ interface Service {
 }
 
 const ServicesPage = () => {
-  const { data: session } = useSession();
+  const { user } = useAuth();
   const [services, setServices] = useState<Service[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedService, setSelectedService] = useState<Service | null>(null);
@@ -29,9 +29,11 @@ const ServicesPage = () => {
   });
 
   useEffect(() => {
+    if (!user?.id) return;
+
     const fetchServices = async () => {
       try {
-        const response = await fetch(`${apiUrl}/services?providerId=${session?.user?.id}`);
+        const response = await fetch(`${apiUrl}/services?providerId=${user?.id}`);
         const data = await response.json();
         setServices(data);
       } catch (error) {
@@ -40,7 +42,7 @@ const ServicesPage = () => {
     };
 
     fetchServices();
-  }, [session?.user?.id, apiUrl]);
+  }, [user, apiUrl]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -49,7 +51,7 @@ const ServicesPage = () => {
         ...formData,
         price: parseFloat(formData.price),
         duration: parseInt(formData.duration),
-        providerId: session?.user?.id
+        providerId: user?.id
       };
 
       const url = selectedService 

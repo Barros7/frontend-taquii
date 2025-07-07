@@ -52,7 +52,7 @@ const BusinessCategoriesSection = () => {
     };
 
     fetchCategories();
-  }, []);
+  }, [apiUrl]);
 
   return (
     <section id="servicos" className="container section-business-category text-center">

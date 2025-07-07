@@ -4,10 +4,10 @@ import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import styles from './provider.module.css';
 import { adminService } from '@/services/adminService';
-import { useSession } from 'next-auth/react';
+import { useAuth } from '@/context/AuthContext';
 
 const ProviderDashboard = () => {
-  const { data: session } = useSession();
+  const { user, loading: authLoading } = useAuth();
   const [stats, setStats] = useState({
     todayAppointments: 0,
     weeklyAppointments: 0,
@@ -19,11 +19,11 @@ const ProviderDashboard = () => {
 
   useEffect(() => {
     const fetchProviderStats = async () => {
-      if (!session?.user?.id) return;
+      if (!user?.id) return;
 
       try {
         setLoading(true);
-        const statsData = await adminService.getProviderStats(session.user.id);
+        const statsData = await adminService.getProviderStats(user.id);
         setStats(statsData);
       } catch (err) {
         setError('Erro ao carregar dados do dashboard. Tente novamente mais tarde.');
@@ -34,9 +34,9 @@ const ProviderDashboard = () => {
     };
 
     fetchProviderStats();
-  }, [session]);
+  }, [user]);
 
-  if (loading) {
+  if (authLoading || loading) {
     return (
       <div className={styles.dashboard}>
         <div className="d-flex justify-content-center align-items-center" style={{ height: '50vh' }}>
@@ -61,7 +61,7 @@ const ProviderDashboard = () => {
   return (
     <div className={styles.dashboard}>
       <div className={styles.welcomeSection}>
-        <h1>Bem-vindo, {session?.user?.name || 'Prestador'}</h1>
+        <h1>Bem-vindo, {user?.name || 'Prestador'}</h1>
         <p>Gerencie seus serviços e agendamentos</p>
       </div>
 

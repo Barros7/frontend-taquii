@@ -2,13 +2,13 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { useSession } from 'next-auth/react';
+import { useAuth } from '@/context/AuthContext';
 import Header from '@/components/header/Header';
 import { apiService, Appointment, Payment } from '@/services/apiService';
 
 export default function ConfirmacaoPage({ params }: { params: Promise<{ appointmentId: string }> }) {
   const router = useRouter();
-  const { status } = useSession();
+  const { user, loading: authLoading } = useAuth();
   
   // Estados para dados da API
   const [appointment, setAppointment] = useState<Appointment | null>(null);
@@ -30,14 +30,14 @@ export default function ConfirmacaoPage({ params }: { params: Promise<{ appointm
 
   // Verificar se usuário está autenticado
   useEffect(() => {
-    if (status === 'unauthenticated') {
+    if (!authLoading && !user) {
       router.push('/login');
     }
-  }, [status, router]);
+  }, [authLoading, user, router]);
 
   // Buscar dados do agendamento e pagamento
   useEffect(() => {
-    if (status === 'loading' || !appointmentId) return; // Aguardar autenticação e appointmentId
+    if (authLoading || !appointmentId) return;
     
     const fetchData = async () => {
       try {
@@ -66,7 +66,7 @@ export default function ConfirmacaoPage({ params }: { params: Promise<{ appointm
     };
 
     fetchData();
-  }, [appointmentId, status]);
+  }, [appointmentId, authLoading]);
 
   const handleConfirmar = async () => {
     if (!appointment) {
@@ -92,7 +92,7 @@ export default function ConfirmacaoPage({ params }: { params: Promise<{ appointm
     }
   };
 
-  if (status === 'loading' || loading) {
+  if (authLoading || loading) {
     return (
       <>
         <Header />
