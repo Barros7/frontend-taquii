@@ -19,13 +19,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
   useEffect(() => { refresh(); }, []);
 
   const login = async (email: string, password: string) => {
     setLoading(true);
     setError(null);
     try {
-      const res = await fetch('http://localhost:8000/api/auth/login', {
+      const res = await fetch(`${apiUrl}/api/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
@@ -49,7 +50,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const refresh = async () => {
     setLoading(true);
     try {
-      const res = await fetch('http://localhost:8000/api/auth/me', {
+      const res = await fetch(`${apiUrl}/api/auth/me`, {
         credentials: 'include',
       });
       if (res.ok) {
@@ -71,7 +72,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const logout = async () => {
-    await fetch('http://localhost:8000/api/auth/logout', { method: 'POST', credentials: 'include' });
+    await fetch(`${apiUrl}/api/auth/logout`, { method: 'POST', credentials: 'include' });
     setUser(null);
   };
 
