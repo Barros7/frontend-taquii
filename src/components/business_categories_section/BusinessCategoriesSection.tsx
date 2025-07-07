@@ -24,7 +24,7 @@ const BusinessCategoriesSection = () => {
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const apiUrl = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:8000/api';
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:8000';
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -35,7 +35,7 @@ const BusinessCategoriesSection = () => {
           return;
         }
 
-        const response = await fetch(`${apiUrl}/categories`);
+        const response = await fetch(`${apiUrl}/api/categories`);
 
         if (!response.ok) {
           console.error(`Erro ao buscar categorias: ${response.status} ${response.statusText}`);
