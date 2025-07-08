@@ -20,7 +20,31 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [error, setError] = useState<string | null>(null);
 
   const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
-  useEffect(() => { refresh(); }, []);
+  const refresh = async () => {
+    setLoading(true);
+    try {
+      const res = await fetch('http://localhost:8000/api/auth/me', {
+        credentials: 'include',
+      });
+      if (res.ok) {
+        const data = await res.json();
+        if (data && data.id && data.name && data.email && data.userType) {
+          setUser(data);
+        } else if (data && data.user && data.user.id && data.user.name && data.user.email && data.user.userType) {
+          setUser(data.user);
+        } else {
+          setUser(null);
+        }
+      } else {
+        setUser(null);
+      }
+    } catch {
+      setUser(null);
+    }
+    setLoading(false);
+  };
+
+  useEffect(() => { refresh(); }, [refresh]);
 
   const login = async (email: string, password: string) => {
     setLoading(true);
@@ -45,30 +69,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setLoading(false);
       return false;
     }
-  };
-
-  const refresh = async () => {
-    setLoading(true);
-    try {
-      const res = await fetch(`${apiUrl}/api/auth/me`, {
-        credentials: 'include',
-      });
-      if (res.ok) {
-        const data = await res.json();
-        if (data && data.id && data.name && data.email && data.userType) {
-          setUser(data);
-        } else if (data && data.user && data.user.id && data.user.name && data.user.email && data.user.userType) {
-          setUser(data.user);
-        } else {
-          setUser(null);
-        }
-      } else {
-        setUser(null);
-      }
-    } catch {
-      setUser(null);
-    }
-    setLoading(false);
   };
 
   const logout = async () => {

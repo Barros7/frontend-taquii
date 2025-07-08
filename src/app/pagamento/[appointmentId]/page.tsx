@@ -17,7 +17,6 @@ export default function PagamentoPage({ params }: { params: Promise<{ appointmen
   const router = useRouter();
   const { user, loading: authLoading } = useAuth();
   const [metodo, setMetodo] = useState<'referencia' | 'qrcode' | 'express'>('qrcode');
-  const [step, setStep] = useState(1);
   const [dadosPagamento, setDadosPagamento] = useState<{
     entidade: string;
     referencia: string;
@@ -147,37 +146,6 @@ export default function PagamentoPage({ params }: { params: Promise<{ appointmen
       generateQRCode();
     }
   }, [metodo, appointment, generateQRCode, dadosPagamento?.qrCode]);
-
-  const handlePagamento = async (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    if (!appointment) {
-      setError('Dados do agendamento não disponíveis');
-      return;
-    }
-
-    try {
-      setSubmitting(true);
-      setError(null);
-
-      // Simular processamento do pagamento
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
-      // Avançar para próximo step
-      setStep(2);
-      
-      // Redirecionar para confirmação após um delay
-      setTimeout(() => {
-        router.push(`/confirmacao/${appointmentId}`);
-      }, 3000);
-      
-    } catch (err: unknown) {
-      console.error('Erro ao processar pagamento:', err);
-      setError(err instanceof Error ? err.message : 'Erro ao processar pagamento');
-    } finally {
-      setSubmitting(false);
-    }
-  };
 
   if (authLoading || loading) {
     return (
