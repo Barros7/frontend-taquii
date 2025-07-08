@@ -221,29 +221,29 @@ export default function PagamentoPage({ params }: { params: Promise<{ appointmen
   return (
     <>
       <Header />
-      <div style={{ background: '#0a1833', minHeight: '100vh', padding: 32 }}>
-        {/* Stepper */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 16, color: '#fff', marginBottom: 32 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8, opacity: 0.5 }}>
+      <div style={{ background: '#0a1833', minHeight: '100vh', padding: 16 }}>
+        {/* Stepper responsivo */}
+        <div className="d-flex flex-wrap align-items-center gap-2 gap-md-4 text-white mb-4" style={{fontSize: 16}}>
+          <div className="d-flex align-items-center gap-2 opacity-50">
             <div style={{ width: 32, height: 32, borderRadius: 16, background: '#1e293b', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700 }}>1</div>
             <span>Agendamento</span>
           </div>
           <div style={{ height: 2, width: 40, background: '#2563eb' }} />
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          <div className="d-flex align-items-center gap-2">
             <div style={{ width: 32, height: 32, borderRadius: 16, background: '#2563eb', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700 }}>2</div>
             <span>Pagamento</span>
           </div>
-          <div style={{ height: 2, width: 40, background: '#1e293b' }} />
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8, opacity: 0.5 }}>
+          <div style={{ height: 2, width: 40, background: '#2563eb' }} />
+          <div className="d-flex align-items-center gap-2 opacity-50">
             <div style={{ width: 32, height: 32, borderRadius: 16, background: '#1e293b', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700 }}>3</div>
             <span>Confirmação</span>
           </div>
         </div>
 
-        {step === 1 ? (
-          <div style={{ display: 'flex', gap: 32 }}>
-            {/* Forma de Pagamento */}
-            <form onSubmit={handlePagamento} style={{ flex: 1, background: '#12224a', borderRadius: 12, padding: 32, color: '#fff', minWidth: 340 }}>
+        <div className="row g-4 flex-column flex-md-row">
+          {/* Coluna de pagamento */}
+          <div className="col-12 col-md-6">
+            <div style={{ background: '#12224a', borderRadius: 12, padding: 24, color: '#fff', minWidth: 0, width: '100%' }}>
               <h2 style={{ marginBottom: 16 }}>Forma de Pagamento</h2>
               <span style={{ color: '#94a3b8', fontSize: 14 }}>Escolha a forma de pagamento (E-Kwanza, Referência)</span>
               <div style={{ margin: '24px 0' }}>
@@ -345,10 +345,11 @@ export default function PagamentoPage({ params }: { params: Promise<{ appointmen
                   {submitting ? 'Processando...' : 'Continuar'}
                 </button>
               </div>
-            </form>
-
-            {/* Resumo do agendamento */}
-            <div style={{ flex: 1, background: '#12224a', borderRadius: 12, padding: 32, color: '#fff', minWidth: 340 }}>
+            </div>
+          </div>
+          {/* Coluna de resumo */}
+          <div className="col-12 col-md-6">
+            <div style={{ background: '#12224a', borderRadius: 12, padding: 24, color: '#fff', minWidth: 0, width: '100%' }}>
               <h3 style={{ marginBottom: 16 }}>Resumo do agendamento</h3>
               <span style={{ color: '#94a3b8', fontSize: 14 }}>Detalhes do seu agendamento</span>
               {appointment && (
@@ -362,16 +363,8 @@ export default function PagamentoPage({ params }: { params: Promise<{ appointmen
               )}
             </div>
           </div>
-        ) : (
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '60vh' }}>
-            <div style={{ textAlign: 'center', color: '#fff' }}>
-              <div style={{ fontSize: 24, marginBottom: 16 }}>Pagamento Processado!</div>
-              <div style={{ color: '#94a3b8', marginBottom: 24 }}>Redirecionando para confirmação...</div>
-              <div style={{ width: 40, height: 40, border: '4px solid #2563eb', borderTop: '4px solid transparent', borderRadius: '50%', animation: 'spin 1s linear infinite', margin: '0 auto' }}></div>
-            </div>
-          </div>
-        )}
-      </div>
+        </div>
+        </div>
       
       <style jsx>{`
         @keyframes spin {
