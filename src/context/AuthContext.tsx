@@ -23,7 +23,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const refresh = async () => {
     setLoading(true);
     try {
-      const res = await fetch('http://localhost:8000/api/auth/me', {
+      const res = await fetch(`${apiUrl}/api/auth/me`, {
         credentials: 'include',
       });
       if (res.ok) {
