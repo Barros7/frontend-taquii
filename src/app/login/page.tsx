@@ -45,7 +45,6 @@ function LoginForm() {
     setFormError('');
     try {
       const success = await login(formData.email, formData.password);
-      console.log("Resultado do Sucesso: ", success);
       if (!success) {
         setFormError('E-mail ou Palavra-passe inválidos!');
       }

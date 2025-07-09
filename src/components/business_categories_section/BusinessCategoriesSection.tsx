@@ -24,7 +24,7 @@ const BusinessCategoriesSection = () => {
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const apiUrl = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:8000';
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -52,7 +52,7 @@ const BusinessCategoriesSection = () => {
     };
 
     fetchCategories();
-  }, [apiUrl]);
+  }, []);
 
   return (
     <section id="servicos" className="container section-business-category text-center">
