@@ -9,7 +9,7 @@ const UserMenu = () => {
   const { user, logout, loading } = useAuth();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  if (loading || !user) return null;
+  if (loading) return null;
 
   const handleLogout = async () => {
     await logout();

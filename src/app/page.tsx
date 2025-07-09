@@ -8,10 +8,9 @@ import CallToAction from '@/components/call_to_action_section/CallToActionSectio
 import ContactFormSection from '@/components/contact_form_section/ContactFormSection';
 import FaqSection from '@/components/faqs_section/FaqsSection';
 import PricingPlans from '@/components/pricing_plans/PricingPlans';
-import { processEnv } from '@next/env';
 
 export default function Home() {
-  console.log(processEnv)
+
   return (
     <div>
       <Header />

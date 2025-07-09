@@ -27,7 +27,7 @@ export default function ProfilePage() {
   const providerId = params?.id;
   const [providerData, setProviderData] = useState<ProviderData | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const apiUrl = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:8000';
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
   useEffect(() => {
     if (!providerId) {
