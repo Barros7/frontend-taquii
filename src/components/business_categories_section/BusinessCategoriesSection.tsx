@@ -24,16 +24,10 @@ const BusinessCategoriesSection = () => {
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-
-        if (!apiUrl) {
-          console.warn('NEXT_PUBLIC_API_URL is not defined');
-          return;
-        }
 
         const response = await fetch(`/api/categories`);
 

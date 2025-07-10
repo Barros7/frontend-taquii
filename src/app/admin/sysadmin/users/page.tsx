@@ -24,7 +24,6 @@ export default function UsersPage() {
   const [selectedUser, setSelectedUser] = useState<User | undefined>();
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
   const [userToDelete, setUserToDelete] = useState<User | null>(null);
-  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
   // Use useCallback para memoizar a função fetchUsers
   const fetchUsers = useCallback(async () => {
@@ -42,7 +41,7 @@ export default function UsersPage() {
     } finally {
       setLoading(false);
     }
-  }, [filter, apiUrl]); // Added apiUrl to dependencies
+  }, [filter]); // Removed apiUrl from dependencies
 
   // O useEffect agora depende apenas da versão memoizada de fetchUsers
   useEffect(() => {

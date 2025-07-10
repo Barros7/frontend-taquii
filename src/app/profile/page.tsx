@@ -23,7 +23,6 @@ export default function ProfilePage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
-  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
   
   const fetchProfile = useCallback(async () => {
     try {
@@ -36,7 +35,7 @@ export default function ProfilePage() {
     } finally {
       setLoading(false);
     }
-  }, [apiUrl]);
+  }, []);
   
   useEffect(() => {
     if (!user) {
