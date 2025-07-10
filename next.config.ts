@@ -27,9 +27,6 @@ const nextConfig = {
         destination: 'https://backend-taquii.onrender.com/api/:path*',
       },
     ];
-  },
-  env: { 
-    NEXT_PUBLIC_API_URL: 'https://backend-taquii.onrender.com', 
   }
 };
 
