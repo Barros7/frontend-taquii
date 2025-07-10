@@ -33,7 +33,7 @@ const ServicesPage = () => {
 
     const fetchServices = async () => {
       try {
-        const response = await fetch(`${apiUrl}/services?providerId=${user?.id}`);
+        const response = await fetch(`/services?providerId=${user?.id}`);
         const data = await response.json();
         setServices(data);
       } catch (error) {
@@ -96,7 +96,7 @@ const ServicesPage = () => {
     }
 
     try {
-      const response = await fetch(`${apiUrl}/services/${id}`, {
+      const response = await fetch(`/services/${id}`, {
         method: 'DELETE',
         credentials: 'include'
       });

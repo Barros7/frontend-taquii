@@ -60,7 +60,7 @@ const SchedulePage = () => {
 
   const handleStatusUpdate = async (appointmentId: string, newStatus: Appointment['status']) => {
     try {
-      const response = await fetch(`${apiUrl}/appointments/${appointmentId}/status`, {
+      const response = await fetch(`/appointments/${appointmentId}/status`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -85,7 +85,7 @@ const SchedulePage = () => {
     }
 
     try {
-      const response = await fetch(`${apiUrl}/appointments/${appointmentId}/cancel`, {
+      const response = await fetch(`/appointments/${appointmentId}/cancel`, {
         method: 'PUT',
         credentials: 'include'
       });

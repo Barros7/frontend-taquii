@@ -35,7 +35,7 @@ const BusinessCategoriesSection = () => {
           return;
         }
 
-        const response = await fetch(`${apiUrl}/api/categories`);
+        const response = await fetch(`/api/categories`);
 
         if (!response.ok) {
           console.error(`Erro ao buscar categorias: ${response.status} ${response.statusText}`);

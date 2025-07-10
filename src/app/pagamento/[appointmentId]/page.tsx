@@ -105,7 +105,7 @@ export default function PagamentoPage({ params }: { params: Promise<{ appointmen
       };
 
       // Criar pagamento com QR Code via API
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/appointments`, {
+      const response = await fetch(`/api/appointments`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

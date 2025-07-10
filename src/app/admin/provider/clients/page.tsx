@@ -30,10 +30,8 @@ const ClientsPage = () => {
   };
 
   useEffect(() => {
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-
     const fetchClients = async () => {
-      const response = await fetch(`${apiUrl}/clients`);
+      const response = await fetch(`/clients`);
       const data = await response.json();
       setClients(data);
     };
