@@ -26,7 +26,7 @@ export default function ProfilePage() {
   
   const fetchProfile = useCallback(async () => {
     try {
-      const response = await fetch(`/users/profile`);
+      const response = await fetch(`/api/users/profile`);
       const data = await response.json();
       setProfile(data);
     } catch (error) {
@@ -66,7 +66,7 @@ export default function ProfilePage() {
         zipCode: formData.get('zipCode')
       };
 
-      const response = await fetch(`/users/profile`, {
+      const response = await fetch(`/api/users/profile`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json'
