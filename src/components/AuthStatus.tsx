@@ -1,7 +1,7 @@
 'use client';
 
 import { useAuth } from '@/context/AuthContext';
-import { Spinner } from './Spinner';
+import { Spinner } from '@/components/Spinner';
 import { toast } from 'react-hot-toast';
 import { useEffect } from 'react';
 
