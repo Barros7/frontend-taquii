@@ -5,7 +5,7 @@ const nextConfig = {
     serverActions: {},
   },
   images: {
-    domains: ['res.cloudinary.com','avatars.githubusercontent.com', 'cdn.jsdelivr.net', 'loremflickr.com'],
+    domains: ['res.cloudinary.com', 'avatars.githubusercontent.com', 'cdn.jsdelivr.net', 'loremflickr.com'],
   },
   async headers() {
     return [

@@ -64,7 +64,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setLoading(false);
       return true;
     } catch {
-      setError('Erro ao autenticar.');
+      setError('Não foi possível fazer login.');
       setLoading(false);
       return false;
     }
