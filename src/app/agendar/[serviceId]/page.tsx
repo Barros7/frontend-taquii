@@ -15,9 +15,24 @@ const horarios = [
 export default function AgendarPage({ params }: { params: Promise<{ serviceId: string }> }) {
   const router = useRouter();
   const { user, loading: authLoading } = useAuth();
-  const [data, setData] = useState('2025-04-07');
-  const [local, setLocal] = useState<'estabelecimento' | 'casa'>('estabelecimento');
-  const [horario, setHorario] = useState('09:00');
+  
+  const [data, setData] = useState(() => {
+    const today = new Date();
+    const yyyy = today.getFullYear();
+    const mm = String(today.getMonth() + 1).padStart(2, '0');
+    const dd = String(today.getDate()).padStart(2, '0');
+    return `${yyyy}-${mm}-${dd}`;
+  });
+  const [local, setLocal] = useState<'ESTABLISHMENT' | 'HOME'>('ESTABLISHMENT');
+
+  const getCurrentTimeString = () => {
+    const now = new Date();
+    const hours = now.getHours().toString().padStart(2, '0');
+    const minutes = now.getMinutes().toString().padStart(2, '0');
+    return `${hours}:${minutes}`;
+  };
+  
+  const [horario, setHorario] = useState(getCurrentTimeString());
   
   // Estados para dados da API
   const [service, setService] = useState<Service | null>(null);
@@ -114,7 +129,7 @@ export default function AgendarPage({ params }: { params: Promise<{ serviceId: s
         providerId: service.providerId,
         serviceId: service.id,
         date: `${data}T${horario}:00.000Z`,
-        location: local === 'estabelecimento' ? 'estabelecimento' : 'casa',
+        location: local === 'ESTABLISHMENT' ? 'ESTABLISHMENT' : 'HOME',
         amount: service.price,
         referenceCode,
         mobileNumber: '937315418',
@@ -231,10 +246,10 @@ export default function AgendarPage({ params }: { params: Promise<{ serviceId: s
               <div style={{ marginBottom: 16 }}>
                 <label>Atendimento</label><br />
                 <label style={{ marginRight: 16 }}>
-                  <input type="radio" checked={local === 'estabelecimento'} onChange={() => setLocal('estabelecimento')} /> No estabelecimento
+                  <input type="radio" checked={local === 'ESTABLISHMENT'} onChange={() => setLocal('ESTABLISHMENT')} /> No estabelecimento
                 </label>
                 <label>
-                  <input type="radio" checked={local === 'casa'} onChange={() => setLocal('casa')} /> Em casa
+                  <input type="radio" checked={local === 'HOME'} onChange={() => setLocal('HOME')} /> Em casa
                 </label>
               </div>
               
