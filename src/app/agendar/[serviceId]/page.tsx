@@ -117,12 +117,12 @@ export default function AgendarPage({ params }: { params: Promise<{ serviceId: s
         location: local === 'estabelecimento' ? 'estabelecimento' : 'casa',
         amount: service.price,
         referenceCode,
-        mobileNumber: '937315418', // TODO: Adicionar phone ao session quando disponível
+        mobileNumber: '937315418',
       };
 
       // Criar agendamento
       const appointment = await apiService.createAppointment(appointmentData);
-      
+      console.log("Agendamentos: ", appointment)
       // Redirecionar para página de pagamento com o ID real
       router.push(`/pagamento/${appointment.id}`);
       
