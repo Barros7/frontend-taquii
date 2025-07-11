@@ -100,12 +100,12 @@ export default function PagamentoPage({ params }: { params: Promise<{ appointmen
         serviceId: appointment.serviceId,
         date: appointment.date,
         amount: appointment.service.price,
-        referenceCode: dadosPagamento?.referencia || `REF${Date.now()}`,
-        mobileNumber: '937315418', // TODO: Pegar do session quando disponível
+        referenceCode: `REF${Date.now()}${Math.floor(Math.random() * 10000)}`,
+        mobileNumber: appointment.client.phone || '937315418',
       };
 
       // Criar pagamento com QR Code via API
-      const response = await fetch(`/api/appointments`, {
+      const response = await fetch(`/api/payments`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -113,17 +113,19 @@ export default function PagamentoPage({ params }: { params: Promise<{ appointmen
         body: JSON.stringify(paymentData),
       });
 
+      console.log("Qr code response: ", response);
+
       if (!response.ok) {
         const errorDetail = await response.json().catch(() => ({ message: response.statusText || 'Erro desconhecido' }));
         throw new Error(`Erro ao gerar QR Code: ${response.status} - ${errorDetail.message}`);
       }
 
       const result: PaymentQRCodeResponse = await response.json();
-      
+      console.log("Qr code result: ", result);
       // Atualizar dados de pagamento com QR Code
       setDadosPagamento((prev) => prev ? {
         ...prev,
-        qrCode: result.data?.QRCode || `https://api.qrserver.com/v1/create-qr-code/?size=400x200&data=${paymentData.referenceCode}`,
+        qrCode: result.data?.QRCode,
         referencia: result.data?.Code || paymentData.referenceCode,
       } : null);
 
