@@ -20,31 +20,22 @@ function LoginForm() {
   const [formError, setFormError] = useState('');
   const [isLoggingIn, setIsLoggingIn] = useState(false);
 
-  useEffect(() => {
-    console.log('LoginPage: useEffect triggered', { user, loading, next });
-    
-    if (user) {
-      console.log('LoginPage: user is logged in, redirecting...', { userType: user.userType, next });
-      
+  useEffect(() => {   
+    if (user) {      
       if (next) {
-        console.log('LoginPage: redirecting to next:', next);
         router.replace(next);
       } else {
         switch (user.userType) {
           case 'ADMIN':
-            console.log('LoginPage: redirecting to admin dashboard');
             router.replace('/admin/sysadmin');
             break;
           case 'PROVIDER':
-            console.log('LoginPage: redirecting to provider dashboard');
             router.replace('/admin/provider');
             break;
           case 'USER':
-            console.log('LoginPage: redirecting to home page');
             router.replace('/');
             break;
           default:
-            console.log('LoginPage: unknown user type, redirecting to login');
             router.replace('/login');
         }
       }
@@ -71,7 +62,7 @@ function LoginForm() {
     setIsLoggingIn(true);
     try {
       const success = await login(formData.phone, formData.password);
-      console.log(success);
+
       if (!success) {
         setFormError('Telefone ou Palavra-passe inválidos!');
       }
@@ -133,6 +124,9 @@ function LoginForm() {
                   >
                     {isLoggingIn ? <Spinner /> : 'Entrar'}
                   </button>
+                  <div className="text-center mt-3">
+                    Não tem uma conta? <a href="/register" className="text-decoration-none">Faça o registo aqui!</a>
+                  </div>
                 </form>
               </div>
             </div>

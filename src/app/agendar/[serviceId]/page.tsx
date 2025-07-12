@@ -137,7 +137,7 @@ export default function AgendarPage({ params }: { params: Promise<{ serviceId: s
 
       // Criar agendamento
       const appointment = await apiService.createAppointment(appointmentData);
-      console.log("Agendamentos: ", appointment)
+
       // Redirecionar para página de pagamento com o ID real
       router.push(`/pagamento/${appointment.id}`);
       

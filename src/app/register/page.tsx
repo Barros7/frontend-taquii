@@ -237,20 +237,6 @@ const RegisterForm: React.FC = () => {
             >
               {isLoading ? 'Registrando...' : 'Registrar'}
             </button>
-            {/*
-              <div className="text-center my-3">
-                <span>ou continue com</span>
-              </div>
-
-              <div className="d-flex gap-2">
-                <button type="button" className="btn btn-outline-danger flex-grow-1">
-                  <i className="fab fa-google me-2"></i> Google
-                </button>
-                <button type="button" className="btn btn-outline-primary flex-grow-1">
-                  <i className="fab fa-facebook-f me-2"></i> Facebook
-                </button>
-              </div>
-            */}
             <div className="text-center mt-3">
               Já tem uma conta? <a href="/login" className="text-decoration-none">Entre agora!</a>
             </div>

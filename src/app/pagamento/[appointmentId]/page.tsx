@@ -141,7 +141,7 @@ export default function PagamentoPage({ params }: { params: Promise<{ appointmen
     } finally {
       setSubmitting(false);
     }
-  }, [appointment, dadosPagamento?.referencia]);
+  }, [appointment]);
 
   useEffect(() => {
     if (metodo === 'qrcode' && appointment && !dadosPagamento?.qrCode) {
