@@ -3,18 +3,24 @@
 import { useAuth } from '@/context/AuthContext';
 import { Spinner } from '@/components/Spinner';
 import { toast } from 'react-hot-toast';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 
 export function AuthStatus() {
   const { user, loading } = useAuth();
+  const hasShownWelcome = useRef(false);
 
   useEffect(() => {
-    if (user) {
+    console.log('AuthStatus: user changed', { user, loading });
+    
+    if (user && !hasShownWelcome.current) {
       toast.success(`Bem-vindo, ${user.name}!`);
-    } else {
+      hasShownWelcome.current = true;
+    } else if (!user && !loading && hasShownWelcome.current) {
+      // Só mostrar erro se o usuário já estava logado e agora não está mais
       toast.error('Sessão expirada. Por favor, faça login novamente.');
+      hasShownWelcome.current = false;
     }
-  }, [user]);
+  }, [user, loading]);
 
   if (loading) {
     return (

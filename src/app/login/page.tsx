@@ -21,24 +21,35 @@ function LoginForm() {
   const [isLoggingIn, setIsLoggingIn] = useState(false);
 
   useEffect(() => {
+    console.log('LoginPage: useEffect triggered', { user, loading, next });
+    
     if (user) {
+      console.log('LoginPage: user is logged in, redirecting...', { userType: user.userType, next });
+      
       if (next) {
+        console.log('LoginPage: redirecting to next:', next);
         router.replace(next);
       } else {
         switch (user.userType) {
           case 'ADMIN':
+            console.log('LoginPage: redirecting to admin dashboard');
             router.replace('/admin/sysadmin');
             break;
           case 'PROVIDER':
+            console.log('LoginPage: redirecting to provider dashboard');
             router.replace('/admin/provider');
             break;
           case 'USER':
+            console.log('LoginPage: redirecting to home page');
             router.replace('/');
             break;
           default:
+            console.log('LoginPage: unknown user type, redirecting to login');
             router.replace('/login');
         }
       }
+    } else {
+      console.log('LoginPage: no user, not redirecting');
     }
   }, [user, router, next]);
 
