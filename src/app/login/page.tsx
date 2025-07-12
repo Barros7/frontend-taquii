@@ -25,7 +25,6 @@ function LoginForm() {
       if (next) {
         router.replace(next);
       } else {
-        // fluxo padrão por tipo de usuário
         switch (user.userType) {
           case 'ADMIN':
             router.replace('/admin/sysadmin');
@@ -49,6 +48,7 @@ function LoginForm() {
     setIsLoggingIn(true);
     try {
       const success = await login(formData.email, formData.password);
+      console.log(success);
       if (!success) {
         setFormError('E-mail ou Palavra-passe inválidos!');
       }

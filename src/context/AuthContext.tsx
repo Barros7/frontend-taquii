@@ -55,21 +55,32 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setLoading(true);
     setError(null);
     try {
+      console.log('Attempting login for:', email);
       const res = await fetch(`/api/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
         body: JSON.stringify({ email, password }),
       });
+      
+      console.log('Login response status:', res.status);
+      
       if (!res.ok) {
+        const errorData = await res.json().catch(() => ({}));
+        console.log('Login error data:', errorData);
         setError('E-mail ou Palavra-passe inválidos!');
         setLoading(false);
         return false;
       }
+      
+      const data = await res.json();
+      console.log('Login success data:', data);
+      
       await refresh();
       setLoading(false);
       return true;
-    } catch {
+    } catch (error) {
+      console.error('Login error:', error);
       setError('Não foi possível fazer login.');
       setLoading(false);
       return false;

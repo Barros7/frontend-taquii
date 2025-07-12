@@ -99,18 +99,26 @@ const RegisterForm: React.FC = () => {
                   value={formData.name}
                   onChange={handleChange}
                   placeholder="Nome de utilizador"
+                  autoComplete="off"
+                  autoCorrect="off"
+                  autoCapitalize="off"
+                  spellCheck="false"
                   required
                 />
               </div>
               <div className="col-md-5 mb-3">
                 <input
-                  type="phone"
+                  type="tel"
                   className="form-control"
                   id="phone"
                   name="phone"
                   value={formData.phone}
                   onChange={handleChange}
                   placeholder="Telefone"
+                  autoComplete="off"
+                  autoCorrect="off"
+                  autoCapitalize="off"
+                  spellCheck="false"
                   required
                 />
               </div>
@@ -123,6 +131,10 @@ const RegisterForm: React.FC = () => {
                   value={formData.email}
                   onChange={handleChange}
                   placeholder="E-mail"
+                  autoComplete="off"
+                  autoCorrect="off"
+                  autoCapitalize="off"
+                  spellCheck="false"
                   required
                 />
               </div>
@@ -135,6 +147,10 @@ const RegisterForm: React.FC = () => {
                   value={formData.password}
                   onChange={handleChange}
                   placeholder="Senha"
+                  autoComplete="new-password"
+                  autoCorrect="off"
+                  autoCapitalize="off"
+                  spellCheck="false"
                   required
                 />
               </div>
@@ -147,6 +163,10 @@ const RegisterForm: React.FC = () => {
                   value={formData.confirmPassword}
                   onChange={handleChange}
                   placeholder="Confirmar senha"
+                  autoComplete="new-password"
+                  autoCorrect="off"
+                  autoCapitalize="off"
+                  spellCheck="false"
                   required
                 />
                 <span 
