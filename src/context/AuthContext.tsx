@@ -13,7 +13,7 @@ type AuthContextType = {
   user: User | null;
   loading: boolean;
   error: string | null;
-  login: (email: string, password: string) => Promise<boolean>;
+  login: (phone: string, password: string) => Promise<boolean>;
   logout: () => Promise<void>;
   refresh: () => Promise<void>;
 };
@@ -51,16 +51,16 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => { refresh(); }, []);
 
-  const login = async (email: string, password: string) => {
+  const login = async (phone: string, password: string) => {
     setLoading(true);
     setError(null);
     try {
-      console.log('Attempting login for:', email);
+      console.log('Attempting login for:', phone);
       const res = await fetch(`/api/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ phone, password }),
       });
       
       console.log('Login response status:', res.status);

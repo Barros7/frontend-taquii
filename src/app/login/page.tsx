@@ -14,7 +14,7 @@ function LoginForm() {
   const next = searchParams?.get('next');
 
   const [formData, setFormData] = useState({
-    email: '',
+    phone: '',
     password: ''
   });
   const [formError, setFormError] = useState('');
@@ -45,12 +45,24 @@ function LoginForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setFormError('');
+    
+    // Validação básica
+    if (!formData.phone.trim()) {
+      setFormError('Telefone é obrigatório');
+      return;
+    }
+    
+    if (!formData.password) {
+      setFormError('Senha é obrigatória');
+      return;
+    }
+    
     setIsLoggingIn(true);
     try {
-      const success = await login(formData.email, formData.password);
+      const success = await login(formData.phone, formData.password);
       console.log(success);
       if (!success) {
-        setFormError('E-mail ou Palavra-passe inválidos!');
+        setFormError('Telefone ou Palavra-passe inválidos!');
       }
     } catch {
       setFormError('Erro ao tentar fazer login.');
@@ -75,14 +87,19 @@ function LoginForm() {
                 )}
                 <form onSubmit={handleSubmit}>
                   <div className="mb-3">
-                    <label htmlFor="email" className="form-label">Email</label>
+                    <label htmlFor="phone" className="form-label">Telefone</label>
                     <input
-                      type="email"
+                      type="tel"
                       className="form-control"
-                      id="email"
-                      name="email"
-                      value={formData.email}
-                      onChange={e => setFormData({ ...formData, email: e.target.value })}
+                      id="phone"
+                      name="phone"
+                      value={formData.phone}
+                      onChange={e => setFormData({ ...formData, phone: e.target.value })}
+                      autoComplete="off"
+                      autoCorrect="off"
+                      autoCapitalize="off"
+                      spellCheck="false"
+                      placeholder="Digite seu número de telefone"
                       required
                     />
                   </div>
