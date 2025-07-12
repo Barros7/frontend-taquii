@@ -24,7 +24,7 @@ const UserMenu = () => {
         return '/admin/sysadmin/profile';
       case 'PROVIDER':
         return '/admin/provider/profile';
-      case 'USER':
+      case 'CUSTOMER':
         return '/profile';
       default:
         return '/login';

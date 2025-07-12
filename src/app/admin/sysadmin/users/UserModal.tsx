@@ -5,8 +5,9 @@ interface User {
   name: string;
   email: string;
   phone: string;
-  type: string;
-  status: string;
+  userType: 'CUSTOMER' | 'PROVIDER' | 'ADMIN';
+  active: boolean;
+  password?: string;
 }
 
 interface UserModalProps {
@@ -22,15 +23,18 @@ export default function UserModal({ isOpen, onClose, onSubmit, user, mode }: Use
     name: '',
     email: '',
     phone: '',
-    type: 'client',
-    status: 'active'
+    userType: 'CUSTOMER',
+    active: true,
+    password: ''
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (user && mode === 'edit') {
-      setFormData(user);
+      setFormData({ ...user, password: '' });
+    } else if (mode === 'create') {
+      setFormData({ name: '', email: '', phone: '', userType: 'CUSTOMER', active: true, password: '' });
     }
   }, [user, mode]);
 
@@ -38,6 +42,18 @@ export default function UserModal({ isOpen, onClose, onSubmit, user, mode }: Use
     e.preventDefault();
     setLoading(true);
     setError(null);
+
+    // Validação básica
+    if (!formData.name || !formData.email || !formData.phone || !formData.userType) {
+      setError('Preencha todos os campos obrigatórios.');
+      setLoading(false);
+      return;
+    }
+    if (mode === 'create' && !formData.password) {
+      setError('A senha é obrigatória para novo usuário.');
+      setLoading(false);
+      return;
+    }
 
     try {
       await onSubmit(formData);
@@ -90,29 +106,39 @@ export default function UserModal({ isOpen, onClose, onSubmit, user, mode }: Use
             />
           </div>
           <div className={styles.formGroup}>
-            <label htmlFor="type">Tipo</label>
+            <label htmlFor="userType">Tipo</label>
             <select
-              id="type"
-              value={formData.type}
-              onChange={(e) => setFormData({ ...formData, type: e.target.value })}
+              id="userType"
+              value={formData.userType}
+              onChange={(e) => setFormData({ ...formData, userType: e.target.value as User['userType'] })}
               required
             >
-              <option value="client">Cliente</option>
-              <option value="provider">Prestador</option>
+              <option value="CUSTOMER">Cliente</option>
+              <option value="PROVIDER">Prestador</option>
+              <option value="ADMIN">Admin</option>
             </select>
           </div>
           <div className={styles.formGroup}>
-            <label htmlFor="status">Status</label>
-            <select
-              id="status"
-              value={formData.status}
-              onChange={(e) => setFormData({ ...formData, status: e.target.value })}
-              required
-            >
-              <option value="active">Ativo</option>
-              <option value="inactive">Inativo</option>
-            </select>
+            <label htmlFor="active">Ativo</label>
+            <input
+              type="checkbox"
+              id="active"
+              checked={formData.active}
+              onChange={(e) => setFormData({ ...formData, active: e.target.checked })}
+            />
           </div>
+          {mode === 'create' && (
+            <div className={styles.formGroup}>
+              <label htmlFor="password">Senha</label>
+              <input
+                type="password"
+                id="password"
+                value={formData.password}
+                onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                required
+              />
+            </div>
+          )}
           {error && <div className={styles.error}>{error}</div>}
           <div className={styles.modalFooter}>
             <button type="button" onClick={onClose} className={styles.cancelButton}>

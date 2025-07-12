@@ -2,7 +2,7 @@ export interface User {
   id: string;
   email: string;
   name: string;
-  type: 'ADMIN' | 'PROVIDER' | 'CLIENT';
+  userType: 'CUSTOMER' | 'PROVIDER' | 'ADMIN';
   createdAt: Date;
   updatedAt: Date;
 }

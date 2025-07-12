@@ -32,7 +32,7 @@ function LoginForm() {
           case 'PROVIDER':
             router.replace('/admin/provider');
             break;
-          case 'USER':
+          case 'CUSTOMER':
             router.replace('/');
             break;
           default:
@@ -101,7 +101,7 @@ function LoginForm() {
                       autoCorrect="off"
                       autoCapitalize="off"
                       spellCheck="false"
-                      placeholder="Digite seu número de telefone"
+                      placeholder="Digite seu telefone"
                       required
                     />
                   </div>
@@ -114,6 +114,7 @@ function LoginForm() {
                       name="password"
                       value={formData.password}
                       onChange={e => setFormData({ ...formData, password: e.target.value })}
+                      placeholder="Digite sua senha"
                       required
                     />
                   </div>

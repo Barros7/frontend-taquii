@@ -4,14 +4,17 @@ import styles from "./users.module.css";
 import UserModal from "./UserModal";
 
 interface User {
+  id: string;
   name: string;
   email: string;
+  password: string;
   phone: string;
-  type: string;
+  userType: 'CUSTOMER' | 'PROVIDER' | 'ADMIN';
   status: string;
+  active: boolean;
 }
 
-type UserType = 'all' | 'user' | 'provider';
+type UserType = 'all' | 'customer' | 'provider';
 
 export default function UsersPage() {
   const [users, setUsers] = useState<User[]>([]);
@@ -50,19 +53,28 @@ export default function UsersPage() {
 
   const handleCreateUser = async (userData: Partial<User>) => {
     try {
-      const response = await fetch(`/api/users`, {
+      // Enviar para o endpoint de registro
+      const response = await fetch(`/api/auth/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(userData),
+        body: JSON.stringify({
+          name: userData.name,
+          email: userData.email,
+          phone: userData.phone,
+          password: userData.password,
+          confirmPassword: userData.password,
+          userType: userData.userType,
+        }),
       });
 
       if (!response.ok) {
-        throw new Error('Falha ao criar usuário');
+        const errData = await response.json().catch(() => ({}));
+        throw new Error(errData.message || 'Falha ao criar usuário');
       }
 
-      await fetchUsers(); // Chama a função memoizada para atualizar a lista
+      await fetchUsers(); // Atualiza a lista
     } catch (err) {
       throw new Error(err instanceof Error ? err.message : 'Erro ao criar usuário');
     }
@@ -72,19 +84,27 @@ export default function UsersPage() {
     if (!selectedUser) return;
 
     try {
-      const response = await fetch(`/api/users/${selectedUser.email}`, {
+      const response = await fetch(`/api/users/${selectedUser.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(userData),
+        body: JSON.stringify({
+          name: userData.name,
+          email: userData.email,
+          phone: userData.phone,
+          userType: userData.userType,
+          active: userData.active,
+        }),
+        credentials: 'include',
       });
 
       if (!response.ok) {
-        throw new Error('Falha ao atualizar usuário');
+        const errData = await response.json().catch(() => ({}));
+        throw new Error(errData.message || 'Falha ao atualizar usuário');
       }
 
-      await fetchUsers(); // Chama a função memoizada para atualizar a lista
+      await fetchUsers(); // Atualiza a lista
     } catch (err) {
       throw new Error(err instanceof Error ? err.message : 'Erro ao atualizar usuário');
     }
@@ -92,15 +112,17 @@ export default function UsersPage() {
 
   const handleDeleteUser = async (user: User) => {
     try {
-      const response = await fetch(`/api/users/${user.email}`, {
+      const response = await fetch(`/api/users/${user.id}`, {
         method: 'DELETE',
+        credentials: 'include',
       });
 
       if (!response.ok) {
-        throw new Error('Falha ao excluir usuário');
+        const errData = await response.json().catch(() => ({}));
+        throw new Error(errData.message || 'Falha ao excluir usuário');
       }
 
-      await fetchUsers(); // Chama a função memoizada para atualizar a lista
+      await fetchUsers(); // Atualiza a lista
       setDeleteConfirmOpen(false);
       setUserToDelete(null);
     } catch (err) {
@@ -182,7 +204,7 @@ export default function UsersPage() {
               <td className={styles.tableCell}>{user.name}</td>
               <td className={styles.tableCell}>{user.email}</td>
               <td className={styles.tableCell}>{user.phone}</td>
-              <td className={styles.tableCell}>{user.type}</td>
+              <td className={styles.tableCell}>{user.userType}</td>
               <td className={styles.tableCell}><span className={styles.status}>{user.status}</span></td>
               <td className={styles.tableCell}>
                 <button 

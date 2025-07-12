@@ -5,7 +5,7 @@ type User = {
   id: string;
   name: string;
   email: string;
-  userType: string;
+  userType: 'CUSTOMER' | 'PROVIDER' | 'ADMIN';
   emailVerified: boolean;
 };
 

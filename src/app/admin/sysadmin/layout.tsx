@@ -14,6 +14,7 @@ export default function SysAdminLayout({ children }: { children: React.ReactNode
     { path: '/admin/sysadmin', label: 'Dashboard', icon: '📊' },
     { path: '/admin/sysadmin/appointements', label: 'Agendamentos', icon: '📅' },
     { path: '/admin/sysadmin/services', label: 'Serviços', icon: '🛠️' },
+    { path: '/admin/sysadmin/categories', label: 'Categorias', icon: '🏷️' },
     { path: '/admin/sysadmin/users', label: 'Usuários', icon: '👥' },
     { path: '/admin/sysadmin/payments', label: 'Pagamentos', icon: '💰' },
     { path: '/admin/sysadmin/reports', label: 'Relatórios', icon: '📈' },

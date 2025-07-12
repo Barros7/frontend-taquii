@@ -1,28 +1,23 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import styles from "./services.module.css";
+import styles from "../services/services.module.css";
 
-interface Service {
+interface Category {
   id: string;
-  title: string;
-  description: string;
-  price: number;
-  duration: number;
-  averageRating: number;
-  providerId: string;
+  name: string;
+  description?: string;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
-export default function ServicesPage() {
-  const [services, setServices] = useState<Service[]>([]);
+export default function CategoriesPage() {
+  const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [formData, setFormData] = useState({
-    title: '',
-    description: '',
-    price: '',
-    duration: '',
-    providerId: ''
+    name: '',
+    description: ''
   });
   const [creating, setCreating] = useState(false);
   const [formError, setFormError] = useState<string | null>(null);
@@ -30,14 +25,14 @@ export default function ServicesPage() {
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [deleteError, setDeleteError] = useState<string | null>(null);
 
-  const fetchServices = async () => {
+  const fetchCategories = async () => {
     setLoading(true);
     setError(null);
     try {
-      const response = await fetch("/api/services", { credentials: "include" });
-      if (!response.ok) throw new Error("Erro ao buscar serviços");
+      const response = await fetch("/api/categories", { credentials: "include" });
+      if (!response.ok) throw new Error("Erro ao buscar categorias");
       const data = await response.json();
-      setServices(data);
+      setCategories(data);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Erro desconhecido");
     } finally {
@@ -46,22 +41,19 @@ export default function ServicesPage() {
   };
 
   useEffect(() => {
-    fetchServices();
+    fetchCategories();
   }, []);
 
-  const handleOpenModal = (service?: Service) => {
-    if (service) {
-      setEditId(service.id);
+  const handleOpenModal = (category?: Category) => {
+    if (category) {
+      setEditId(category.id);
       setFormData({
-        title: service.title,
-        description: service.description,
-        price: service.price.toString(),
-        duration: service.duration.toString(),
-        providerId: service.providerId
+        name: category.name,
+        description: category.description || ''
       });
     } else {
       setEditId(null);
-      setFormData({ title: '', description: '', price: '', duration: '', providerId: '' });
+      setFormData({ name: '', description: '' });
     }
     setFormError(null);
     setIsModalOpen(true);
@@ -82,28 +74,25 @@ export default function ServicesPage() {
     setFormError(null);
     setCreating(true);
     try {
-      if (!formData.title || !formData.description || !formData.price || !formData.duration || !formData.providerId) {
-        setFormError('Preencha todos os campos.');
+      if (!formData.name) {
+        setFormError('O nome da categoria é obrigatório.');
         setCreating(false);
         return;
       }
       const payload = {
-        title: formData.title,
-        description: formData.description,
-        price: parseFloat(formData.price),
-        duration: parseInt(formData.duration),
-        providerId: formData.providerId
+        name: formData.name,
+        description: formData.description || undefined
       };
       let response;
       if (editId) {
-        response = await fetch(`/api/services/${editId}`, {
+        response = await fetch(`/api/categories/${editId}`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           credentials: 'include',
           body: JSON.stringify(payload)
         });
       } else {
-        response = await fetch('/api/services', {
+        response = await fetch('/api/categories', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           credentials: 'include',
@@ -112,9 +101,9 @@ export default function ServicesPage() {
       }
       if (!response.ok) {
         const errData = await response.json().catch(() => ({}));
-        throw new Error(errData.message || 'Erro ao salvar serviço');
+        throw new Error(errData.message || 'Erro ao salvar categoria');
       }
-      await fetchServices();
+      await fetchCategories();
       setIsModalOpen(false);
     } catch (err) {
       setFormError(err instanceof Error ? err.message : 'Erro desconhecido');
@@ -128,15 +117,15 @@ export default function ServicesPage() {
     setDeletingId(id);
     setDeleteError(null);
     try {
-      const response = await fetch(`/api/services/${id}`, {
+      const response = await fetch(`/api/categories/${id}`, {
         method: 'DELETE',
         credentials: 'include'
       });
       if (!response.ok) {
         const errData = await response.json().catch(() => ({}));
-        throw new Error(errData.message || 'Erro ao deletar serviço');
+        throw new Error(errData.message || 'Erro ao deletar categoria');
       }
-      await fetchServices();
+      await fetchCategories();
     } catch (err) {
       setDeleteError(err instanceof Error ? err.message : 'Erro desconhecido');
     } finally {
@@ -147,8 +136,8 @@ export default function ServicesPage() {
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <span className={styles.title}>Serviços</span>
-        <button className={styles.button} onClick={() => handleOpenModal()}>Novo Serviço</button>
+        <span className={styles.title}>Categorias</span>
+        <button className={styles.button} onClick={() => handleOpenModal()}>Nova Categoria</button>
       </div>
       {loading ? (
         <div>Carregando...</div>
@@ -161,35 +150,27 @@ export default function ServicesPage() {
               <th>ID</th>
               <th>Nome</th>
               <th>Descrição</th>
-              <th>Preço</th>
-              <th>Duração</th>
-              <th>Provider</th>
-              <th>Rating</th>
               <th>Ações</th>
             </tr>
           </thead>
           <tbody>
-            {services.map(service => (
-              <tr key={service.id}>
-                <td>{service.id}</td>
-                <td>{service.title}</td>
-                <td>{service.description}</td>
-                <td>{service.price.toLocaleString('pt-AO', { style: 'currency', currency: 'AOA' })}</td>
-                <td>{service.duration} min</td>
-                <td>{service.providerId}</td>
-                <td>{service.averageRating?.toFixed(1) ?? '-'}</td>
+            {categories.map(category => (
+              <tr key={category.id}>
+                <td>{category.id}</td>
+                <td>{category.name}</td>
+                <td>{category.description}</td>
                 <td>
-                  <button className={styles.editButton} onClick={() => handleOpenModal(service)}>
+                  <button className={styles.editButton} onClick={() => handleOpenModal(category)}>
                     Editar
                   </button>
                   <button
                     className={styles.deleteButton}
                     onClick={() => {
-                      if (window.confirm('Tem certeza que deseja excluir este serviço?')) handleDelete(service.id);
+                      if (window.confirm('Tem certeza que deseja excluir esta categoria?')) handleDelete(category.id);
                     }}
-                    disabled={deletingId === service.id}
+                    disabled={deletingId === category.id}
                   >
-                    {deletingId === service.id ? 'Excluindo...' : 'Excluir'}
+                    {deletingId === category.id ? 'Excluindo...' : 'Excluir'}
                   </button>
                 </td>
               </tr>
@@ -201,17 +182,17 @@ export default function ServicesPage() {
         <div className={styles.modal}>
           <div className={styles.modalContent}>
             <div className={styles.modalHeader}>
-              <h2>{editId ? 'Editar Serviço' : 'Novo Serviço'}</h2>
+              <h2>{editId ? 'Editar Categoria' : 'Nova Categoria'}</h2>
               <button onClick={handleCloseModal} className={styles.closeButton}>×</button>
             </div>
             <form onSubmit={handleSubmit} className={styles.form}>
               <div className={styles.formGroup}>
-                <label htmlFor="title">Título</label>
+                <label htmlFor="name">Nome</label>
                 <input
                   type="text"
-                  id="title"
-                  name="title"
-                  value={formData.title}
+                  id="name"
+                  name="name"
+                  value={formData.name}
                   onChange={handleChange}
                   required
                 />
@@ -223,41 +204,6 @@ export default function ServicesPage() {
                   name="description"
                   value={formData.description}
                   onChange={handleChange}
-                  required
-                />
-              </div>
-              <div className={styles.formGroup}>
-                <label htmlFor="price">Preço</label>
-                <input
-                  type="number"
-                  id="price"
-                  name="price"
-                  value={formData.price}
-                  onChange={handleChange}
-                  step="0.01"
-                  required
-                />
-              </div>
-              <div className={styles.formGroup}>
-                <label htmlFor="duration">Duração (minutos)</label>
-                <input
-                  type="number"
-                  id="duration"
-                  name="duration"
-                  value={formData.duration}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-              <div className={styles.formGroup}>
-                <label htmlFor="providerId">ID do Provider</label>
-                <input
-                  type="text"
-                  id="providerId"
-                  name="providerId"
-                  value={formData.providerId}
-                  onChange={handleChange}
-                  required
                 />
               </div>
               {formError && <div style={{ color: 'red', marginBottom: 8 }}>{formError}</div>}
