@@ -116,8 +116,6 @@ export default function PagamentoPage({ params }: { params: Promise<{ appointmen
         body: JSON.stringify(paymentData),
       });
 
-      console.log("Qr code response: ", response);
-
       if (!response.ok) {
         const errorDetail = await response.json().catch(() => ({ message: response.statusText || 'Erro desconhecido' }));
         throw new Error(`Erro ao gerar QR Code: ${response.status} - ${errorDetail.message}`);
@@ -128,7 +126,7 @@ export default function PagamentoPage({ params }: { params: Promise<{ appointmen
       // Atualizar dados de pagamento com QR Code
       setDadosPagamento((prev) => prev ? {
         ...prev,
-        qrCode: result.data?.QRCode,
+        qrCode: result.data?.QRCode ? `data:image/png;base64,${result.data.QRCode}` : null,
         referencia: result.data?.Code || paymentData.referenceCode,
       } : null);
 
