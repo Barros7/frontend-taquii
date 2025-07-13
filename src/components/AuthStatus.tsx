@@ -9,9 +9,7 @@ export function AuthStatus() {
   const { user, loading } = useAuth();
   const hasShownWelcome = useRef(false);
 
-  useEffect(() => {
-    console.log('AuthStatus: user changed', { user, loading });
-    
+  useEffect(() => {    
     if (user && !hasShownWelcome.current) {
       toast.success(`Bem-vindo, ${user.name}!`);
       hasShownWelcome.current = true;
