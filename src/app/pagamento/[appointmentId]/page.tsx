@@ -58,7 +58,7 @@ export default function PagamentoPage({ params }: { params: Promise<{ appointmen
       try {
         setLoading(true);
         setError(null);
-        // Buscar dados do agendamento
+
         const appointmentData = await apiService.getAppointment(appointmentId);
         setAppointment(appointmentData);
         
@@ -149,13 +149,12 @@ export default function PagamentoPage({ params }: { params: Promise<{ appointmen
       }
 
       const result = await response.json();
-      console.log("Reference code result: ", result);
       
       // Atualizar dados de pagamento com informações da referência
       setDadosPagamento((prev) => prev ? {
         ...prev,
-        entity: result.data?.responseStatus?.reference?.entity,
-        reference: result.data?.responseStatus?.reference?.referenceNumber,
+        entity: result.responseStatus?.reference?.entity,
+        reference: result.responseStatus?.reference?.referenceNumber,
         montante: `${appointment.service.price} Kz`,
       } : null);
 
