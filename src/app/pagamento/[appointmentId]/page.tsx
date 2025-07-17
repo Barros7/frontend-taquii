@@ -189,15 +189,22 @@ export default function PagamentoPage({ params }: { params: Promise<{ appointmen
 
   useEffect(() => {
     if (metodo === 'qrcode' && appointment && !dadosPagamento?.qrCode) {
+      // Limpar dados de referência se existirem
+      if (dadosPagamento?.reference) {
+        setDadosPagamento(null);
+      }
       generateQRCode();
     }
   }, [metodo, appointment, generateQRCode, dadosPagamento?.qrCode]);
 
   useEffect(() => {
-    if (metodo === 'reference' && appointment && !dadosPagamento?.reference) {
+    if (metodo === 'reference' && appointment && !dadosPagamento?.entity) {
+      if (dadosPagamento?.qrCode) {
+        setDadosPagamento(null);
+      }
       generateReferenceCode();
     }
-  }, [metodo, appointment, generateReferenceCode, dadosPagamento?.reference]);
+  }, [metodo, appointment, generateReferenceCode, dadosPagamento?.entity]);
 
   // Debug: monitorar mudanças no estado dadosPagamento
   useEffect(() => {
