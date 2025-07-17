@@ -101,16 +101,25 @@ export default function PagamentoPage({ params }: { params: Promise<{ appointmen
 
       if (!response.ok) {
         const errorDetail = await response.json().catch(() => ({ message: response.statusText || 'Erro desconhecido' }));
+        // Tratamento específico para pagamento duplicado
+        if (
+          response.status === 409 ||
+          (errorDetail.message && errorDetail.message.toLowerCase().includes('já existe um pagamento'))
+        ) {
+          throw new Error('Já existe um pagamento registrado para este agendamento.');
+        }
         throw new Error(`Erro ao gerar QR Code: ${response.status} - ${errorDetail.message}`);
       }
 
       const result: PaymentQRCodeResponse = await response.json();
       // Atualizar dados de pagamento com QR Code
-      setDadosPagamento((prev) => prev ? {
-        ...prev,
+      setDadosPagamento({
         qrCode: result.data?.QRCode ? `data:image/png;base64,${result.data.QRCode}` : null,
         reference: result.data?.Code,
-      } : null);
+        entity: '',
+        montante: `${appointment.service.price} Kz`,
+        valor: `${appointment.service.price} Kz`,
+      });
 
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : 'Erro ao gerar QR Code');
@@ -145,21 +154,25 @@ export default function PagamentoPage({ params }: { params: Promise<{ appointmen
 
       if (!response.ok) {
         const errorDetail = await response.json().catch(() => ({ message: response.statusText || 'Erro desconhecido' }));
+        // Tratamento específico para pagamento duplicado
+        if (
+          response.status === 409 ||
+          (errorDetail.message && errorDetail.message.toLowerCase().includes('já existe um pagamento'))
+        ) {
+          throw new Error('Já existe um pagamento registrado para este agendamento.');
+        }
         throw new Error(`Erro ao gerar código de referência: ${response.status} - ${errorDetail.message}`);
       }
 
       const result = await response.json();
-      console.log("#######");
-      console.log(result.responseStatus.reference)
-      console.log("#######");
-
       // Atualizar dados de pagamento com informações da referência
-      setDadosPagamento((prev) => prev ? {
-        ...prev,
+      setDadosPagamento({
         entity: result.responseStatus?.reference?.entity,
         reference: result.responseStatus?.reference?.referenceNumber,
         montante: `${appointment.service.price} Kz`,
-      } : null);
+        valor: `${appointment.service.price} Kz`,
+        qrCode: null,
+      });
 
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : 'Erro ao gerar código de referência');
