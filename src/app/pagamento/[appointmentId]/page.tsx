@@ -122,7 +122,6 @@ export default function PagamentoPage({ params }: { params: Promise<{ appointmen
       }
 
       const result: PaymentQRCodeResponse = await response.json();
-      console.log("Qr code result: ", result);
       // Atualizar dados de pagamento com QR Code
       setDadosPagamento((prev) => prev ? {
         ...prev,
@@ -131,14 +130,7 @@ export default function PagamentoPage({ params }: { params: Promise<{ appointmen
       } : null);
 
     } catch (err: unknown) {
-      console.error('Erro ao gerar QR Code:', err);
       setError(err instanceof Error ? err.message : 'Erro ao gerar QR Code');
-      
-      // Fallback para QR Code genérico
-      setDadosPagamento((prev) => prev ? {
-        ...prev,
-        qrCode: `https://api.qrserver.com/v1/create-qr-code/?size=400x200&data=${prev.referencia || 'REF' + Date.now()}`,
-      } : null);
     } finally {
       setSubmitting(false);
     }

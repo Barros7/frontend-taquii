@@ -111,6 +111,14 @@ export default function AgendarPage({ params }: { params: Promise<{ serviceId: s
       return;
     }
 
+    // Validação extra: não permitir datas/horas passadas
+    const now = new Date();
+    const selectedDateTime = new Date(`${data}T${horario}:00`);
+    if (selectedDateTime < now) {
+      setError('Não é possível agendar para datas/horas passadas!');
+      return;
+    }
+
     try {
       setSubmitting(true);
       setError(null);
@@ -238,6 +246,7 @@ export default function AgendarPage({ params }: { params: Promise<{ serviceId: s
                 <input 
                   type="date" 
                   value={data} 
+                  min={new Date().toISOString().split('T')[0]} // Bloqueia datas passadas
                   onChange={e => setData(e.target.value)} 
                   style={{ background: '#1e293b', color: '#fff', border: 'none', borderRadius: 6, padding: 8, marginTop: 4 }} 
                 />
@@ -257,7 +266,12 @@ export default function AgendarPage({ params }: { params: Promise<{ serviceId: s
                 <label>Horário</label><br />
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginTop: 8 }}>
                   {horarios.map(h => {
-                    const isAvailable = isTimeAvailable(h);
+                    // Bloquear horários passados no dia atual
+                    const isToday = data === new Date().toISOString().split('T')[0];
+                    const now = new Date();
+                    const [hHour, hMin] = h.split(':').map(Number);
+                    const isPast = isToday && (hHour < now.getHours() || (hHour === now.getHours() && hMin <= now.getMinutes()));
+                    const isAvailable = isTimeAvailable(h) && !isPast;
                     return (
                       <button
                         key={h}
