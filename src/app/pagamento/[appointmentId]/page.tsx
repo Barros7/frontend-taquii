@@ -165,6 +165,7 @@ export default function PagamentoPage({ params }: { params: Promise<{ appointmen
       }
 
       const result = await response.json();
+      console.log(result.responseStatus)
       // Atualizar dados de pagamento com informações da referência
       setDadosPagamento({
         entity: result.responseStatus?.reference?.entity,
