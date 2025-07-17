@@ -8,7 +8,7 @@ import { apiService, Appointment, PaymentQRCodeResponse } from '@/services/apiSe
 import Image from 'next/image';
 
 const metodos = [
-  { key: 'referencia', label: 'Por Referência' },
+  { key: 'reference', label: 'Por Referência' },
   { key: 'qrcode', label: 'E-Kwanza (QR Code)' },
   { key: 'express', label: 'Multicaixa Express' },
 ];
@@ -16,10 +16,10 @@ const metodos = [
 export default function PagamentoPage({ params }: { params: Promise<{ appointmentId: string }> }) {
   const router = useRouter();
   const { user, loading: authLoading } = useAuth();
-  const [metodo, setMetodo] = useState<'referencia' | 'qrcode' | 'express'>('qrcode');
+  const [metodo, setMetodo] = useState<'reference' | 'qrcode' | 'express'>('qrcode');
   const [dadosPagamento, setDadosPagamento] = useState<{
-    entidade: string;
-    referencia: string;
+    entity: string;
+    reference: string;
     montante: string;
     valor: string;
     qrCode: string | null;
@@ -58,22 +58,9 @@ export default function PagamentoPage({ params }: { params: Promise<{ appointmen
       try {
         setLoading(true);
         setError(null);
-        
         // Buscar dados do agendamento
         const appointmentData = await apiService.getAppointment(appointmentId);
         setAppointment(appointmentData);
-        
-        // Gerar dados de pagamento iniciais
-        if (appointmentData) {
-          const referenceCode = `REF${Date.now()}`;
-          setDadosPagamento({
-            entidade: '01236',
-            referencia: referenceCode,
-            montante: `${appointmentData.service.price} Kz`,
-            valor: `${appointmentData.service.price} Kz`,
-            qrCode: null, // Será gerado quando necessário
-          });
-        }
         
       } catch (err: unknown) {
         console.error('Erro ao carregar dados do agendamento:', err);
@@ -101,10 +88,6 @@ export default function PagamentoPage({ params }: { params: Promise<{ appointmen
         appointmentId: appointment.id,
         date: appointment.date,
         location: appointment.location,
-        paymentMethod: 'E-Kwanza',
-        amount: appointment.service.price,
-        referenceCode: `REF${Date.now()}${Math.floor(Math.random() * 10000)}`,
-        mobileNumber: appointment.client.phone || '937315418',
       };
 
       // Criar pagamento com QR Code via API
@@ -126,7 +109,7 @@ export default function PagamentoPage({ params }: { params: Promise<{ appointmen
       setDadosPagamento((prev) => prev ? {
         ...prev,
         qrCode: result.data?.QRCode ? `data:image/png;base64,${result.data.QRCode}` : null,
-        referencia: result.data?.Code || paymentData.referenceCode,
+        reference: result.data?.Code,
       } : null);
 
     } catch (err: unknown) {
@@ -171,8 +154,8 @@ export default function PagamentoPage({ params }: { params: Promise<{ appointmen
       // Atualizar dados de pagamento com informações da referência
       setDadosPagamento((prev) => prev ? {
         ...prev,
-        entidade: result.data?.responseStatus?.reference?.entity,
-        referencia: result.data?.responseStatus?.reference?.referenceNumber,
+        entity: result.data?.responseStatus?.reference?.entity,
+        reference: result.data?.responseStatus?.reference?.referenceNumber,
         montante: `${appointment.service.price} Kz`,
       } : null);
 
@@ -190,10 +173,10 @@ export default function PagamentoPage({ params }: { params: Promise<{ appointmen
   }, [metodo, appointment, generateQRCode, dadosPagamento?.qrCode]);
 
   useEffect(() => {
-    if (metodo === 'referencia' && appointment && !dadosPagamento?.referencia) {
+    if (metodo === 'reference' && appointment && !dadosPagamento?.reference) {
       generateReferenceCode();
     }
-  }, [metodo, appointment, generateReferenceCode, dadosPagamento?.referencia]);
+  }, [metodo, appointment, generateReferenceCode, dadosPagamento?.reference]);
 
   if (authLoading || loading) {
     return (
@@ -265,7 +248,7 @@ export default function PagamentoPage({ params }: { params: Promise<{ appointmen
               <div style={{ margin: '24px 0' }}>
                 <select
                   value={metodo}
-                  onChange={e => setMetodo(e.target.value as 'referencia' | 'qrcode' | 'express')}
+                  onChange={e => setMetodo(e.target.value as 'reference' | 'qrcode' | 'express')}
                   style={{ width: '100%', padding: 12, borderRadius: 8, background: '#1e293b', color: '#fff', border: 'none', fontSize: 16 }}
                 >
                   {metodos.map(m => (
@@ -275,12 +258,12 @@ export default function PagamentoPage({ params }: { params: Promise<{ appointmen
               </div>
 
               {/* Renderização dinâmica do método */}
-              {metodo === 'referencia' && dadosPagamento && (
+              {metodo === 'reference' && dadosPagamento && (
                 <div style={{ marginTop: 24 }}>
                   <h3 style={{ color: '#fff' }}>Pagamento por Referência</h3>
                   <div style={{ margin: '16px 0', background: '#1e293b', borderRadius: 8, padding: 16 }}>
-                    <div>Entidade: <b>{dadosPagamento.entidade}</b></div>
-                    <div>Referência: <b>{dadosPagamento.referencia}</b></div>
+                    <div>Entidade: <b>{dadosPagamento.entity}</b></div>
+                    <div>Referência: <b>{dadosPagamento.reference}</b></div>
                     <div>Montante: <b>{dadosPagamento.montante}</b></div>
                   </div>
                 </div>
