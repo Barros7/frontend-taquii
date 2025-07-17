@@ -10,10 +10,10 @@ const Hero: React.FC = () => {
       <div className={styles.row}>
         <div className={`${styles.col} ${styles.spacing3}`}>
           <h1 className={styles.heading1}>
-            Conectando tecnologia & trabalho.
+            Encontre os Melhores Serviços
           </h1>
           <p className={styles.body1}>
-            Feito para estabelecimentos que prezam pelo melhor para seus clientes.
+          Conectamos você aos melhores prestadores de serviços da sua banda. Agende e faça pagamento numa única plataforma.
           </p>
           <div className={styles.spacing3}>
             <Link href="/register" className={styles.buttonPrimary}>

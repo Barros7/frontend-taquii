@@ -12,7 +12,7 @@ const Footer: React.FC = () => {
               {/* Primeira coluna */}
               <div className="col-xs-12 col-sm-12 col-md-3">
                 <div className="col-xs-12 col-md-12 col-md-12">
-                  <Image src='/logo-exfigital.png' alt="Logo" width={100} height={40} />
+                  <Image src='/logo/logo.png' alt="Logo" width={100} height={40} />
                   <p className="mt-2 text-footer w-75">Não perca as melhores oportunidades, siga-nos!</p>
                   <div className="mt-2">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-facebook mx-1" viewBox="0 0 16 16">

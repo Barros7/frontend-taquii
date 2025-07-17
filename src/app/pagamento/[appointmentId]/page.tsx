@@ -144,11 +144,64 @@ export default function PagamentoPage({ params }: { params: Promise<{ appointmen
     }
   }, [appointment]);
 
+  // Gerar código de referência quando método for selecionado
+  const generateReferenceCode = useCallback(async () => {
+    if (!appointment) return;
+
+    try {
+      setSubmitting(true);
+      
+      // Dados para gerar código de referência
+      const paymentData = {
+        clientId: appointment.clientId,
+        providerId: appointment.providerId,
+        serviceId: appointment.serviceId,
+        appointmentId: appointment.id,
+      };
+
+      // Criar pagamento com código de referência via API
+      const response = await fetch(`/api/payments/createReferenceCode`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(paymentData),
+      });
+
+      if (!response.ok) {
+        const errorDetail = await response.json().catch(() => ({ message: response.statusText || 'Erro desconhecido' }));
+        throw new Error(`Erro ao gerar código de referência: ${response.status} - ${errorDetail.message}`);
+      }
+
+      const result = await response.json();
+      console.log("Reference code result: ", result);
+      
+      // Atualizar dados de pagamento com informações da referência
+      setDadosPagamento((prev) => prev ? {
+        ...prev,
+        entidade: result.data?.responseStatus?.reference?.entity,
+        referencia: result.data?.responseStatus?.reference?.referenceNumber,
+        montante: `${appointment.service.price} Kz`,
+      } : null);
+
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Erro ao gerar código de referência');
+    } finally {
+      setSubmitting(false);
+    }
+  }, [appointment]);
+
   useEffect(() => {
     if (metodo === 'qrcode' && appointment && !dadosPagamento?.qrCode) {
       generateQRCode();
     }
   }, [metodo, appointment, generateQRCode, dadosPagamento?.qrCode]);
+
+  useEffect(() => {
+    if (metodo === 'referencia' && appointment && !dadosPagamento?.referencia) {
+      generateReferenceCode();
+    }
+  }, [metodo, appointment, generateReferenceCode, dadosPagamento?.referencia]);
 
   if (authLoading || loading) {
     return (

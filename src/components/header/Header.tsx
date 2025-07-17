@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import styles from '@/styles/design-system.module.css';
 import UserMenu from './UserMenu';
+import Image from 'next/image';
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -17,7 +18,15 @@ export default function Header() {
       <div className="container">
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '1rem 0' }}>
           <Link href="/" className={styles.brand}>
-            Taqui Serviço
+            <Image
+              src={"/logo/logo.png"}
+              alt={"logo"}
+              width={300} // Reduzido de 100 para 60
+              height={100} // Reduzido de 100 para 60
+              style={{ maxWidth: '100%', height: 'auto' }}
+              objectFit="cover"
+              className={styles.image}
+            />
           </Link>
 
           <button 
