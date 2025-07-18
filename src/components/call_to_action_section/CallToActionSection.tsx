@@ -1,23 +1,27 @@
 import React from "react";
-import { Button } from "react-bootstrap";
-import "./CallToActionsSection.css";
+import Link from "next/link";
+import styles from "./CallToActionSection.module.css";
 
-const CallToAction: React.FC = () => {
+const CallToActionSection: React.FC = () => {
   return (
-    <section className={"ctaSection"}>
-      <div className="container text-center">
-        <div className="row">
-            <div className="col-sm-9 col-md-8">
-              <h2 className="fw-bold">Comece agora mesmo</h2>
-              <p className="text-muted">Registe o seu estabelecimento e automatize seus processos!</p>
-            </div>
-            <div className="col-sm-3 col-md-4 d-flex align-items-center">   
-              <Button className={"ctaButton w-100"}>Começar agora</Button>
-            </div>
-        </div>
+    <section className={styles.ctaSection} aria-labelledby="cta-title">
+      <div className={styles.ctaCard}>
+        <h2 id="cta-title" className={styles.title}>
+          Está a um clique do seu próximo serviço!
+        </h2>
+        <p className={styles.subtitle}>
+          Encontre e agende serviços confiáveis em poucos segundos. Prático, seguro e feito para você.
+        </p>
+        <Link
+          href="/agendar"
+          className={styles.ctaButton}
+          aria-label="Agendar agora"
+        >
+          Agendar agora
+        </Link>
       </div>
     </section>
   );
 };
 
-export default CallToAction;
+export default CallToActionSection; 

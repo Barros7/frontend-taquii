@@ -4,7 +4,6 @@ import { useState } from 'react';
 import Link from 'next/link';
 import styles from '@/styles/design-system.module.css';
 import UserMenu from './UserMenu';
-import Image from 'next/image';
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);

@@ -1,7 +1,6 @@
 'use client'
 import React, { useState } from "react";
-import "bootstrap/dist/css/bootstrap.min.css";
-import "./ContactFormSection.css";
+import styles from "./ContactFormSection.module.css";
 
 const ContactFormSection: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -20,32 +19,32 @@ const ContactFormSection: React.FC = () => {
   };
 
   return (
-    <section id="contatos" className="container d-flex flex-column align-items-center justify-content-center my-5">
-      <h2 className="text-center fw-bold">Contato</h2>
-      <p className="text-muted text-center mb-4">
+    <section id="contatos" className={styles.contactSection}>
+      <h2 className={styles.title}>Contato</h2>
+      <p className={styles.subtitle}>
         Fale conosco para transformar seu estabelecimento junto com a gente!
       </p>
 
-      <form onSubmit={handleSubmit} className="contact-form p-4 shadow-sm rounded">
-        <div className="mb-3">
-          <label className="form-label fw-medium">Seu nome</label>
+      <form onSubmit={handleSubmit} className={styles.contactForm}>
+        <div>
+          <label className={styles.formLabel}>Seu nome</label>
           <input
             type="text"
             name="name"
             value={formData.name}
             onChange={handleChange}
             placeholder="Digite seu nome"
-            className="form-control"
+            className={styles.input}
           />
         </div>
 
-        <div className="mb-3">
-          <label className="form-label fw-medium">Sua categoria de serviços</label>
+        <div>
+          <label className={styles.formLabel}>Sua categoria de serviços</label>
           <select
             name="category"
             value={formData.category}
             onChange={handleChange}
-            className="form-select"
+            className={styles.select}
           >
             <option value="">Informe o departamento do seu estabelecimento</option>
             <option value="barbearia">Barbearia</option>
@@ -56,13 +55,13 @@ const ContactFormSection: React.FC = () => {
           </select>
         </div>
 
-        <div className="mb-3">
-          <label className="form-label fw-medium">Quantidade de funcionários</label>
+        <div>
+          <label className={styles.formLabel}>Quantidade de funcionários</label>
           <select
             name="employees"
             value={formData.employees}
             onChange={handleChange}
-            className="form-select"
+            className={styles.select}
           >
             <option value="">Informe a quantidade de funcionários</option>
             <option value="1-5">1-5</option>
@@ -71,7 +70,7 @@ const ContactFormSection: React.FC = () => {
           </select>
         </div>
 
-        <button type="submit" className="btn btn-primary w-100">
+        <button type="submit" className={styles.button}>
           Enviar
         </button>
       </form>
