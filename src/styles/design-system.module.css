@@ -304,4 +304,28 @@
   .heading4 {
     font-size: 1.125rem;
   }
+}
+
+.logoText {
+  font-family: 'Poppins', 'Inter', Arial, sans-serif;
+  font-size: 1.7rem;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  color: #222;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+}
+
+.logoHighlight {
+  color: #4F46E5;
+  font-weight: 900;
+  margin-left: 0.25rem;
+  letter-spacing: 0;
+}
+
+@media (max-width: 768px) {
+  .logoText {
+    font-size: 1.2rem;
+  }
 } 

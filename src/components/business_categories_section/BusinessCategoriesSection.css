@@ -1,57 +1,106 @@
 .section-business-category {
-    padding: 6rem 0;
+    padding: 2.5rem 0 1.5rem 0;
+    background: #f8f9fa;
 }
 
-.card-group {
-    background-color: rgb(255, 255, 255);
-}
-
-.offers-text{
-    font-size: 12px;
-    color: #505050;
+.card-custom {
+    background: #fff;
+    border-radius: 18px;
+    box-shadow: 0 2px 12px rgba(79,70,229,0.06);
+    padding: 1.3rem 0.7rem 0.8rem 0.7rem;
+    border: 2px solid transparent;
+    transition: box-shadow 0.2s, border 0.2s, transform 0.18s;
+    cursor: pointer;
+    min-height: 140px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0.7rem;
 }
 
 .hiperlink {
     text-decoration: none;
+    color: inherit;
+    display: block;
 }
 
-.hiperlink:hover {
-    border: 1px solid #0022ff;
+.hiperlink:hover .card-custom, .card-custom:hover {
+    border: 2px solid #4F46E5;
+    box-shadow: 0 6px 24px rgba(79,70,229,0.13);
+    transform: translateY(-4px) scale(1.04);
 }
 
-/* cardStyles.css */
-.card-custom {
-    padding: 1.5rem;
+.image-product, .placeholder-icon {
+    width: 70px;
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+    font-size: 2.2rem;
+    background: #f3f4f6;
+    border-radius: 50%;
+    box-shadow: 0 1px 4px rgba(79,70,229,0.04);
 }
 
-.image-product {
-    width: 100%;
-    height: 60px;
+.card-title-custom {
+    font-size: 1.08rem;
+    font-weight: 700;
+    color: #222;
+    margin: 0;
+    letter-spacing: -0.01em;
+    text-align: center;
+    white-space: normal;
+    word-break: break-word;
+    overflow: visible;
 }
-  
-.card-title-custom,
-.card-text-custom {
+
+.subtitle {
+    color: #6b7280;
     font-size: 1rem;
+    margin-bottom: 2rem;
 }
-  
-/* Em telas menores (menos de 576px) */
+
+.title {
+    font-size: 2rem;
+    font-weight: 800;
+    color: #4F46E5;
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.01em;
+}
+
 @media (max-width: 576px) {
     .card-custom {
-        width: 7.5rem;
-        margin: 0.2rem 0;
-        padding: 0.5rem;
+        width: 100%;
+        margin: 0.1rem 0;
+        padding: 0.7rem 0.3rem 0.5rem 0.3rem;
+        min-height: 90px;
     }
-    .card-title-custom,
-    .card-text-custom {
-        font-size: 0.55rem; /* tamanho de fonte reduzido */
+    .card-title-custom {
+        font-size: 0.95rem;
+        white-space: normal;
+        word-break: break-word;
+        overflow: visible;
+        text-align: center;
+        max-width: 100%;
+    }
+    .image-product, .placeholder-icon {
+        width: 48px;
+        height: 48px;
+        font-size: 1.3rem;
+    }
+    .title {
+        font-size: 1.3rem;
     }
 }
-  
+
 .skeleton-card {
     background: #f0f0f0;
-    border-radius: 8px;
+    border-radius: 12px;
     height: 150px;
     padding: 16px;
+    box-shadow: 0 1px 4px rgba(79,70,229,0.04);
   }
   
   .skeleton-image {

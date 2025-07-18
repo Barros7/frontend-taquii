@@ -5,6 +5,7 @@ import { useSearchParams } from 'next/navigation';
 import { Suspense } from 'react';
 import Header from '@/components/header/Header';
 import ServiceCatalog from '@/components/service_catalog/ServiceCatalog';
+import styles from './Empresas.module.css';
 
 function EmpresasContent() {
   const searchParams = useSearchParams();
@@ -12,12 +13,18 @@ function EmpresasContent() {
   const categoryDescription = "Descubra os melhores profissionais da área.";
 
   return (
-    <div className="container-fluid bg-light min-vh-100">
+    <div className={styles.empresasWrapper}>
       <Header />
-      <ServiceCatalog
-        categoryName={categoryName}
-        categoryDescription={categoryDescription}
-      />
+      <div className={styles.header}>
+        <h1 className={styles.title}>{categoryName || 'Empresas & Serviços'}</h1>
+        <p className={styles.subtitle}>{categoryDescription}</p>
+      </div>
+      <div className={styles.catalogContainer}>
+        <ServiceCatalog
+          categoryName={categoryName}
+          categoryDescription={categoryDescription}
+        />
+      </div>
     </div>
   );
 }

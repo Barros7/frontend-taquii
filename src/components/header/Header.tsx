@@ -17,16 +17,8 @@ export default function Header() {
     <nav className={styles.navbar}>
       <div className="container">
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '1rem 0' }}>
-          <Link href="/" className={styles.brand}>
-            <Image
-              src={"/logo/logo.png"}
-              alt={"logo"}
-              width={300} // Reduzido de 100 para 60
-              height={100} // Reduzido de 100 para 60
-              style={{ maxWidth: '100%', height: 'auto' }}
-              objectFit="cover"
-              className={styles.image}
-            />
+          <Link href="/" className={styles.brand} aria-label="Página inicial Taqui Serviço">
+            <span className={styles.logoText}>Taqui <span className={styles.logoHighlight}>Serviço</span></span>
           </Link>
 
           <button 
