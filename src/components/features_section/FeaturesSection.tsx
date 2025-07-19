@@ -4,35 +4,35 @@ import styles from "./FeaturesSection.module.css";
 const FeatureSection: React.FC = () => {
   return (
     <section className={styles.featuresWrapper}>
-      <h2 className={styles.title}>Tudo em um só lugar</h2>
-      <p className={styles.subtitle}>Uma plataforma focada no controle total do estabelecimento</p>
+      <h2 className={styles.title}>Por que escolher o Taqui?</h2>
+      <p className={styles.subtitle}>Descubra como tornamos o agendamento de serviços simples, rápido e seguro</p>
       <div className={styles.featuresGrid}>
         <div className={styles.featureCard}>
-          <span className={styles.icon}>💬</span>
-          <h5 className={styles.featureTitle}>Notificações</h5>
+          <span className={styles.icon}>⚡</span>
+          <h5 className={styles.featureTitle}>Agendamento em segundos</h5>
           <p className={styles.featureDesc}>
-            Mantenha sempre seus clientes avisados sobre seus agendamentos. Evitando assim faltas e possíveis prejuízos.
+            Encontre e reserve seu horário em menos de 30 segundos. Sem ligações, sem esperas, sem complicações.
           </p>
         </div>
         <div className={styles.featureCard}>
-          <span className={styles.icon}>👥</span>
-          <h5 className={styles.featureTitle}>Funcionários</h5>
+          <span className={styles.icon}>🛡️</span>
+          <h5 className={styles.featureTitle}>Profissionais verificados</h5>
           <p className={styles.featureDesc}>
-            Gerencie comissão, horários, serviços e férias de seus funcionários. Tenha estatísticas de performance ao fim do mês.
+            Todos os prestadores de serviço são cuidadosamente selecionados e avaliados por nossa comunidade.
           </p>
         </div>
         <div className={styles.featureCard}>
-          <span className={styles.icon}>⏰</span>
-          <h5 className={styles.featureTitle}>Horários</h5>
+          <span className={styles.icon}>📱</span>
+          <h5 className={styles.featureTitle}>Lembretes automáticos</h5>
           <p className={styles.featureDesc}>
-            Configure facilmente os horários da sua semana, adicione férias/descansos, dias disponíveis na agenda e muito mais.
+            Receba notificações no WhatsApp e email para nunca mais esquecer de um compromisso importante.
           </p>
         </div>
         <div className={styles.featureCard}>
-          <span className={styles.icon}>✏️</span>
-          <h5 className={styles.featureTitle}>Personalize seu perfil</h5>
+          <span className={styles.icon}>⭐</span>
+          <h5 className={styles.featureTitle}>Avaliações reais</h5>
           <p className={styles.featureDesc}>
-            Mostre todos os seus serviços, configure um perfil personalizado para sua empresa e atraia ainda mais clientes.
+            Veja comentários de clientes reais e escolha o profissional ideal para você com total confiança.
           </p>
         </div>
       </div>

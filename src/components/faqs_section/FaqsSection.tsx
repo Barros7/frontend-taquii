@@ -7,100 +7,87 @@ export default function FaqSection() {
 
     const toggleSection = (index: number) => {
         setOpenSections(prevOpenSections => {
-            const newOpenSections = new Set(prevOpenSections); // Create a copy of the current open sections
+            const newOpenSections = new Set(prevOpenSections);
             if (newOpenSections.has(index)) {
-                newOpenSections.delete(index); // If the section is open, close it (remove from Set)
+                newOpenSections.delete(index);
             } else {
-                newOpenSections.add(index); // If the section is closed, open it (add to Set)
+                newOpenSections.add(index);
             }
-            return newOpenSections; // Return the new Set to update state
+            return newOpenSections;
         });
     };
 
-    // Your FAQ data
     const sections = [
         {
-            title: 'Como faço para registar o meu estabelecimento e começar a usar o Taqui?',
-            // Make sure to complete the content here
-            content: 'Para fazer o registo no Taqui, basta apenas visitar a nossa página de registo para estabelecimentos e seguir os passos indicados para criar o seu perfil e configurar os seus serviços.'
+            title: 'Como funciona o agendamento no Taqui?',
+            content: 'É super simples! Você escolhe o serviço que precisa, seleciona o profissional, escolhe o horário disponível e confirma o agendamento. Receberá uma confirmação instantânea e lembretes automáticos no WhatsApp.'
         },
         {
-            title: 'Posso utilizar o Taqui de graça?',
-            content: 'Sim, temos um plano gratuito. No entanto, você pode ter algumas limitações nesse plano e algumas funcionalidades que estão presentes somente em outros planos.'
+            title: 'Posso cancelar ou reagendar um serviço?',
+            content: 'Sim! Você pode cancelar ou reagendar seu agendamento gratuitamente até 2 horas antes do horário marcado. Basta acessar seu perfil e gerenciar seus agendamentos.'
         },
         {
-            title: 'E se meus clientes não conseguirem agendar sozinhos, irei perder os clientes?',
-            content: 'Não! Temos noção que algumas pessoas não tem conhecimento suficiente ou eventualmente não irão conseguir agendar sozinhos. Por isso, temos a opção de "Agendamento manual", onde você mesmo poderá adicionar esse agendamento depois que o cliente marcar com você por alguma rede social ou pessoalmente.'
+            title: 'Como sei se o profissional é confiável?',
+            content: 'Todos os profissionais no Taqui passam por verificação rigorosa. Além disso, você pode ver avaliações reais de outros clientes, fotos dos trabalhos realizados e informações detalhadas sobre cada prestador de serviço.'
         },
         {
-            title: 'Como irei receber o dinheiro dos agendamentos?',
-            content:'Atualmente não temos pagamento na plataforma, então, você irá receber o dinheiro dos seus agendamentos no ato do atendimento.'
+            title: 'Como funciona o pagamento?',
+            content: 'O pagamento é feito diretamente com o profissional no momento do serviço. Você pode pagar em dinheiro, cartão ou PIX, conforme a preferência do prestador. O Taqui não cobra taxas adicionais.'
         },
         {
-            title: 'E como posso fazer para que os meus clientes não marquem agendamentos nos meus horários de almoço e/ou descanso?',
-            content: 'Não se preocupe. No Taqui, você pode configurar os dias de abertura e fechamento de todos os dias da semana. Além disso, pode configurar "janelas de descanso" durante o dia. Você também pode desabilitar um dia específico para não receber agendamentos naquele dia (ex: Domingo)'
+            title: 'E se o profissional não aparecer ou o serviço for ruim?',
+            content: 'Nossa equipe de suporte está sempre pronta para ajudar. Se houver qualquer problema, entre em contato conosco imediatamente. Trabalhamos para garantir sua satisfação total.'
         },
         {
-            title: 'E se eu precisar me ausentar em um dia específico?',
-            content: 'Além da configuração de horários do seu estabelecimento, você pode configurar "Horários Off", informando uma data e horário de início e fim. Desse modo, os seus clientes não vão conseguir marcar agendamento com você nesse período.'
+            title: 'Posso agendar serviços para outras pessoas?',
+            content: 'Sim! Você pode agendar serviços para familiares ou amigos. Basta informar os dados da pessoa que receberá o serviço durante o processo de agendamento.'
         },
         {
-            title: 'E como os clientes vão escolher o horário?',
-            content: 'Os horários são listados em intervalos de tempo que podem ser configurados por você e o cliente irá escolher um deles. Quando um cliente marca um horário, aquele horário irá ficar bloqueado para próximos clientes, evitando assim dois clientes marcando no mesmo horário.'
+            title: 'O Taqui funciona 24 horas por dia?',
+            content: 'O agendamento funciona 24/7, mas os horários de atendimento dependem de cada profissional. Você pode ver a disponibilidade de cada um em tempo real na plataforma.'
         },
         {
-            title: 'Como posso obter suporte em caso de problemas?',
-            content: 'Você pode entrar em contato com nossa equipe de suporte, que irá responder e tentar resolver o seu problema o mais rápido possível. Clicando aqui, você será redirecionado para o chat com o nosso suporte.'
+            title: 'Como posso entrar em contato com o suporte?',
+            content: 'Nossa equipe está disponível através do chat online, WhatsApp ou email. Respondemos em até 2 horas e estamos sempre prontos para te ajudar com qualquer dúvida ou problema.'
         }
     ];
 
     return (
         <section id="faqs" className="container my-5">
             <div className="faq-section">
-                {/* Optional: Add a main heading for the FAQ section */}
                 <h2>Perguntas Frequentes</h2>
 
-                {/* Use a container for the FAQ items, though not strictly required by Bootstrap collapse if not using accordion behavior */}
                 <div>
                     {sections.map((section, index) => {
-                        // Determine if the current section is open
                         const isExpanded = openSections.has(index);
-                        // Create a unique ID for the collapsible content
                         const collapseId = `faq-collapse-${index}`;
 
                         return (
-                            // Use a div for each FAQ item, applying Bootstrap classes for accordion items if desired for styling
-                            <div className="card mb-2" key={index}> {/* Using card for visual separation like your original alert */}
-                                <div className="card-header" id={`faq-heading-${index}`}> {/* Card header for the question */}
+                            <div className="card mb-2" key={index}>
+                                <div className="card-header" id={`faq-heading-${index}`}>
                                     <h5 className="mb-0">
-                                        {/* Use a button for the question title - better for accessibility */}
                                         <button
-                                            className={`btn btn-link ${isExpanded ? '' : 'collapsed'}`} // Bootstrap classes for button styling and state
+                                            className={`btn btn-link ${isExpanded ? '' : 'collapsed'}`}
                                             type="button"
-                                            onClick={() => toggleSection(index)} // Toggle the section state on click
-                                            aria-expanded={isExpanded} // ARIA attribute: true if expanded, false if collapsed
-                                            aria-controls={collapseId} // ARIA attribute linking button to the collapsible content
-                                            style={{ textDecoration: 'none', color: 'inherit' }} // Optional: Remove default button link styling
+                                            onClick={() => toggleSection(index)}
+                                            aria-expanded={isExpanded}
+                                            aria-controls={collapseId}
+                                            style={{ textDecoration: 'none', color: 'inherit' }}
                                         >
                                             {section.title}
                                         </button>
                                     </h5>
                                 </div>
 
-                                {/* The collapsible content */}
                                 <div
                                     id={collapseId}
-                                    // Apply Bootstrap collapse classes and the 'show' class conditionally
                                     className={`collapse ${isExpanded ? 'show' : ''}`}
-                                    aria-labelledby={`faq-heading-${index}`} // ARIA attribute linking content back to its heading
-                                    // Removed data-bs-parent attribute to allow multiple items to be open simultaneously
+                                    aria-labelledby={`faq-heading-${index}`}
                                 >
-                                    <div className="card-body"> {/* Card body for the answer */}
-                                        {/* Content is typically in a paragraph */}
+                                    <div className="card-body">
                                         <p>{section.content}</p>
-                                        {/* If there's a link mentioned in content, ensure it's an actual <a> tag */}
-                                        {index === 7 && ( // Example for the support question
-                                            <p><a href="#" className="alert-link">Clique aqui para o chat com o nosso suporte.</a></p>
+                                        {index === 7 && (
+                                            <p><a href="#" className="alert-link">Clique aqui para falar com nosso suporte agora.</a></p>
                                         )}
                                     </div>
                                 </div>

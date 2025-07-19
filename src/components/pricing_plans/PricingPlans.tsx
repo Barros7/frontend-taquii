@@ -5,9 +5,9 @@ import { FaCheckCircle, FaTimesCircle } from 'react-icons/fa';
 
 const PricingPlans: React.FC = () => {
   return (
-    <section id="planos" className={styles.pricingSection}>
-      <h2 className={styles.sectionTitle}>Planos</h2>
-      <p className={styles.sectionSubtitle}>Temos planos que se encaixam para cada cenário.</p>
+    <section id="como-funciona" className={styles.pricingSection}>
+      <h2 className={styles.sectionTitle}>Como Funciona</h2>
+      <p className={styles.sectionSubtitle}>4 passos simples para agendar qualquer serviço</p>
 
       <div className={styles.plansContainer}>
         {plans.map((plan) => (
@@ -26,7 +26,7 @@ const PricingPlans: React.FC = () => {
                 </li>
               ))}
             </ul>
-            <button className={styles.startButton}>Começar</button>
+            <button className={styles.startButton}>Experimentar</button>
           </div>
         ))}
       </div>

@@ -19,10 +19,10 @@ const ContactFormSection: React.FC = () => {
   };
 
   return (
-    <section id="contatos" className={styles.contactSection}>
-      <h2 className={styles.title}>Contato</h2>
+    <section id="suporte" className={styles.contactSection}>
+      <h2 className={styles.title}>Precisa de Ajuda?</h2>
       <p className={styles.subtitle}>
-        Fale conosco para transformar seu estabelecimento junto com a gente!
+        Nossa equipe está pronta para te ajudar a encontrar o serviço ideal
       </p>
 
       <form onSubmit={handleSubmit} className={styles.contactForm}>
@@ -33,45 +33,47 @@ const ContactFormSection: React.FC = () => {
             name="name"
             value={formData.name}
             onChange={handleChange}
-            placeholder="Digite seu nome"
+            placeholder="Como devemos te chamar?"
             className={styles.input}
           />
         </div>
 
         <div>
-          <label className={styles.formLabel}>Sua categoria de serviços</label>
+          <label className={styles.formLabel}>Que tipo de serviço você procura?</label>
           <select
             name="category"
             value={formData.category}
             onChange={handleChange}
             className={styles.select}
           >
-            <option value="">Informe o departamento do seu estabelecimento</option>
+            <option value="">Selecione o tipo de serviço</option>
             <option value="barbearia">Barbearia</option>
             <option value="salaoDeBeleza">Salão de Beleza</option>
-            <option value="rentacar">Rent a Car</option>
+            <option value="rentacar">Aluguel de Carro</option>
             <option value="segurança">Serviços de Segurança</option>
-            <option value="hotelaria">Hotelaria</option>
+            <option value="hotelaria">Hospedagem</option>
+            <option value="outro">Outro</option>
           </select>
         </div>
 
         <div>
-          <label className={styles.formLabel}>Quantidade de funcionários</label>
+          <label className={styles.formLabel}>Quando você precisa do serviço?</label>
           <select
             name="employees"
             value={formData.employees}
             onChange={handleChange}
             className={styles.select}
           >
-            <option value="">Informe a quantidade de funcionários</option>
-            <option value="1-5">1-5</option>
-            <option value="6-10">6-10</option>
-            <option value="11+">Mais de 10</option>
+            <option value="">Selecione a urgência</option>
+            <option value="hoje">Hoje mesmo</option>
+            <option value="semana">Esta semana</option>
+            <option value="mes">Este mês</option>
+            <option value="sem-pressa">Sem pressa</option>
           </select>
         </div>
 
         <button type="submit" className={styles.button}>
-          Enviar
+          Enviar solicitação
         </button>
       </form>
     </section>

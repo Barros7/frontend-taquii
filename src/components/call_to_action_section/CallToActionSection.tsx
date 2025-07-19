@@ -7,17 +7,18 @@ const CallToActionSection: React.FC = () => {
     <section className={styles.ctaSection} aria-labelledby="cta-title">
       <div className={styles.ctaCard}>
         <h2 id="cta-title" className={styles.title}>
-          Está a um clique do seu próximo serviço!
+          Pronto para simplificar sua vida?
         </h2>
         <p className={styles.subtitle}>
-          Encontre e agende serviços confiáveis em poucos segundos. Prático, seguro e feito para você.
+          Junte-se a milhares de pessoas que já descobriram a forma mais fácil de agendar serviços. 
+          Sem complicações, sem esperas, apenas resultados.
         </p>
         <Link
-          href="/agendar"
+          href="/register"
           className={styles.ctaButton}
-          aria-label="Agendar agora"
+          aria-label="Começar agora - é grátis"
         >
-          Agendar agora
+          Começar agora - é grátis
         </Link>
       </div>
     </section>
