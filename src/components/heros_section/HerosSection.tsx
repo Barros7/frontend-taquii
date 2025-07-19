@@ -68,8 +68,10 @@ const Hero: React.FC = () => {
               <div className={styles.phoneFrame}>
                 <div className={styles.phoneScreen}>
                   <div className={styles.appHeader}>
-                    <div className={styles.appLogo}>T</div>
-                    <div className={styles.appTitle}>Taqui Serviço</div>
+                    <div className={styles.appLogo}>
+                      <span className={styles.logoText}>Taqui</span>
+                      <span className={styles.logoHighlight}>Serviço</span>
+                    </div>
                   </div>
                   
                   <div className={styles.appContent}>
