@@ -4,7 +4,7 @@ import styles from "./FeaturesSection.module.css";
 const FeatureSection: React.FC = () => {
   return (
     <section className={styles.featuresWrapper}>
-      <h2 className={styles.title}>Por que escolher o Taqui?</h2>
+      <h2 className={styles.title}>Por que escolher o Taqui Serviço?</h2>
       <p className={styles.subtitle}>Descubra como tornamos o agendamento de serviços simples, rápido e seguro</p>
       <div className={styles.featuresGrid}>
         <div className={styles.featureCard}>

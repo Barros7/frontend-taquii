@@ -454,25 +454,34 @@
 
 @media (max-width: 768px) {
   .heroSection {
-    min-height: auto;
-    padding: 0.5rem 0 0.5rem 0;
-  }
-  .heroContent {
-    gap: 1.5rem;
-  }
-  
-  .heroTitle {
-    font-size: 2.5rem;
-  }
-  
-  .heroSubtitle {
-    font-size: 1.125rem;
-  }
-  
-  .heroFeatures {
-    flex-direction: column;
+    min-height: 60vh;
+    padding: 2rem 0;
+    display: flex;
     align-items: center;
-    gap: 1rem;
+    justify-content: center;
+  }
+  
+  .heroContainer {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .heroContent {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+  }
+  
+  .heroVisual {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
   
   .phoneFrame {
@@ -487,17 +496,9 @@
 }
 
 @media (max-width: 480px) {
-  .heroTitle {
-    font-size: 2rem;
-  }
-  
-  .heroSubtitle {
-    font-size: 1rem;
-  }
-  
-  .ctaButton {
-    padding: 0.875rem 1.5rem;
-    font-size: 1rem;
+  .heroSection {
+    min-height: 50vh;
+    padding: 1.5rem 0;
   }
   
   .phoneFrame {

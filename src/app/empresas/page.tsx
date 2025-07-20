@@ -15,10 +15,6 @@ function EmpresasContent() {
   return (
     <div className={styles.empresasWrapper}>
       <Header />
-      <div className={styles.header}>
-        <h1 className={styles.title}>{categoryName || 'Empresas & Serviços'}</h1>
-        <p className={styles.subtitle}>{categoryDescription}</p>
-      </div>
       <div className={styles.catalogContainer}>
         <ServiceCatalog
           categoryName={categoryName}

@@ -51,8 +51,8 @@ const BusinessCategoriesSection = () => {
   return (
     <section id="servicos" className="container-fluid section-business-category text-center">
       <div id="servicos" className="container">
-        <h2 className="title">Para todo tipo de empresa</h2>
-        <p className="subtitle">Temos a solução para todo tipo de estabelecimento</p>
+        <h2 className="title">Escolha a categoria e resolva sua necessidade</h2>
+        <p className="subtitle">Taqui Serviços com profissionais prontos para atender em diversas áreas.</p>
         <div className="row py-3">
           {loading
             ? Array.from({ length: 6 }).map((_, i) => <SkeletonCard key={i} />)

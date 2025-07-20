@@ -46,8 +46,8 @@ export default function Header() {
                 </Link>
               </li>
               <li className={styles.menuItem}>
-                <Link href="/#planos" className={styles.menuLink}>
-                  Planos
+                <Link href="/#como-funciona" className={styles.menuLink}>
+                  Como funciona
                 </Link>
               </li>
               <li className={styles.menuItem}>

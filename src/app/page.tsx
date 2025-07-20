@@ -7,7 +7,7 @@ import ResultsSection from '@/components/results_section/ResultsSection';
 import CallToAction from '@/components/call_to_action_section/CallToActionSection';
 import ContactFormSection from '@/components/contact_form_section/ContactFormSection';
 import FaqSection from '@/components/faqs_section/FaqsSection';
-import PricingPlans from '@/components/pricing_plans/PricingPlans';
+import HowAPPWork from '@/components/how_app_work/HowAPPWork';
 
 export default function Home() {
 
@@ -19,7 +19,7 @@ export default function Home() {
       <FeatureSection />
       <CallToAction />
       <ResultsSection />
-      <PricingPlans />
+      <HowAPPWork />
       <ContactFormSection />
       <FaqSection />
     </div>

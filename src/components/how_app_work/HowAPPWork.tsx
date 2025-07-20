@@ -1,9 +1,9 @@
 import React from 'react';
 import { plans } from '../../types/PlanTypes';
-import styles from './PricingPlans.module.css';
+import styles from './HowAPPWork.module.css';
 import { FaCheckCircle, FaTimesCircle } from 'react-icons/fa';
 
-const PricingPlans: React.FC = () => {
+const HowAPPWork: React.FC = () => {
   return (
     <section id="como-funciona" className={styles.pricingSection}>
       <h2 className={styles.sectionTitle}>Como Funciona</h2>
@@ -34,4 +34,4 @@ const PricingPlans: React.FC = () => {
   );
 };
 
-export default PricingPlans;
+export default HowAPPWork;

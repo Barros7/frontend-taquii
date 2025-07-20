@@ -2,14 +2,49 @@
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import styles from './HerosSection.module.css';
+import LaptopMockup from '../laptop_mockup/LaptopMockup';
 
 const Hero: React.FC = () => {
   const [isVisible, setIsVisible] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
     setIsVisible(true);
+    
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
+    return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
+  // Renderização para Mobile (apenas o laptop)
+  if (isMobile) {
+    return (
+      <section className={styles.heroSection}>
+        <div className={styles.heroContainer}>
+          <div className={styles.backgroundElements}>
+            <div className={styles.gradientCircle1}></div>
+            <div className={styles.gradientCircle2}></div>
+            <div className={styles.floatingShape1}></div>
+            <div className={styles.floatingShape2}></div>
+          </div>
+
+          <div className={styles.heroContent}>
+            {/* Apenas o Laptop no centro */}
+            <div className={`${styles.heroVisual} ${isVisible ? styles.fadeInRight : ''}`}>
+              <LaptopMockup />
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  // Renderização para Desktop (layout original)
   return (
     <section className={styles.heroSection}>
       <div className={styles.heroContainer}>
