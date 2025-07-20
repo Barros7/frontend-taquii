@@ -195,7 +195,7 @@ export default function PagamentoPage({ params }: { params: Promise<{ appointmen
       }
       generateQRCode();
     }
-  }, [metodo, appointment, generateQRCode, dadosPagamento?.qrCode]);
+  }, [metodo, appointment, generateQRCode, dadosPagamento?.qrCode, dadosPagamento?.reference]);
 
   useEffect(() => {
     if (metodo === 'reference' && appointment && !dadosPagamento?.entity) {
@@ -204,7 +204,7 @@ export default function PagamentoPage({ params }: { params: Promise<{ appointmen
       }
       generateReferenceCode();
     }
-  }, [metodo, appointment, generateReferenceCode, dadosPagamento?.entity]);
+  }, [metodo, appointment, generateReferenceCode, dadosPagamento?.entity, dadosPagamento?.qrCode]);
 
   // Debug: monitorar mudanças no estado dadosPagamento
   useEffect(() => {

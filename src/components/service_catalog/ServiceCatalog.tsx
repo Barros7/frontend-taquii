@@ -6,6 +6,7 @@ import Image from 'next/image';
 import "./ServiceCatalog.css";
 import Link from 'next/link';
 import ServiceCatalogSkeleton from '../service_catalog_skeleton/ServiceCatalogSkeleton';
+import ServiceCard from './ServiceCard';
 
 // Lista das províncias de Angola
 const angolanProvinces = [
@@ -161,30 +162,7 @@ export default function ServiceCatalog({ categoryName, categoryDescription }: Se
           <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
             {professionals.map((provider) => (
               <div key={provider.id} className="col">
-                <div className="card h-100 shadow-sm rounded">
-                  <div className="card-body d-flex flex-column">
-                    <div className="d-flex align-items-center mb-3">
-                      <Image
-                        src={provider.profileImage}
-                        alt={provider.name}
-                        height={60}
-                        width={60}
-                        className="rounded-circle me-3 border"
-                      />
-                      <h5 className="card-title h6 font-weight-bold text-primary mb-0">{provider.name}</h5>
-                    </div>
-                    <p className="card-text text-muted mb-2">
-                      {provider.addresses?.[0]?.city}, {provider.addresses?.[0]?.country}
-                    </p>
-                    <div className="d-flex align-items-center mb-3">
-                      <span className="text-success font-weight-bold me-2">{provider.services?.[0]?.averageRating?.toFixed(1) ?? 'N/A'} ★</span>
-                      <span className="text-success small">Disponível</span>
-                    </div>
-                    <Link href={`/perfil/${provider.id}`} className="btn btn-primary mt-auto">
-                      Agendar
-                    </Link>
-                  </div>
-                </div>
+                <ServiceCard provider={provider} />
               </div>
             ))}
           </div>

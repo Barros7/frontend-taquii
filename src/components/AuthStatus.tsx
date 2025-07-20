@@ -22,7 +22,13 @@ export function AuthStatus() {
 
   if (loading) {
     return (
-      <div className="fixed top-0 left-0 w-full h-1">
+      <div style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: '4px'
+      }}>
         <Spinner />
       </div>
     );
@@ -37,7 +43,18 @@ export function AuthGuard({ children }: { children: React.ReactNode }) {
     return <Spinner />;
   }
   if (!user) {
-    return <div>Você precisa estar autenticado para acessar esta página.</div>;
+    return (
+      <div style={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        minHeight: '50vh',
+        fontSize: '1.1rem',
+        color: '#6c757d'
+      }}>
+        Você precisa estar autenticado para acessar esta página.
+      </div>
+    );
   }
   return <>{children}</>;
 }
@@ -48,7 +65,18 @@ export function RoleGuard({ children, allowedRoles }: { children: React.ReactNod
     return <Spinner />;
   }
   if (!user || !allowedRoles.includes(user.userType)) {
-    return <div>Acesso não autorizado.</div>;
+    return (
+      <div style={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        minHeight: '50vh',
+        fontSize: '1.1rem',
+        color: '#dc3545'
+      }}>
+        Acesso não autorizado.
+      </div>
+    );
   }
   return <>{children}</>;
 } 

@@ -38,24 +38,68 @@ export class ErrorBoundary extends Component<Props, State> {
       }
 
       return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-100">
-          <div className="bg-white p-8 rounded-lg shadow-md max-w-md w-full">
-            <h2 className="text-2xl font-bold text-red-600 mb-4">
+        <div style={{
+          minHeight: '100vh',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          backgroundColor: '#f8f9fa'
+        }}>
+          <div style={{
+            backgroundColor: '#ffffff',
+            padding: '2rem',
+            borderRadius: '0.5rem',
+            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+            maxWidth: '28rem',
+            width: '100%'
+          }}>
+            <h2 style={{
+              fontSize: '1.5rem',
+              fontWeight: 'bold',
+              color: '#dc3545',
+              marginBottom: '1rem'
+            }}>
               Oops! Algo deu errado
             </h2>
-            <p className="text-gray-600 mb-6">
+            <p style={{
+              color: '#6c757d',
+              marginBottom: '1.5rem'
+            }}>
               {this.state.error?.message || 'Um erro inesperado ocorreu.'}
             </p>
-            <div className="flex justify-between">
+            <div style={{
+              display: 'flex',
+              justifyContent: 'space-between'
+            }}>
               <button
                 onClick={this.handleRetry}
-                className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors"
+                style={{
+                  backgroundColor: '#007bff',
+                  color: '#ffffff',
+                  padding: '0.5rem 1rem',
+                  borderRadius: '0.25rem',
+                  border: 'none',
+                  cursor: 'pointer',
+                  transition: 'background-color 0.2s'
+                }}
+                onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#0056b3'}
+                onMouseOut={(e) => e.currentTarget.style.backgroundColor = '#007bff'}
               >
                 Tentar Novamente
               </button>
               <button
                 onClick={() => window.location.href = '/'}
-                className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition-colors"
+                style={{
+                  backgroundColor: '#6c757d',
+                  color: '#ffffff',
+                  padding: '0.5rem 1rem',
+                  borderRadius: '0.25rem',
+                  border: 'none',
+                  cursor: 'pointer',
+                  transition: 'background-color 0.2s'
+                }}
+                onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#545b62'}
+                onMouseOut={(e) => e.currentTarget.style.backgroundColor = '#6c757d'}
               >
                 Voltar ao Início
               </button>
