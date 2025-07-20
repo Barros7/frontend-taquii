@@ -2,9 +2,7 @@
 
 import { useEffect, useState, useCallback } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Image from 'next/image';
 import "./ServiceCatalog.css";
-import Link from 'next/link';
 import ServiceCatalogSkeleton from '../service_catalog_skeleton/ServiceCatalogSkeleton';
 import ServiceCard from './ServiceCard';
 

@@ -81,7 +81,7 @@
 
 @media (max-width: 600px) {
   .featuresWrapper {
-    padding: 1.2rem 0 1rem 0;
+    padding: 1.2rem 0.7rem 1rem 0.7rem;
   }
   .title {
     font-size: 1.3rem;
