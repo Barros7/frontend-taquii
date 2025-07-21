@@ -238,7 +238,7 @@ const RegisterForm: React.FC = () => {
               {isLoading ? 'Registrando...' : 'Registrar'}
             </button>
             <div className="text-center mt-3">
-              Já tem uma conta? <a href="/login" className="text-decoration-none">Entre agora!</a>
+              Já tem uma conta? <a href="/login" className="text-decoration-none">Faça o Login aqui!</a>
             </div>
           </form>
         </div>

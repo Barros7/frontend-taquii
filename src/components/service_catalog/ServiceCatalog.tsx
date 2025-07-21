@@ -28,12 +28,55 @@ const angolanProvinces = [
   'Luanda',
 ];
 
+interface Address {
+  id: string;
+  name: string;
+  street: string;
+  number: string | null;
+  complement: string | null;
+  neighborhood: string | null;
+  city: string;
+  state: string;
+  country: string;
+  postalCode: string | null;
+  latitude: number | null;
+  longitude: number | null;
+}
+
+interface GalleryImage {
+  id: string;
+  imageUrl: string;
+  caption?: string;
+  providerId: string;
+}
+
+interface ServiceCategory {
+  category: {
+    id: string;
+    name: string;
+  };
+}
+
+interface Service {
+  id: string;
+  imageUrlService?: string | null;
+  title: string;
+  description: string;
+  duration: number;
+  price: number;
+  averageRating?: number;
+  categories?: ServiceCategory[];
+}
+
 interface IProvider {
   id: string;
   name: string;
+  email?: string;
+  phone?: string;
   profileImage: string;
-  addresses?: { city: string; country: string; }[];
-  services?: { averageRating?: number; }[];
+  galleryImages?: GalleryImage[];
+  addresses?: Address[];
+  services?: Service[];
 }
 
 interface ServiceCatalogProps {
@@ -47,6 +90,174 @@ export default function ServiceCatalog({ categoryName, categoryDescription }: Se
   const [professionals, setProfessionals] = useState<IProvider[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  const MOCK_PROFESSIONALS: IProvider[] = [
+    {
+      id: '1',
+      name: 'Barbearia Classic',
+      email: 'classic@barbearia.com',
+      phone: '+244 912 345 678',
+      profileImage: '/barber.webp',
+      galleryImages: [
+        {
+          id: 'g1',
+          imageUrl: '/barber.webp',
+          caption: 'Corte clássico',
+          providerId: '1',
+        },
+        {
+          id: 'g2',
+          imageUrl: '/beauty.png',
+          caption: 'Barba desenhada',
+          providerId: '1',
+        },
+      ],
+      addresses: [
+        {
+          id: 'a1',
+          name: 'Barbearia Classic',
+          street: 'Rua Principal',
+          number: '123',
+          complement: null,
+          neighborhood: 'Centro',
+          city: 'Luanda',
+          state: 'Luanda',
+          country: 'Angola',
+          postalCode: '1000',
+          latitude: null,
+          longitude: null,
+        },
+      ],
+      services: [
+        {
+          id: 's1',
+          imageUrlService: '/barber.webp',
+          title: 'Corte Masculino',
+          description: 'Corte clássico e moderno',
+          duration: 1,
+          price: 5000,
+          averageRating: 4.8,
+          categories: [
+            { category: { id: 'c1', name: 'Barbearia' } },
+          ],
+        },
+        {
+          id: 's2',
+          imageUrlService: '/beauty.png',
+          title: 'Barba Completa',
+          description: 'Barba desenhada e aparada',
+          duration: 1,
+          price: 7000,
+          averageRating: 4.7,
+          categories: [
+            { category: { id: 'c2', name: 'Barba' } },
+          ],
+        },
+      ],
+    },
+    {
+      id: '2',
+      name: 'Salão Beleza VIP',
+      email: 'vip@beleza.com',
+      phone: '+244 987 654 321',
+      profileImage: '/beauty.png',
+      galleryImages: [
+        {
+          id: 'g3',
+          imageUrl: '/beauty.png',
+          caption: 'Cabelo e maquiagem',
+          providerId: '2',
+        },
+        {
+          id: 'g4',
+          imageUrl: '/photo.jpg',
+          caption: 'Transformação',
+          providerId: '2',
+        },
+      ],
+      addresses: [
+        {
+          id: 'a2',
+          name: 'Salão Beleza VIP',
+          street: 'Av. das Flores',
+          number: '456',
+          complement: 'Sala 2',
+          neighborhood: 'Centro',
+          city: 'Benguela',
+          state: 'Benguela',
+          country: 'Angola',
+          postalCode: '2000',
+          latitude: null,
+          longitude: null,
+        },
+      ],
+      services: [
+        {
+          id: 's3',
+          imageUrlService: '/beauty.png',
+          title: 'Maquiagem Profissional',
+          description: 'Maquiagem para eventos e festas',
+          duration: 2,
+          price: 10000,
+          averageRating: 4.9,
+          categories: [
+            { category: { id: 'c3', name: 'Maquiagem' } },
+          ],
+        },
+      ],
+    },
+    {
+      id: '3',
+      name: 'PetShop Miau',
+      email: 'contato@miau.com',
+      phone: '+244 999 888 777',
+      profileImage: '/petshops.webp',
+      galleryImages: [
+        {
+          id: 'g5',
+          imageUrl: '/petshops.webp',
+          caption: 'Banho e tosa',
+          providerId: '3',
+        },
+        {
+          id: 'g6',
+          imageUrl: '/main.svg',
+          caption: 'Produtos para pets',
+          providerId: '3',
+        },
+      ],
+      addresses: [
+        {
+          id: 'a3',
+          name: 'PetShop Miau',
+          street: 'Rua dos Animais',
+          number: '789',
+          complement: null,
+          neighborhood: 'Bairro Novo',
+          city: 'Huambo',
+          state: 'Huambo',
+          country: 'Angola',
+          postalCode: '3000',
+          latitude: null,
+          longitude: null,
+        },
+      ],
+      services: [
+        {
+          id: 's4',
+          imageUrlService: '/petshops.webp',
+          title: 'Banho e Tosa',
+          description: 'Cuidados completos para seu pet',
+          duration: 1,
+          price: 8000,
+          averageRating: 4.6,
+          categories: [
+            { category: { id: 'c4', name: 'Petshop' } },
+          ],
+        },
+      ],
+    },
+  ];
 
   const fetchProfessionals = useCallback(async () => {
     setLoading(true);
@@ -91,6 +302,9 @@ export default function ServiceCatalog({ categoryName, categoryDescription }: Se
   useEffect(() => {
     fetchProfessionals();
   }, [fetchProfessionals]);
+
+  // Se não houver dados da API, mostra mock
+  const displayProfessionals = professionals.length > 0 ? professionals : MOCK_PROFESSIONALS;
 
   return (
     <section className="container my-4">
@@ -153,12 +367,12 @@ export default function ServiceCatalog({ categoryName, categoryDescription }: Se
         {/* Lista de profissionais */}
         {loading && <ServiceCatalogSkeleton categoryName={categoryName} categoryDescription={categoryDescription} />}
         {error && <p className="text-center text-danger">{error}</p>}
-        {!loading && !error && professionals.length === 0 && (
+        {!loading && !error && displayProfessionals.length === 0 && (
           <p className="text-center">Nenhum profissional encontrado com os filtros aplicados.</p>
         )}
-        {!loading && !error && professionals.length > 0 && (
+        {!loading && !error && displayProfessionals.length > 0 && (
           <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
-            {professionals.map((provider) => (
+            {displayProfessionals.map((provider) => (
               <div key={provider.id} className="col">
                 <ServiceCard provider={provider} />
               </div>
