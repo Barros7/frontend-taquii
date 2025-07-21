@@ -1,198 +1,153 @@
 import Image from 'next/image';
 import React, { useState } from 'react';
-import styles from './NavBar.module.css';
-import { FaArrowLeft, FaPhoneAlt, FaStar, FaCalendarAlt } from 'react-icons/fa';
+import styles from './ProviderProfile.module.css';
+import ServicesSection from '../company_profile/CompanyProfile';
+import AboutSection from '../about_section/AboutSection';
+import GallerySection from '../galary_section/GallerySection';
 import { useRouter } from 'next/navigation';
 
-// Mock data fallback
-const mockProvider = {
-  name: 'João Silva',
-  profileImage: '/barber.webp',
-  category: 'Barbeiro',
-  rating: 4.8,
-  address: 'Benguela, Centro',
-  schedule: 'Seg-Sex: 08h-18h',
-  phone: '+244 123 456 789',
-  email: 'joao.silva@email.com',
-  galleryImages: [
-    { id: '1', imageUrl: '/photo.jpg' },
-    { id: '2', imageUrl: '/barber.webp' },
-    { id: '3', imageUrl: '/beauty.png' },
-    { id: '4', imageUrl: '/petshops.webp' },
-    { id: '5', imageUrl: '/main.svg' },
-    { id: '6', imageUrl: '/logo/j2b_code_logo.png' },
-  ],
-  services: [
-    { id: '1', title: 'Corte Masculino', description: 'Corte clássico e moderno', price: 5000, imageUrlService: '/barber.webp' },
-    { id: '2', title: 'Barba Completa', description: 'Barba desenhada e aparada', price: 7000, imageUrlService: '/beauty.png' },
-    { id: '3', title: 'Tratamento Capilar', description: 'Hidratação e revitalização', price: 15000, imageUrlService: '/photo.jpg' },
-  ],
-};
+interface Service {
+  id: string;
+  title: string;
+  duration: number;
+  status: 'Disponível' | 'Indisponível';
+  description: string;
+  price: number;
+  averageRating?: number;
+  providerId: string;
+}
 
-const TABS = [
-  { key: 'servicos', label: 'Serviços' },
-  { key: 'galeria', label: 'Galeria' },
-  { key: 'sobre', label: 'Sobre' },
-  { key: 'contato', label: 'Contato' },
-];
+interface IProviderDetails {
+  provider: {
+    id: string;
+    name: string;
+    profileImage: string;
+    galleryImages?: { id: string; imageUrl: string; }[];
+    addresses?: { city: string; country: string; }[];
+    services?: {
+      id: string;
+      title: string;
+      duration: number;
+      status: 'Disponível' | 'Indisponível';
+      description: string;
+      price: number;
+      averageRating?: number;
+    }[];
+    category?: string;
+    rating?: number;
+    schedule?: string;
+    phone?: string;
+    email?: string;
+  };
+}
 
-export const ProviderDetails = ({ provider }) => {
+const DUMMY_SCHEDULE = 'Seg-Sex: 08h-18h, Sáb: 08h-12h';
+const DUMMY_PHONE = '+244 123 456 789';
+const DUMMY_EMAIL = 'joao.silva@email.com';
+
+export const ProviderDetails: React.FC<IProviderDetails> = ({ provider }) => {
+  const [activeTab, setActiveTab] = useState<'servicos' | 'galeria' | 'sobre' | 'contato'>('servicos');
   const router = useRouter();
-  const [activeTab, setActiveTab] = useState('servicos');
-  const [modalImg, setModalImg] = useState(null);
-  const data = provider || mockProvider;
 
-  // Header
-  const HeaderSection = () => (
-    <div style={{
-      background: 'linear-gradient(90deg, #4F46E5 0%, #6366f1 100%)',
-      borderRadius: '0 0 24px 24px',
-      padding: '2rem 1rem 1.5rem 1rem',
-      color: '#fff',
-      position: 'relative',
-      marginBottom: 32,
-      boxShadow: '0 4px 24px rgba(79,70,229,0.10)'
-    }}>
-      <button onClick={() => router.back()} style={{
-        position: 'absolute', left: 24, top: 24, background: 'rgba(255,255,255,0.15)', border: 'none', borderRadius: '50%', width: 40, height: 40, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', cursor: 'pointer', boxShadow: '0 2px 8px rgba(0,0,0,0.08)'
-      }} aria-label="Voltar">
-        <FaArrowLeft size={20} />
-      </button>
-      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12 }}>
-        <Image src={data.profileImage} alt={data.name} width={96} height={96} style={{ borderRadius: '50%', border: '4px solid #fff', objectFit: 'cover', boxShadow: '0 2px 12px rgba(79,70,229,0.13)' }} />
-        <h2 style={{ fontWeight: 800, fontSize: 28, margin: 0 }}>{data.name}</h2>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 18 }}>
-          <span style={{ color: '#ffd700' }}><FaStar /></span>
-          <span style={{ fontWeight: 700 }}>{data.rating}</span>
-          <span style={{ fontSize: 15, color: '#ede9fe' }}>({provider?.services?.[0]?.averageRating ? provider.services[0].averageRating : '127'} avaliações)</span>
-        </div>
-        <div style={{ color: '#ede9fe', fontSize: 16 }}>{data.category || 'Profissional'} • {data.address || 'Endereço'}</div>
-        <div style={{ color: '#ede9fe', fontSize: 15, display: 'flex', alignItems: 'center', gap: 8 }}>
-          <FaCalendarAlt /> <span>{data.schedule}</span>
-        </div>
-        <div style={{ display: 'flex', gap: 16, marginTop: 16 }}>
-          <button style={{ background: '#fff', color: '#4F46E5', border: 'none', borderRadius: 999, padding: '0.7rem 1.5rem', fontWeight: 700, fontSize: 16, boxShadow: '0 2px 12px rgba(79,70,229,0.13)', display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer', transition: 'background 0.2s' }} onClick={() => router.push(`/agendar/${data.services?.[0]?.id || 1}`)}>
-            <FaCalendarAlt /> Agendar Serviço
-          </button>
-          <a href={`tel:${data.phone}`} style={{ background: 'linear-gradient(90deg, #4F46E5 0%, #6366f1 100%)', color: '#fff', border: 'none', borderRadius: 999, padding: '0.7rem 1.5rem', fontWeight: 700, fontSize: 16, boxShadow: '0 2px 12px rgba(79,70,229,0.13)', display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer', textDecoration: 'none', transition: 'background 0.2s' }}>
-            <FaPhoneAlt /> Ligar
-          </a>
-        </div>
-      </div>
-    </div>
-  );
+  const servicesWithProviderId: Service[] = (provider.services ?? []).map(service => ({
+    ...service,
+    providerId: provider.id,
+  }));
 
-  // Tabs
-  const Tabs = () => (
-    <nav style={{ background: '#fff', borderRadius: 12, boxShadow: '0 2px 8px rgba(79,70,229,0.06)', margin: '0 auto 2rem auto', maxWidth: 900, padding: 0 }}>
-      <ul style={{ display: 'flex', justifyContent: 'space-around', alignItems: 'center', margin: 0, padding: 0, listStyle: 'none', height: 56 }}>
-        {TABS.map(tab => (
-          <li key={tab.key} style={{ flex: 1, textAlign: 'center', height: '100%' }}>
-            <button
-              style={{
-                background: 'none',
-                border: 'none',
-                color: activeTab === tab.key ? '#4F46E5' : '#222',
-                fontWeight: activeTab === tab.key ? 700 : 500,
-                fontSize: 17,
-                height: '100%',
-                width: '100%',
-                borderBottom: activeTab === tab.key ? '3px solid #4F46E5' : '3px solid transparent',
-                cursor: 'pointer',
-                transition: 'color 0.2s, border 0.2s',
-                outline: 'none',
-              }}
-              onClick={() => setActiveTab(tab.key)}
-            >
-              {tab.label}
-            </button>
-          </li>
-        ))}
-      </ul>
-    </nav>
-  );
-
-  // Serviços
-  const ServicesTab = () => (
-    <div className="container py-4">
-      <div className="row g-4">
-        {data.services.map((service, idx) => (
-          <div className="col-12 col-md-6 col-lg-4" key={service.id}>
-            <div style={{ background: '#fff', borderRadius: 16, boxShadow: '0 2px 12px rgba(79,70,229,0.06)', padding: 20, transition: 'box-shadow 0.2s, transform 0.18s', cursor: 'pointer', minHeight: 220, display: 'flex', flexDirection: 'column', gap: 12, alignItems: 'center', border: '2px solid transparent' }}
-              onMouseOver={e => { e.currentTarget.style.boxShadow = '0 6px 24px rgba(79,70,229,0.13)'; e.currentTarget.style.transform = 'translateY(-4px) scale(1.04)'; e.currentTarget.style.border = '2px solid #4F46E5'; }}
-              onMouseOut={e => { e.currentTarget.style.boxShadow = '0 2px 12px rgba(79,70,229,0.06)'; e.currentTarget.style.transform = 'none'; e.currentTarget.style.border = '2px solid transparent'; }}
-            >
-              <Image src={service.imageUrlService || '/barber.webp'} alt={service.title} width={80} height={80} style={{ borderRadius: 12, objectFit: 'cover', marginBottom: 8 }} />
-              <h5 style={{ fontWeight: 700, color: '#222', margin: 0 }}>{service.title}</h5>
-              <p style={{ color: '#6b7280', fontSize: 15, margin: 0, textAlign: 'center' }}>{service.description}</p>
-              <div style={{ fontWeight: 700, color: '#4F46E5', fontSize: 18 }}>{service.price.toLocaleString()} Kz</div>
-              <button style={{ background: 'linear-gradient(90deg, #4F46E5 0%, #6366f1 100%)', color: '#fff', border: 'none', borderRadius: 999, padding: '0.6rem 1.2rem', fontWeight: 600, fontSize: 15, marginTop: 8, boxShadow: '0 2px 8px rgba(79,70,229,0.10)', cursor: 'pointer', transition: 'background 0.2s' }} onClick={() => router.push(`/agendar/${service.id}`)}>
-                Agendar
-              </button>
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-
-  // Galeria
-  const GalleryTab = () => (
-    <div className="container py-4">
-      <div className="row g-3">
-        {data.galleryImages.map(img => (
-          <div className="col-6 col-md-4 col-lg-4" key={img.id}>
-            <div style={{ borderRadius: 12, overflow: 'hidden', boxShadow: '0 2px 8px rgba(79,70,229,0.06)', cursor: 'pointer', transition: 'box-shadow 0.2s' }} onClick={() => setModalImg(img.imageUrl)}>
-              <Image src={img.imageUrl} alt="Galeria" width={300} height={200} style={{ width: '100%', height: 180, objectFit: 'cover', display: 'block' }} />
-            </div>
-          </div>
-        ))}
-      </div>
-      {/* Modal */}
-      {modalImg && (
-        <div style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', background: 'rgba(30, 41, 59, 0.85)', zIndex: 9999, display: 'flex', alignItems: 'center', justifyContent: 'center' }} onClick={() => setModalImg(null)}>
-          <img src={modalImg} alt="Galeria" style={{ maxWidth: '90vw', maxHeight: '80vh', borderRadius: 16, boxShadow: '0 8px 32px rgba(0,0,0,0.25)' }} />
-        </div>
-      )}
-    </div>
-  );
-
-  // Sobre
-  const SobreTab = () => (
-    <div className="container py-4">
-      <div style={{ background: '#fff', borderRadius: 16, boxShadow: '0 2px 12px rgba(79,70,229,0.06)', padding: 32, color: '#222', fontSize: 17, lineHeight: 1.7, maxWidth: 800, margin: '0 auto' }}>
-        <h4 style={{ color: '#4F46E5', fontWeight: 700, marginBottom: 16 }}>Sobre {data.name}</h4>
-        <p>Profissional com anos de experiência em {data.category}. Atendimento personalizado, ambiente confortável e compromisso com a satisfação do cliente.</p>
-        <ul style={{ color: '#6b7280', fontSize: 15, marginTop: 16 }}>
-          <li>Atendimento com hora marcada</li>
-          <li>Ambiente climatizado</li>
-          <li>Produtos de alta qualidade</li>
-        </ul>
-      </div>
-    </div>
-  );
-
-  // Contato
-  const ContatoTab = () => (
-    <div className="container py-4">
-      <div style={{ background: '#fff', borderRadius: 16, boxShadow: '0 2px 12px rgba(79,70,229,0.06)', padding: 32, color: '#222', fontSize: 17, lineHeight: 1.7, maxWidth: 800, margin: '0 auto' }}>
-        <h4 style={{ color: '#4F46E5', fontWeight: 700, marginBottom: 16 }}>Contato</h4>
-        <div style={{ marginBottom: 12 }}><strong>Telefone:</strong> <a href={`tel:${data.phone}`} style={{ color: '#4F46E5', textDecoration: 'none' }}>{data.phone}</a></div>
-        <div style={{ marginBottom: 12 }}><strong>Email:</strong> <a href={`mailto:${data.email}`} style={{ color: '#4F46E5', textDecoration: 'none' }}>{data.email}</a></div>
-        <div style={{ marginBottom: 12 }}><strong>Endereço:</strong> {data.address}</div>
-        <div style={{ marginBottom: 12 }}><strong>Horários:</strong> {data.schedule}</div>
-      </div>
-    </div>
-  );
+  const handleBack = () => router.back();
+  const handleAgendar = () => router.push(`/agendar/${provider.id}`);
+  const handleCall = () => window.open(`tel:${provider.phone || DUMMY_PHONE}`);
 
   return (
-    <div style={{ background: '#f8fafc', minHeight: '100vh', paddingBottom: 32 }}>
-      <HeaderSection />
-      <Tabs />
-      {activeTab === 'servicos' && <ServicesTab />}
-      {activeTab === 'galeria' && <GalleryTab />}
-      {activeTab === 'sobre' && <SobreTab />}
-      {activeTab === 'contato' && <ContatoTab />}
+    <div>
+      {/* HEADER */}
+      <div className={styles.profileHeader}>
+        <button className={styles.backButton} onClick={handleBack} title="Voltar">
+          <svg width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
+        </button>
+        <div className={styles.headerInfo}>
+          <Image
+            src={provider.profileImage || '/avatar.png'}
+            alt={provider.name}
+            width={110}
+            height={110}
+            className={styles.avatar}
+          />
+          <div className={styles.name}>{provider.name}</div>
+          <div className={styles.rating}>
+            {Array.from({ length: 5 }).map((_, i) => (
+              <span key={i}>{i < Math.round(provider.rating ?? provider.services?.[0]?.averageRating ?? 4.8) ? '★' : '☆'}</span>
+            ))}
+            <span style={{ color: '#fff', marginLeft: 4 }}>{(provider.rating ?? provider.services?.[0]?.averageRating ?? 4.8).toFixed(1)}</span>
+          </div>
+          <div className={styles.address}>
+            <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            {provider.addresses?.[0]?.city}, {provider.addresses?.[0]?.country}
+          </div>
+          <div className={styles.schedule}>
+            <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+            {provider.schedule || DUMMY_SCHEDULE}
+          </div>
+          <div className={styles.headerActions}>
+            <button className={styles.actionBtn} onClick={handleAgendar}>
+              <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M8 17l4 4 4-4m-4-5v9"/></svg>
+              Agendar Serviço
+            </button>
+            <button className={styles.actionBtn} onClick={handleCall}>
+              <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M22 16.92V21a2 2 0 0 1-2.18 2A19.72 19.72 0 0 1 3 5.18 2 2 0 0 1 5 3h4.09a2 2 0 0 1 2 1.72c.13 1.13.37 2.23.72 3.28a2 2 0 0 1-.45 2.11l-1.27 1.27a16 16 0 0 0 6.29 6.29l1.27-1.27a2 2 0 0 1 2.11-.45c1.05.35 2.15.59 3.28.72A2 2 0 0 1 21 18.91z"/></svg>
+              Ligar
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* TABS */}
+      <nav className={styles.tabsNav}>
+        <button className={`${styles.tabBtn} ${activeTab === 'servicos' ? styles.active : ''}`} onClick={() => setActiveTab('servicos')}>Serviços</button>
+        <button className={`${styles.tabBtn} ${activeTab === 'galeria' ? styles.active : ''}`} onClick={() => setActiveTab('galeria')}>Galeria</button>
+        <button className={`${styles.tabBtn} ${activeTab === 'sobre' ? styles.active : ''}`} onClick={() => setActiveTab('sobre')}>Sobre</button>
+        <button className={`${styles.tabBtn} ${activeTab === 'contato' ? styles.active : ''}`} onClick={() => setActiveTab('contato')}>Contato</button>
+      </nav>
+
+      {/* TABS CONTENT */}
+      <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 1rem' }}>
+        {activeTab === 'servicos' && (
+          <ServicesSection items={servicesWithProviderId} />
+        )}
+        {activeTab === 'galeria' && (
+          <GallerySection items={(provider.galleryImages ?? []).map(img => ({ ...img, caption: '' }))} />
+        )}
+        {activeTab === 'sobre' && (
+          <AboutSection
+            title={`Sobre ${provider.name}`}
+            description={`Profissional da categoria ${provider.category || 'Serviço'} com experiência e dedicação. Atendimento de qualidade e foco no cliente.`}
+            imageUrl={provider.profileImage || '/avatar.png'}
+            imageAlt={provider.name}
+            additionalInfo={[
+              'Rating: 4.8 estrelas',
+              'Endereço: ' + (provider.addresses?.[0]?.city || 'Cidade') + ', ' + (provider.addresses?.[0]?.country || 'País'),
+              'Horários: ' + (provider.schedule || DUMMY_SCHEDULE),
+            ]}
+          />
+        )}
+        {activeTab === 'contato' && (
+          <div style={{ background: '#fff', borderRadius: 16, boxShadow: '0 2px 12px rgba(79,70,229,0.06)', padding: '2rem', maxWidth: 500, margin: '2rem auto' }}>
+            <h4 style={{ color: '#4F46E5', fontWeight: 700, marginBottom: 16 }}>Contato</h4>
+            <div style={{ marginBottom: 12 }}>
+              <strong>Telefone:</strong> <a href={`tel:${provider.phone || DUMMY_PHONE}`} style={{ color: '#4F46E5', textDecoration: 'none' }}>{provider.phone || DUMMY_PHONE}</a>
+            </div>
+            <div style={{ marginBottom: 12 }}>
+              <strong>Email:</strong> <a href={`mailto:${provider.email || DUMMY_EMAIL}`} style={{ color: '#4F46E5', textDecoration: 'none' }}>{provider.email || DUMMY_EMAIL}</a>
+            </div>
+            <div style={{ marginBottom: 12 }}>
+              <strong>Endereço:</strong> {provider.addresses?.[0]?.city}, {provider.addresses?.[0]?.country}
+            </div>
+            <div>
+              <strong>Horários:</strong> {provider.schedule || DUMMY_SCHEDULE}
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

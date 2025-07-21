@@ -1,0 +1,157 @@
+.profileHeader {
+  background: linear-gradient(90deg, #4F46E5 0%, #6366f1 100%);
+  color: #fff;
+  padding: 2.5rem 1.5rem 1.5rem 1.5rem;
+  border-radius: 0 0 32px 32px;
+  position: relative;
+  box-shadow: 0 8px 32px rgba(79,70,229,0.10);
+  margin-bottom: 2rem;
+}
+
+.backButton {
+  position: absolute;
+  top: 1.5rem;
+  left: 1.5rem;
+  background: rgba(255,255,255,0.15);
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: background 0.2s;
+  z-index: 2;
+}
+.backButton:hover {
+  background: rgba(255,255,255,0.25);
+}
+
+.avatar {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid #fff;
+  box-shadow: 0 2px 12px rgba(79,70,229,0.13);
+  margin-bottom: 1rem;
+}
+
+.headerInfo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.name {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: 0.2rem;
+  letter-spacing: -0.01em;
+}
+
+.rating {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 1.1rem;
+  color: #ffd700;
+  font-weight: 600;
+}
+
+.address, .schedule {
+  color: #e0e7ff;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.headerActions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.2rem;
+}
+
+.actionBtn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #fff;
+  color: #4F46E5;
+  border: none;
+  border-radius: 999px;
+  padding: 0.7rem 1.5rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+  box-shadow: 0 2px 12px rgba(79,70,229,0.13);
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, transform 0.18s;
+}
+.actionBtn:hover {
+  background: #ede9fe;
+  color: #6366f1;
+  transform: translateY(-2px) scale(1.03);
+}
+
+.tabsNav {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-bottom: 2rem;
+  background: #ede9fe;
+  border-radius: 999px;
+  padding: 0.5rem 0.5rem;
+  box-shadow: 0 2px 12px rgba(79,70,229,0.05);
+}
+.tabBtn {
+  background: none;
+  border: none;
+  color: #4F46E5;
+  font-size: 1.1rem;
+  font-weight: 600;
+  padding: 0.7rem 1.5rem;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+.tabBtn.active, .tabBtn:focus {
+  background: linear-gradient(90deg, #4F46E5 0%, #6366f1 100%);
+  color: #fff;
+}
+
+@media (max-width: 768px) {
+  .profileHeader {
+    padding: 2rem 0.5rem 1rem 0.5rem;
+    border-radius: 0 0 18px 18px;
+  }
+  .avatar {
+    width: 80px;
+    height: 80px;
+  }
+  .name {
+    font-size: 1.2rem;
+  }
+  .headerActions {
+    flex-direction: column;
+    gap: 0.7rem;
+    width: 100%;
+  }
+  .actionBtn {
+    width: 100%;
+    justify-content: center;
+  }
+  .tabsNav {
+    gap: 0.5rem;
+    padding: 0.3rem 0.2rem;
+  }
+  .tabBtn {
+    font-size: 1rem;
+    padding: 0.5rem 0.7rem;
+  }
+} 
