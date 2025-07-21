@@ -2,6 +2,7 @@
 import React, { useEffect, useState, useCallback } from "react"; // Adicionado useCallback
 import styles from "./users.module.css";
 import UserModal from "./UserModal";
+import { Spinner } from '@/components/Spinner';
 
 interface User {
   id: string;
@@ -154,7 +155,7 @@ export default function UsersPage() {
   );
 
   if (loading) {
-    return <div className={styles.container}>Carregando...</div>;
+    return <div className={styles.container}><Spinner /></div>;
   }
 
   if (error) {

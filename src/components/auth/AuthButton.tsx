@@ -4,6 +4,7 @@ import React from 'react';
 import { useAuth } from '@/context/AuthContext';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { Spinner } from '@/components/Spinner';
 
 const AuthButton: React.FC = () => {
   const { user, logout, loading } = useAuth();
@@ -24,11 +25,7 @@ const AuthButton: React.FC = () => {
   };
 
   if (loading) {
-    return (
-      <button className="btn btn-outline-primary" disabled>
-        Carregando...
-      </button>
-    );
+    return <Spinner />;
   }
 
   if (user) {

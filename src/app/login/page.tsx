@@ -150,18 +150,7 @@ function LoginForm() {
               zIndex: 9999
             }}
           >
-            <div 
-              style={{
-                backgroundColor: 'white',
-                padding: '2rem',
-                borderRadius: '8px',
-                boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-                textAlign: 'center'
-              }}
-            >
-              <Spinner />
-              <p className="mt-3 text-muted mb-0">Carregando...</p>
-            </div>
+             <Spinner />
           </div>
         )}
       </div>
@@ -171,7 +160,7 @@ function LoginForm() {
 
 export default function LoginPage() {
   return (
-    <Suspense fallback={<div>Carregando...</div>}>
+    <Suspense fallback={<Spinner />}>
       <LoginForm />
     </Suspense>
   );

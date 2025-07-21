@@ -5,6 +5,7 @@ import Link from 'next/link';
 import styles from './provider.module.css';
 import { adminService } from '@/services/adminService';
 import { useAuth } from '@/context/AuthContext';
+import { Spinner } from '@/components/Spinner';
 
 const ProviderDashboard = () => {
   const { user, loading: authLoading } = useAuth();
@@ -41,7 +42,7 @@ const ProviderDashboard = () => {
       <div className={styles.dashboard}>
         <div className="d-flex justify-content-center align-items-center" style={{ height: '50vh' }}>
           <div className="spinner-border text-primary" role="status">
-            <span className="visually-hidden">Carregando...</span>
+            <span className="visually-hidden"><Spinner /></span>
           </div>
         </div>
       </div>

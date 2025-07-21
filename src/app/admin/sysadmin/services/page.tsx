@@ -1,6 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import styles from "./services.module.css";
+import { Spinner } from '@/components/Spinner';
 
 interface Service {
   id: string;
@@ -151,7 +152,7 @@ export default function ServicesPage() {
         <button className={styles.button} onClick={() => handleOpenModal()}>Novo Serviço</button>
       </div>
       {loading ? (
-        <div>Carregando...</div>
+        <div><Spinner /></div>
       ) : error ? (
         <div style={{ color: 'red' }}>{error}</div>
       ) : (

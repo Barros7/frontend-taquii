@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
 import Header from '@/components/header/Header';
 import { apiService, Appointment, Payment } from '@/services/apiService';
+import { Spinner } from '@/components/Spinner';
 
 export default function ConfirmacaoPage({ params }: { params: Promise<{ appointmentId: string }> }) {
   const router = useRouter();
@@ -97,7 +98,7 @@ export default function ConfirmacaoPage({ params }: { params: Promise<{ appointm
       <>
         <Header />
         <div style={{ background: '#0a1833', minHeight: '100vh', padding: 32, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <div style={{ color: '#fff', fontSize: 18 }}>Carregando...</div>
+          <div style={{ color: '#fff', fontSize: 18 }}><Spinner /></div>
         </div>
       </>
     );

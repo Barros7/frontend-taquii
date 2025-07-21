@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import './ServiceCard.css';
 import { Card, Button } from 'react-bootstrap';
+import { Spinner } from '@/components/Spinner';
 
 interface Product {
   id: number;
@@ -40,7 +41,7 @@ const ServiceCard = () => {
     getServiceData();
   }, [product]);
 
-  if (!product) return <p className="text-center">Carregando...</p>;
+  if (!product) return <div className="text-center"><Spinner /></div>;
 
   return (
     <Card className={`shadow-sm p-3 ${"productCard"}`}>

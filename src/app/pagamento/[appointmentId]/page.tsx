@@ -6,6 +6,7 @@ import { useAuth } from '@/context/AuthContext';
 import Header from '@/components/header/Header';
 import { apiService, Appointment, PaymentQRCodeResponse } from '@/services/apiService';
 import Image from 'next/image';
+import { Spinner } from '@/components/Spinner';
 
 const metodos = [
   { key: 'reference', label: 'Por Referência' },
@@ -218,7 +219,7 @@ export default function PagamentoPage({ params }: { params: Promise<{ appointmen
       <>
         <Header />
         <div style={{ background: '#0a1833', minHeight: '100vh', padding: 32, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <div style={{ color: '#fff', fontSize: 18 }}>Carregando...</div>
+          <div style={{ color: '#fff', fontSize: 18 }}><Spinner /></div>
         </div>
       </>
     );

@@ -1,6 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import styles from "./payments.module.css";
+import { Spinner } from '@/components/Spinner';
 
 interface Payment {
   id: string;
@@ -118,7 +119,7 @@ export default function PaymentsPage() {
   };
 
   if (loading) {
-    return <div className={styles.container}>Carregando...</div>;
+    return <div className={styles.container}><Spinner /></div>;
   }
 
   if (error) {

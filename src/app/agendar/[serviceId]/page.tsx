@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
 import Header from '@/components/header/Header';
 import { apiService, Service } from '@/services/apiService';
+import { Spinner } from '@/components/Spinner';
 
 const horarios = [
   '08:00', '09:00', '10:00', '11:00',
@@ -167,7 +168,7 @@ export default function AgendarPage({ params }: { params: Promise<{ serviceId: s
       <>
         <Header />
         <div style={{ background: '#0a1833', minHeight: '100vh', padding: 32, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <div style={{ color: '#fff', fontSize: 18 }}>Carregando...</div>
+          <div style={{ color: '#fff', fontSize: 18 }}><Spinner /></div>
         </div>
       </>
     );

@@ -4,6 +4,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import { useRouter } from 'next/navigation';
 import styles from './profile.module.css';
+import { Spinner } from '@/components/Spinner';
 
 interface UserProfile {
   id: string;
@@ -89,7 +90,7 @@ export default function ProfilePage() {
   if (loading) {
     return (
       <div className={styles.container}>
-        <div className={styles.loading}>Carregando...</div>
+        <div className={styles.loading}><Spinner /></div>
       </div>
     );
   }

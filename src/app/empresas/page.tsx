@@ -6,6 +6,7 @@ import { Suspense } from 'react';
 import Header from '@/components/header/Header';
 import ServiceCatalog from '@/components/service_catalog/ServiceCatalog';
 import styles from './Empresas.module.css';
+import { Spinner } from '@/components/Spinner';
 
 function EmpresasContent() {
   const searchParams = useSearchParams();
@@ -27,7 +28,7 @@ function EmpresasContent() {
 
 export default function EmpresasPage() {
   return (
-    <Suspense fallback={<div>Carregando...</div>}>
+    <Suspense fallback={<Spinner />}>
       <EmpresasContent />
     </Suspense>
   );
