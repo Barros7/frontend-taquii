@@ -58,7 +58,7 @@ const BusinessCategoriesSection = () => {
             ? Array.from({ length: 6 }).map((_, i) => <SkeletonCard key={i} />)
             : categories.length > 0 ? (
                 categories.map((category) => (
-                  <div className="col-4 col-sm-2 col-md-2 py-2" key={category.id}>
+                  <div className="col-4 col-sm-2 col-md-2 p-2" key={category.id}>
                     <Link
                       href={`/empresas?search=${encodeURIComponent(category.name)}`}
                       className="hiperlink card card-custom d-flex flex-column align-items-center justify-content-center"
