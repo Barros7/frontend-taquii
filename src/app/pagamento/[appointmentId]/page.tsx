@@ -7,6 +7,7 @@ import Header from '@/components/header/Header';
 import { apiService, Appointment, PaymentQRCodeResponse } from '@/services/apiService';
 import Image from 'next/image';
 import { Spinner } from '@/components/Spinner';
+import styles from '../Pagamento.module.css';
 
 const metodos = [
   { key: 'reference', label: 'Por Referência' },
@@ -218,8 +219,8 @@ export default function PagamentoPage({ params }: { params: Promise<{ appointmen
     return (
       <>
         <Header />
-        <div style={{ background: '#0a1833', minHeight: '100vh', padding: 32, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <div style={{ color: '#fff', fontSize: 18 }}><Spinner /></div>
+        <div className={styles.pagamentoBg} style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <Spinner />
         </div>
       </>
     );
@@ -229,7 +230,7 @@ export default function PagamentoPage({ params }: { params: Promise<{ appointmen
     return (
       <>
         <Header />
-        <div style={{ background: '#0a1833', minHeight: '100vh', padding: 32, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <div className={styles.pagamentoBg} style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           <div style={{ color: '#ef4444', fontSize: 18, textAlign: 'center' }}>
             <div style={{ marginBottom: 16 }}>Erro ao carregar dados</div>
             <div style={{ fontSize: 14, color: '#94a3b8' }}>{error}</div>
@@ -237,7 +238,7 @@ export default function PagamentoPage({ params }: { params: Promise<{ appointmen
               onClick={() => window.location.reload()} 
               style={{ 
                 marginTop: 16, 
-                background: '#2563eb', 
+                background: '#4F46E5', 
                 color: '#fff', 
                 padding: '8px 16px', 
                 borderRadius: 6, 
@@ -256,21 +257,21 @@ export default function PagamentoPage({ params }: { params: Promise<{ appointmen
   return (
     <>
       <Header />
-      <div style={{ background: '#0a1833', minHeight: '100vh', padding: 16 }}>
-        {/* Stepper responsivo */}
-        <div className="d-flex flex-wrap align-items-center gap-2 gap-md-4 text-white mb-4" style={{fontSize: 16}}>
-          <div className="d-flex align-items-center gap-2 opacity-50">
-            <div style={{ width: 32, height: 32, borderRadius: 16, background: '#1e293b', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700 }}>1</div>
+      <div className={styles.pagamentoBg}>
+        {/* Stepper */}
+        <div className={styles.stepper}>
+          <div className={styles.step}>
+            <div className={styles.stepCircle}>1</div>
             <span>Agendamento</span>
           </div>
-          <div style={{ height: 2, width: 40, background: '#2563eb' }} />
-          <div className="d-flex align-items-center gap-2">
-            <div style={{ width: 32, height: 32, borderRadius: 16, background: '#2563eb', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700 }}>2</div>
+          <div className={styles.stepLine} />
+          <div className={`${styles.step} ${styles.active}`}> 
+            <div className={styles.stepCircle}>2</div>
             <span>Pagamento</span>
           </div>
-          <div style={{ height: 2, width: 40, background: '#2563eb' }} />
-          <div className="d-flex align-items-center gap-2 opacity-50">
-            <div style={{ width: 32, height: 32, borderRadius: 16, background: '#1e293b', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700 }}>3</div>
+          <div className={styles.stepLine} />
+          <div className={styles.step}>
+            <div className={styles.stepCircle}>3</div>
             <span>Confirmação</span>
           </div>
         </div>
@@ -278,14 +279,14 @@ export default function PagamentoPage({ params }: { params: Promise<{ appointmen
         <div className="row g-4 flex-column flex-md-row">
           {/* Coluna de pagamento */}
           <div className="col-12 col-md-6">
-            <div style={{ background: '#12224a', borderRadius: 12, padding: 24, color: '#fff', minWidth: 0, width: '100%' }}>
-              <h2 style={{ marginBottom: 16 }}>Forma de Pagamento</h2>
-              <span style={{ color: '#94a3b8', fontSize: 14 }}>Escolha a forma de pagamento (E-Kwanza, Referência)</span>
+            <div className={styles.cardForm}>
+              <h2 style={{ marginBottom: 16, color: '#4F46E5', fontWeight: 800 }}>Forma de Pagamento</h2>
+              <span style={{ color: '#6b7280', fontSize: 14 }}>Escolha a forma de pagamento (E-Kwanza, Referência)</span>
               <div style={{ margin: '24px 0' }}>
                 <select
                   value={metodo}
                   onChange={e => setMetodo(e.target.value as 'reference' | 'qrcode' | 'express')}
-                  style={{ width: '100%', padding: 12, borderRadius: 8, background: '#1e293b', color: '#fff', border: 'none', fontSize: 16 }}
+                  className={styles.select}
                 >
                   {metodos.map(m => (
                     <option key={m.key} value={m.key}>{m.label}</option>
@@ -296,42 +297,40 @@ export default function PagamentoPage({ params }: { params: Promise<{ appointmen
               {/* Renderização dinâmica do método */}
               {metodo === 'reference' && dadosPagamento && (
                 <div style={{ marginTop: 24 }}>
-                  <h3 style={{ color: '#fff' }}>Pagamento por Referência</h3>
-                  <div style={{ margin: '16px 0', background: '#1e293b', borderRadius: 8, padding: 16 }}>
+                  <h3 style={{ color: '#4F46E5' }}>Pagamento por Referência</h3>
+                  <div style={{ margin: '16px 0', background: '#f3f4f6', borderRadius: 8, padding: 16 }}>
                     <div>Entidade: <b>{dadosPagamento.entity}</b></div>
                     <div>Referência: <b>{dadosPagamento.reference}</b></div>
                     <div>Montante: <b>{dadosPagamento.montante}</b></div>
                   </div>
                 </div>
               )}
-              
               {metodo === 'qrcode' && dadosPagamento && (
                 <div style={{ marginTop: 24 }}>
-                  <h3 style={{ color: '#fff' }}>E-Kwanza</h3>
-                  <span style={{ color: '#94a3b8' }}>Escaneie o Código Qr no Aplicativo</span>
-                  <div style={{ margin: '16px 0', background: '#1e293b', borderRadius: 8, padding: 16, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                  <h3 style={{ color: '#4F46E5' }}>E-Kwanza</h3>
+                  <span style={{ color: '#6b7280' }}>Escaneie o Código Qr no Aplicativo</span>
+                  <div style={{ margin: '16px 0', background: '#f3f4f6', borderRadius: 8, padding: 16, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                     {submitting ? (
-                      <div style={{ color: '#94a3b8', padding: 20 }}>Gerando QR Code...</div>
+                      <div style={{ color: '#6b7280', padding: 20 }}>Gerando QR Code...</div>
                     ) : dadosPagamento.qrCode ? (
                       <Image src={dadosPagamento.qrCode} alt="QR Code" width={200} height={200} />
                     ) : (
-                      <div style={{ color: '#94a3b8', padding: 20 }}>QR Code não disponível</div>
+                      <div style={{ color: '#6b7280', padding: 20 }}>QR Code não disponível</div>
                     )}
                     <div style={{ marginTop: 12 }}>Valor: <b>{dadosPagamento.valor}</b></div>
                   </div>
                 </div>
               )}
-              
               {metodo === 'express' && (
                 <div style={{ marginTop: 24 }}>
-                  <h3 style={{ color: '#fff' }}>Multicaixa Express</h3>
+                  <h3 style={{ color: '#4F46E5' }}>Multicaixa Express</h3>
                   <label>Número de telefone:</label>
                   <input
                     type="tel"
                     required
                     value={telefone}
                     onChange={e => setTelefone(e.target.value)}
-                    style={{ width: '100%', padding: 8, margin: '8px 0 16px 0', borderRadius: 6, border: '1px solid #ccc', background: '#1e293b', color: '#fff' }}
+                    className={styles.input}
                     placeholder="Ex: 923000000"
                   />
                 </div>
@@ -365,17 +364,7 @@ export default function PagamentoPage({ params }: { params: Promise<{ appointmen
                 <button 
                   type="submit" 
                   disabled={submitting}
-                  style={{ 
-                    flex: 1, 
-                    background: submitting ? '#6b7280' : '#2563eb', 
-                    color: '#fff', 
-                    padding: 14, 
-                    borderRadius: 8, 
-                    border: 'none', 
-                    fontWeight: 600, 
-                    fontSize: 18,
-                    cursor: submitting ? 'not-allowed' : 'pointer'
-                  }}
+                  className={styles.submitBtn}
                 >
                   {submitting ? 'Processando...' : 'Continuar'}
                 </button>
@@ -384,29 +373,22 @@ export default function PagamentoPage({ params }: { params: Promise<{ appointmen
           </div>
           {/* Coluna de resumo */}
           <div className="col-12 col-md-6">
-            <div style={{ background: '#12224a', borderRadius: 12, padding: 24, color: '#fff', minWidth: 0, width: '100%' }}>
-              <h3 style={{ marginBottom: 16 }}>Resumo do agendamento</h3>
-              <span style={{ color: '#94a3b8', fontSize: 14 }}>Detalhes do seu agendamento</span>
+            <div className={styles.cardResumo}>
+              <h3 style={{ marginBottom: 16, color: '#4F46E5', fontWeight: 700 }}>Resumo do agendamento</h3>
+              <span style={{ color: '#6b7280', fontSize: 14 }}>Detalhes do seu agendamento</span>
               {appointment && (
-                <div style={{ marginTop: 24, background: '#1e293b', borderRadius: 8, padding: 16 }}>
+                <div style={{ marginTop: 24, background: '#f3f4f6', borderRadius: 8, padding: 16 }}>
                   <div>{appointment.service.title}</div>
                   <div style={{ margin: '8px 0' }}>{appointment.provider.name}<br />Profissional</div>
                   <div>{new Date(appointment.date).toLocaleDateString('pt-BR')}</div>
                   <div>{new Date(appointment.date).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}</div>
-                  <div style={{ marginTop: 16, fontWeight: 700, fontSize: 20 }}>Total: <span style={{ color: '#fff' }}>{appointment.service.price} Kz</span></div>
+                  <div style={{ marginTop: 16, fontWeight: 700, fontSize: 20 }}>Total: <span style={{ color: '#4F46E5' }}>{appointment.service.price} Kz</span></div>
                 </div>
               )}
             </div>
           </div>
         </div>
-        </div>
-      
-      <style jsx>{`
-        @keyframes spin {
-          0% { transform: rotate(0deg); }
-          100% { transform: rotate(360deg); }
-        }
-      `}</style>
+      </div>
     </>
   );
 } 

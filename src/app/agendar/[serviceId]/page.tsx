@@ -6,6 +6,7 @@ import { useAuth } from '@/context/AuthContext';
 import Header from '@/components/header/Header';
 import { apiService, Service } from '@/services/apiService';
 import { Spinner } from '@/components/Spinner';
+import styles from '../Agendar.module.css';
 
 const horarios = [
   '08:00', '09:00', '10:00', '11:00',
@@ -167,8 +168,8 @@ export default function AgendarPage({ params }: { params: Promise<{ serviceId: s
     return (
       <>
         <Header />
-        <div style={{ background: '#0a1833', minHeight: '100vh', padding: 32, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <div style={{ color: '#fff', fontSize: 18 }}><Spinner /></div>
+        <div className={styles.agendarBg} style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <Spinner />
         </div>
       </>
     );
@@ -178,7 +179,7 @@ export default function AgendarPage({ params }: { params: Promise<{ serviceId: s
     return (
       <>
         <Header />
-        <div style={{ background: '#0a1833', minHeight: '100vh', padding: 32, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <div className={styles.agendarBg} style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           <div style={{ color: '#ef4444', fontSize: 18, textAlign: 'center' }}>
             <div style={{ marginBottom: 16 }}>Erro ao carregar dados</div>
             <div style={{ fontSize: 14, color: '#94a3b8' }}>{error}</div>
@@ -186,7 +187,7 @@ export default function AgendarPage({ params }: { params: Promise<{ serviceId: s
               onClick={() => window.location.reload()} 
               style={{ 
                 marginTop: 16, 
-                background: '#2563eb', 
+                background: '#4F46E5', 
                 color: '#fff', 
                 padding: '8px 16px', 
                 borderRadius: 6, 
@@ -205,21 +206,21 @@ export default function AgendarPage({ params }: { params: Promise<{ serviceId: s
   return (
     <>
       <Header />
-      <div style={{ background: '#0a1833', minHeight: '100vh', padding: 16 }}>
-        {/* Stepper responsivo */}
-        <div className="d-flex flex-wrap align-items-center gap-2 gap-md-4 text-white mb-4" style={{fontSize: 16}}>
-          <div className="d-flex align-items-center gap-2">
-            <div style={{ width: 32, height: 32, borderRadius: 16, background: '#2563eb', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700 }}>1</div>
+      <div className={styles.agendarBg}>
+        {/* Stepper */}
+        <div className={styles.stepper}>
+          <div className={styles.step}>
+            <div className={styles.stepCircle}>1</div>
             <span>Agendamento</span>
           </div>
-          <div style={{ height: 2, width: 40, background: '#2563eb' }} />
-          <div className="d-flex align-items-center gap-2 opacity-50">
-            <div style={{ width: 32, height: 32, borderRadius: 16, background: '#1e293b', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700 }}>2</div>
+          <div className={styles.stepLine} />
+          <div className={`${styles.step} ${styles.inactive}`}> 
+            <div className={styles.stepCircle}>2</div>
             <span>Pagamento</span>
           </div>
-          <div style={{ height: 2, width: 40, background: '#1e293b' }} />
-          <div className="d-flex align-items-center gap-2 opacity-50">
-            <div style={{ width: 32, height: 32, borderRadius: 16, background: '#1e293b', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700 }}>3</div>
+          <div className={styles.stepLine} />
+          <div className={`${styles.step} ${styles.inactive}`}>
+            <div className={styles.stepCircle}>3</div>
             <span>Confirmação</span>
           </div>
         </div>
@@ -227,17 +228,16 @@ export default function AgendarPage({ params }: { params: Promise<{ serviceId: s
         <div className="row g-4 flex-column flex-md-row">
           {/* Formulário de agendamento */}
           <div className="col-12 col-md-6">
-            <form onSubmit={handleAgendar} style={{ background: '#12224a', borderRadius: 12, padding: 24, color: '#fff', minWidth: 0, width: '100%' }}>
-              <h2 style={{ marginBottom: 16 }}>Agende o seu atendimento</h2>
-              
+            <form onSubmit={handleAgendar} className={styles.cardForm}>
+              <h2 style={{ marginBottom: 16, color: '#4F46E5', fontWeight: 800 }}>Agende o seu atendimento</h2>
               {/* Dados do serviço */}
               {service && (
-                <div style={{ background: '#1e293b', borderRadius: 8, padding: 16, marginBottom: 24 }}>
+                <div className={styles.cardService}>
                   <h3 style={{ marginBottom: 8 }}>{service.title}</h3>
-                  <p style={{ color: '#94a3b8', marginBottom: 8 }}>{service.description}</p>
+                  <p style={{ color: '#6b7280', marginBottom: 8 }}>{service.description}</p>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <span>Profissional: {service.provider.name}</span>
-                    <span style={{ fontWeight: 700, fontSize: 18 }}>{service.price} Kz</span>
+                    <span style={{ fontWeight: 700, fontSize: 18, color: '#4F46E5' }}>{service.price} Kz</span>
                   </div>
                 </div>
               )}
@@ -247,27 +247,28 @@ export default function AgendarPage({ params }: { params: Promise<{ serviceId: s
                 <input 
                   type="date" 
                   value={data} 
-                  min={new Date().toISOString().split('T')[0]} // Bloqueia datas passadas
+                  min={new Date().toISOString().split('T')[0]}
                   onChange={e => setData(e.target.value)} 
-                  style={{ background: '#1e293b', color: '#fff', border: 'none', borderRadius: 6, padding: 8, marginTop: 4 }} 
+                  className={styles.input}
                 />
               </div>
-              
+
               <div style={{ marginBottom: 16 }}>
                 <label>Atendimento</label><br />
-                <label style={{ marginRight: 16 }}>
-                  <input type="radio" checked={local === 'ESTABLISHMENT'} onChange={() => setLocal('ESTABLISHMENT')} /> No estabelecimento
-                </label>
-                <label>
-                  <input type="radio" checked={local === 'HOME'} onChange={() => setLocal('HOME')} /> Em casa
-                </label>
+                <div className={styles.radioGroup}>
+                  <label>
+                    <input type="radio" checked={local === 'ESTABLISHMENT'} onChange={() => setLocal('ESTABLISHMENT')} /> No estabelecimento
+                  </label>
+                  <label>
+                    <input type="radio" checked={local === 'HOME'} onChange={() => setLocal('HOME')} /> Em casa
+                  </label>
+                </div>
               </div>
-              
+
               <div style={{ marginBottom: 16 }}>
                 <label>Horário</label><br />
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginTop: 8 }}>
+                <div className={styles.timeGrid}>
                   {horarios.map(h => {
-                    // Bloquear horários passados no dia atual
                     const isToday = data === new Date().toISOString().split('T')[0];
                     const now = new Date();
                     const [hHour, hMin] = h.split(':').map(Number);
@@ -279,16 +280,9 @@ export default function AgendarPage({ params }: { params: Promise<{ serviceId: s
                         type="button"
                         onClick={() => isAvailable && setHorario(h)}
                         disabled={!isAvailable}
-                        style={{
-                          background: horario === h ? '#2563eb' : isAvailable ? '#1e293b' : '#374151',
-                          color: isAvailable ? '#fff' : '#6b7280',
-                          border: horario === h ? '2px solid #2563eb' : '1px solid #334155',
-                          borderRadius: 6,
-                          padding: '8px 16px',
-                          fontWeight: 500,
-                          cursor: isAvailable ? 'pointer' : 'not-allowed',
-                          opacity: isAvailable ? 1 : 0.5
-                        }}
+                        className={
+                          styles.timeBtn + (horario === h ? ' ' + styles.selected : '')
+                        }
                       >
                         {h}
                       </button>
@@ -306,18 +300,7 @@ export default function AgendarPage({ params }: { params: Promise<{ serviceId: s
               <button 
                 type="submit" 
                 disabled={submitting}
-                style={{ 
-                  marginTop: 24, 
-                  width: '100%', 
-                  background: submitting ? '#6b7280' : '#2563eb', 
-                  color: '#fff', 
-                  padding: 14, 
-                  borderRadius: 8, 
-                  border: 'none', 
-                  fontWeight: 600, 
-                  fontSize: 18,
-                  cursor: submitting ? 'not-allowed' : 'pointer'
-                }}
+                className={styles.submitBtn}
               >
                 {submitting ? 'Agendando...' : 'Agendar'}
               </button>
@@ -326,20 +309,19 @@ export default function AgendarPage({ params }: { params: Promise<{ serviceId: s
 
           {/* Agenda do profissional */}
           <div className="col-12 col-md-6">
-            <div style={{ background: '#12224a', borderRadius: 12, padding: 32, color: '#fff', minWidth: 340 }}>
-              <h3 style={{ marginBottom: 16 }}>Agenda do profissional</h3>
+            <div className={styles.cardAgenda}>
+              <h3 style={{ marginBottom: 16, color: '#4F46E5', fontWeight: 700 }}>Agenda do profissional</h3>
               <div style={{ marginBottom: 16 }}>
-                <span style={{ color: '#94a3b8' }}>Horários ocupados em {new Date(data).toLocaleDateString('pt-BR')}</span>
+                <span style={{ color: '#6b7280' }}>Horários ocupados em {new Date(data).toLocaleDateString('pt-BR')}</span>
               </div>
-              
               {bookedSlots.length === 0 ? (
-                <div style={{ background: '#1e293b', borderRadius: 8, padding: 16, textAlign: 'center', color: '#94a3b8' }}>
+                <div style={{ background: '#f3f4f6', borderRadius: 8, padding: 16, textAlign: 'center', color: '#6b7280' }}>
                   Nenhum horário ocupado nesta data
                 </div>
               ) : (
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-                  <div style={{ background: '#1e293b', borderRadius: 8, padding: 12 }}>
-                    <div style={{ color: '#60a5fa', fontWeight: 500 }}>Horários Ocupados</div>
+                  <div style={{ background: '#ede9fe', borderRadius: 8, padding: 12 }}>
+                    <div style={{ color: '#4F46E5', fontWeight: 500 }}>Horários Ocupados</div>
                     <div style={{ marginTop: 8 }}>
                       {bookedSlots.map((slot, index) => (
                         <div key={index} style={{ color: '#ef4444' }}>{slot}</div>
