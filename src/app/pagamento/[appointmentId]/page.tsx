@@ -283,15 +283,29 @@ export default function PagamentoPage({ params }: { params: Promise<{ appointmen
               <h2 style={{ marginBottom: 16, color: '#4F46E5', fontWeight: 800 }}>Forma de Pagamento</h2>
               <span style={{ color: '#6b7280', fontSize: 14 }}>Escolha a forma de pagamento (E-Kwanza, Referência)</span>
               <div style={{ margin: '24px 0' }}>
-                <select
-                  value={metodo}
-                  onChange={e => setMetodo(e.target.value as 'reference' | 'qrcode' | 'express')}
-                  className={styles.select}
-                >
+                <div className={styles.paymentMethodsGrid}>
                   {metodos.map(m => (
-                    <option key={m.key} value={m.key}>{m.label}</option>
+                    <label
+                      key={m.key}
+                      className={
+                        styles.paymentMethodCard +
+                        (metodo === m.key ? ' ' + styles.selected : '')
+                      }
+                    >
+                      <input
+                        type="radio"
+                        name="paymentMethod"
+                        value={m.key}
+                        checked={metodo === m.key}
+                        onChange={() => setMetodo(m.key as 'reference' | 'qrcode' | 'express')}
+                        className={styles.radio}
+                      />
+                      {/* Substitua por <img src=...> se quiser ícones reais */}
+                      <span className={styles.iconPlaceholder}></span>
+                      <span className={styles.label}>{m.label}</span>
+                    </label>
                   ))}
-                </select>
+                </div>
               </div>
 
               {/* Renderização dinâmica do método */}

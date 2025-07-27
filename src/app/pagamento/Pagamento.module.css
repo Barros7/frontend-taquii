@@ -121,6 +121,51 @@
   width: 100%;
 }
 
+.paymentMethodsGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+.paymentMethodCard {
+  display: flex;
+  align-items: center;
+  border: 2px solid #cfd8dc;
+  border-radius: 12px;
+  padding: 1rem 1.5rem;
+  min-width: 260px;
+  background: #fff;
+  cursor: pointer;
+  transition: border 0.2s, box-shadow 0.2s;
+  position: relative;
+  margin-bottom: 0.5rem;
+  box-shadow: 0 1px 4px rgba(79,70,229,0.04);
+}
+.paymentMethodCard.selected {
+  border: 2px solid #4F46E5;
+  box-shadow: 0 0 0 2px #4F46E533;
+}
+.radio {
+  position: absolute;
+  right: 1rem;
+  top: 1rem;
+  accent-color: #4F46E5;
+}
+.iconPlaceholder {
+  width: 40px;
+  height: 40px;
+  background: #ede9fe;
+  border-radius: 8px;
+  margin-right: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.label {
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+
 @media (max-width: 768px) {
   .cardForm, .cardResumo {
     padding: 1.5rem 0.7rem;
