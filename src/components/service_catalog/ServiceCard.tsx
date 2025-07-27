@@ -4,7 +4,7 @@ import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import styles from './ServiceCard.module.css';
-import TagList from './TagList';
+//import TagList from './TagList';
 import Rating from './Rating';
 
 interface ServiceCardProps {
@@ -50,7 +50,7 @@ export default function ServiceCard({ provider }: ServiceCardProps) {
   const category = provider.category || provider.services?.[0]?.category || 'Serviço';
   const city = provider.addresses?.[0]?.city || 'Localização';
   const distance = provider.distance || '2.3km';
-  const tags = provider.tags || ['Corte Tradicional', 'Barba', 'Cuidados Masculinos'];
+  //const tags = provider.tags || ['Corte Tradicional', 'Barba', 'Cuidados Masculinos'];
   const isAvailable = provider.isAvailable !== false;
 
   return (
@@ -116,7 +116,7 @@ export default function ServiceCard({ provider }: ServiceCardProps) {
           </div>
         </div>
         
-        <TagList tags={tags} />
+        {/*<TagList tags={tags} />*/}
         
         <div className={styles.actionSection}>
           <Link href={`/perfil/${provider.id}`} className={styles.agendarButton}>

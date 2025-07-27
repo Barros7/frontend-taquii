@@ -30,7 +30,7 @@ export default function CategoriesPage() {
     setLoading(true);
     setError(null);
     try {
-      const response = await fetch("/api/categories", { credentials: "include" });
+      const response = await fetch("/api/v1/categories", { credentials: "include" });
       if (!response.ok) throw new Error("Erro ao buscar categorias");
       const data = await response.json();
       setCategories(data);
@@ -86,14 +86,14 @@ export default function CategoriesPage() {
       };
       let response;
       if (editId) {
-        response = await fetch(`/api/categories/${editId}`, {
+        response = await fetch(`/api/v1/categories/${editId}`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           credentials: 'include',
           body: JSON.stringify(payload)
         });
       } else {
-        response = await fetch('/api/categories', {
+        response = await fetch('/api/v1/categories', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           credentials: 'include',
@@ -118,7 +118,7 @@ export default function CategoriesPage() {
     setDeletingId(id);
     setDeleteError(null);
     try {
-      const response = await fetch(`/api/categories/${id}`, {
+      const response = await fetch(`/api/v1/categories/${id}`, {
         method: 'DELETE',
         credentials: 'include'
       });

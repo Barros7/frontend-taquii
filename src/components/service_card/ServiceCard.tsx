@@ -24,7 +24,7 @@ const ServiceCard = () => {
   useEffect(() => {
     async function getServiceData() {
       try {
-        const response = await fetch('/api/service');
+        const response = await fetch('/api/v1/service');
 
         if (!response.ok) {
           throw new Error(`Erro de rede: ${response.status}`);

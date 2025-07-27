@@ -35,7 +35,7 @@ export default function ServicesPage() {
     setLoading(true);
     setError(null);
     try {
-      const response = await fetch("/api/services", { credentials: "include" });
+      const response = await fetch("/api/v1/services", { credentials: "include" });
       if (!response.ok) throw new Error("Erro ao buscar serviços");
       const data = await response.json();
       setServices(data);
@@ -97,14 +97,14 @@ export default function ServicesPage() {
       };
       let response;
       if (editId) {
-        response = await fetch(`/api/services/${editId}`, {
+        response = await fetch(`/api/v1/services/${editId}`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           credentials: 'include',
           body: JSON.stringify(payload)
         });
       } else {
-        response = await fetch('/api/services', {
+        response = await fetch('/api/v1/services', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           credentials: 'include',
@@ -129,7 +129,7 @@ export default function ServicesPage() {
     setDeletingId(id);
     setDeleteError(null);
     try {
-      const response = await fetch(`/api/services/${id}`, {
+      const response = await fetch(`/api/v1/services/${id}`, {
         method: 'DELETE',
         credentials: 'include'
       });

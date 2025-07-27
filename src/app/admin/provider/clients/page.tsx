@@ -31,7 +31,7 @@ const ClientsPage = () => {
 
   useEffect(() => {
     const fetchClients = async () => {
-      const response = await fetch(`/api/clients`);
+      const response = await fetch(`/api/v1/clients`);
       const data = await response.json();
       setClients(data);
     };

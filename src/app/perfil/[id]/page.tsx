@@ -37,7 +37,7 @@ export default function ProfilePage() {
 
     const fetchProviderDetails = async () => {
         try {
-            const response = await fetch(`/api/users/providers?id=${providerId}`);
+            const response = await fetch(`/api/v1/users/providers?id=${providerId}`);
             if (!response.ok) {
                 if (response.status === 404) {
                   throw new Error("Profissional não encontrado.");

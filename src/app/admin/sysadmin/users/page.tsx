@@ -33,7 +33,7 @@ export default function UsersPage() {
   const fetchUsers = useCallback(async () => {
     try {
       setLoading(true);
-      const endpoint = filter === 'all' ? `/api/users` : `/api/users/${filter}s`;
+      const endpoint = filter === 'all' ? `/api/v1/users` : `/api/v1/users/${filter}s`;
       const response = await fetch(endpoint);
       if (!response.ok) {
         throw new Error('Falha ao carregar usuários');
@@ -55,7 +55,7 @@ export default function UsersPage() {
   const handleCreateUser = async (userData: Partial<User>) => {
     try {
       // Enviar para o endpoint de registro
-      const response = await fetch(`/api/auth/register`, {
+      const response = await fetch(`/api/v1/auth/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -85,7 +85,7 @@ export default function UsersPage() {
     if (!selectedUser) return;
 
     try {
-      const response = await fetch(`/api/users/${selectedUser.id}`, {
+      const response = await fetch(`/api/v1/users/${selectedUser.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -113,7 +113,7 @@ export default function UsersPage() {
 
   const handleDeleteUser = async (user: User) => {
     try {
-      const response = await fetch(`/api/users/${user.id}`, {
+      const response = await fetch(`/api/v1/users/${user.id}`, {
         method: 'DELETE',
         credentials: 'include',
       });

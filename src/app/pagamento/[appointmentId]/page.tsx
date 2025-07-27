@@ -93,7 +93,7 @@ export default function PagamentoPage({ params }: { params: Promise<{ appointmen
       };
 
       // Criar pagamento com QR Code via API
-      const response = await fetch(`/api/payments`, {
+      const response = await fetch(`/api/v1/payments`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -146,7 +146,7 @@ export default function PagamentoPage({ params }: { params: Promise<{ appointmen
       };
 
       // Criar pagamento com código de referência via API
-      const response = await fetch(`/api/payments/createReferenceCode`, {
+      const response = await fetch(`/api/v1/payments/createReferenceCode`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

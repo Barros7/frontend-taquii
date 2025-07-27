@@ -73,7 +73,7 @@ export const apiService = {
   // Buscar serviço por ID
   getService: async (serviceId: string): Promise<Service> => {
     try {
-      const response = await fetch(`/api/services/${serviceId}`, {
+      const response = await fetch(`/api/v1/services/${serviceId}`, {
         credentials: 'include',
       });
       
@@ -92,7 +92,7 @@ export const apiService = {
   // Buscar horários ocupados para um provedor em uma data específica
   getBookedSlots: async (providerId: string, date: string): Promise<string[]> => {
     try {
-      const response = await fetch(`/api/appointments/booked-slots?providerId=${providerId}&date=${date}`, {
+      const response = await fetch(`/api/v1/appointments/booked-slots?providerId=${providerId}&date=${date}`, {
         credentials: 'include',
       });
       
@@ -111,7 +111,7 @@ export const apiService = {
   // Criar agendamento
   createAppointment: async (appointmentData: CreateAppointmentData): Promise<Appointment> => {
     try {
-      const response = await fetch(`/api/appointments`, {
+      const response = await fetch(`/api/v1/appointments`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -135,7 +135,7 @@ export const apiService = {
   // Buscar agendamento por ID
   getAppointment: async (appointmentId: string): Promise<Appointment> => {
     try {
-      const response = await fetch(`/api/appointments/${appointmentId}`, {
+      const response = await fetch(`/api/v1/appointments/${appointmentId}`, {
         credentials: 'include',
       });
       
@@ -154,7 +154,7 @@ export const apiService = {
   // Buscar pagamento por ID do agendamento
   getPaymentByAppointmentId: async (appointmentId: string): Promise<Payment> => {
     try {
-      const response = await fetch(`/api/appointments/${appointmentId}/payment`, {
+      const response = await fetch(`/api/v1/appointments/${appointmentId}/payment`, {
         credentials: 'include',
       });
       
@@ -173,7 +173,7 @@ export const apiService = {
   // Atualizar status do pagamento
   updatePaymentStatus: async (paymentId: string, status: string): Promise<Payment> => {
     try {
-      const response = await fetch(`/api/payments/${paymentId}/status`, {
+      const response = await fetch(`/api/v1/payments/${paymentId}/status`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

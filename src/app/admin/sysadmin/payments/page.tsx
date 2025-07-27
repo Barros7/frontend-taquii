@@ -56,7 +56,7 @@ export default function PaymentsPage() {
         params.append('status', status);
       }
 
-      const response = await fetch(`/api/sysadmin/payments?${params}`, {
+      const response = await fetch(`/api/v1/sysadmin/payments?${params}`, {
         credentials: 'include'
       });
 
