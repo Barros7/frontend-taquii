@@ -300,9 +300,18 @@ export default function PagamentoPage({ params }: { params: Promise<{ appointmen
                         onChange={() => setMetodo(m.key as 'reference' | 'qrcode' | 'express')}
                         className={styles.radio}
                       />
-                      {/* Substitua por <img src=...> se quiser ícones reais */}
-                      <span className={styles.iconPlaceholder}></span>
-                      <span className={styles.label}>{m.label}</span>
+                      {/* Ícone do método de pagamento */}
+                      <span className={styles.iconPlaceholder}>
+                        {m.key === 'qrcode' && (
+                          <Image src="/logo/e_kwanza.png" alt="E-Kwanza" width={32} height={32} />
+                        )}
+                        {m.key === 'reference' && (
+                          <Image src="/logo/mcxexpress_logo.webp" alt="Referência" width={32} height={32} />
+                        )}
+                        {m.key === 'express' && (
+                          <Image src="/logo/mcxexpress_logo.webp" alt="Multicaixa Express" width={32} height={32} />
+                        )}
+                      </span>
                     </label>
                   ))}
                 </div>
