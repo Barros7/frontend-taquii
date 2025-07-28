@@ -118,22 +118,26 @@
   padding: 2.5rem 2rem;
   color: #222;
   min-width: 0;
-  width: 100%;
+  width: 80%;
+  margin: 0 auto;
 }
 
 .paymentMethodsGrid {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: wrap; /* Permite quebra de linha */
   gap: 1rem;
   margin-top: 0.5rem;
+  justify-content: flex-start;
 }
 .paymentMethodCard {
+  flex: 1 1 220px; /* Permite cards encolherem e quebrarem linha */
+  max-width: 320px;
+  min-width: 200px;
   display: flex;
   align-items: center;
   border: 2px solid #cfd8dc;
   border-radius: 12px;
   padding: 1rem 1.5rem;
-  min-width: 260px;
   background: #fff;
   cursor: pointer;
   transition: border 0.2s, box-shadow 0.2s;
@@ -166,6 +170,17 @@
   font-weight: 500;
 }
 
+@media (max-width: 1200px) {
+  .cardResumo {
+    width: 100%;
+    margin: 0;
+  }
+  .paymentMethodsGrid {
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
+}
+
 @media (max-width: 768px) {
   .cardForm, .cardResumo {
     padding: 1.5rem 0.7rem;
@@ -173,5 +188,14 @@
   .stepper {
     font-size: 0.95rem;
     gap: 0.7rem;
+  }
+  .paymentMethodsGrid {
+    flex-direction: column;
+    gap: 0.7rem;
+  }
+  .paymentMethodCard {
+    min-width: 0;
+    width: 100%;
+    max-width: 100%;
   }
 } 
