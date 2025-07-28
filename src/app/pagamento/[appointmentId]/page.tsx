@@ -370,24 +370,6 @@ export default function PagamentoPage({ params }: { params: Promise<{ appointmen
 
                 <div style={{ display: 'flex', gap: 16, marginTop: 32 }}>
                   <button 
-                    type="button" 
-                    onClick={() => router.back()} 
-                    disabled={submitting}
-                    style={{ 
-                      flex: 1, 
-                      background: submitting ? '#6b7280' : '#ef4444', 
-                      color: '#fff', 
-                      padding: 14, 
-                      borderRadius: 8, 
-                      border: 'none', 
-                      fontWeight: 600, 
-                      fontSize: 18,
-                      cursor: submitting ? 'not-allowed' : 'pointer'
-                    }}
-                  >
-                    Voltar
-                  </button>
-                  <button 
                     type="submit" 
                     disabled={submitting}
                     className={styles.submitBtn}
