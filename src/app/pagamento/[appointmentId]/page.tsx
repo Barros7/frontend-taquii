@@ -277,7 +277,7 @@ export default function PagamentoPage({ params }: { params: Promise<{ appointmen
         </div>
 
         <div className="container">
-          <div className="row g-4 flex-column flex-md-row">
+          <div className="row">
             {/* Coluna de pagamento */}
             <div className="col-12 col-md-6">
               <div className={styles.cardForm}>
@@ -301,7 +301,17 @@ export default function PagamentoPage({ params }: { params: Promise<{ appointmen
                             onChange={() => setMetodo(m.key as 'reference' | 'qrcode' | 'express')}
                             className={styles.radio}
                           />
-                          {/* Substitua por <img src=...> se quiser ícones reais */}
+                          <Image
+                            src={
+                              m.key === 'qrcode'
+                                ? '/logo/e_kwanza_logo.png'
+                                : '/logo/mcxexpress.webp'
+                            }
+                            alt={m.label}
+                            width={32}
+                            height={32}
+                            className={styles.paymentIcon}
+                          />
                           <span className={styles.iconPlaceholder}></span>
                           <span className={styles.label}>{m.label}</span>
                         </label>
