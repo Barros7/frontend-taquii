@@ -283,7 +283,7 @@ export default function PagamentoPage({ params }: { params: Promise<{ appointmen
               <h2 style={{ marginBottom: 16, color: '#4F46E5', fontWeight: 800 }}>Forma de Pagamento</h2>
               <span style={{ color: '#6b7280', fontSize: 14 }}>Escolha a forma de pagamento (E-Kwanza, Referência)</span>
               <div style={{ margin: '24px 0' }}>
-                <div className={styles.paymentMethodsGrid}>
+                <div className={`d-flex flex-row gap-3 ${styles.paymentMethodsGrid}`} style={{flexWrap: 'nowrap'}}>
                   {metodos.map(m => (
                     <label
                       key={m.key}
