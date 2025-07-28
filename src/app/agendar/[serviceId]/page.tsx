@@ -225,111 +225,113 @@ export default function AgendarPage({ params }: { params: Promise<{ serviceId: s
           </div>
         </div>
 
-        <div className="row g-4 flex-column flex-md-row">
-          {/* Formulário de agendamento */}
-          <div className="col-12 col-md-6">
-            <form onSubmit={handleAgendar} className={styles.cardForm}>
-              <h2 style={{ marginBottom: 16, color: '#4F46E5', fontWeight: 800 }}>Agende o seu atendimento</h2>
-              {/* Dados do serviço */}
-              {service && (
-                <div className={styles.cardService}>
-                  <h3 style={{ marginBottom: 8 }}>{service.title}</h3>
-                  <p style={{ color: '#6b7280', marginBottom: 8 }}>{service.description}</p>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <span>Profissional: {service.provider.name}</span>
-                    <span style={{ fontWeight: 700, fontSize: 18, color: '#4F46E5' }}>{service.price} Kz</span>
-                  </div>
-                </div>
-              )}
-
-              <div style={{ marginBottom: 16 }}>
-                <label>Data</label><br />
-                <input 
-                  type="date" 
-                  value={data} 
-                  min={new Date().toISOString().split('T')[0]}
-                  onChange={e => setData(e.target.value)} 
-                  className={styles.input}
-                />
-              </div>
-
-              <div style={{ marginBottom: 16 }}>
-                <label>Atendimento</label><br />
-                <div className={styles.radioGroup}>
-                  <label>
-                    <input type="radio" checked={local === 'ESTABLISHMENT'} onChange={() => setLocal('ESTABLISHMENT')} /> No estabelecimento
-                  </label>
-                  <label>
-                    <input type="radio" checked={local === 'HOME'} onChange={() => setLocal('HOME')} /> Em casa
-                  </label>
-                </div>
-              </div>
-
-              <div style={{ marginBottom: 16 }}>
-                <label>Horário</label><br />
-                <div className={styles.timeGrid}>
-                  {horarios.map(h => {
-                    const isToday = data === new Date().toISOString().split('T')[0];
-                    const now = new Date();
-                    const [hHour, hMin] = h.split(':').map(Number);
-                    const isPast = isToday && (hHour < now.getHours() || (hHour === now.getHours() && hMin <= now.getMinutes()));
-                    const isAvailable = isTimeAvailable(h) && !isPast;
-                    return (
-                      <button
-                        key={h}
-                        type="button"
-                        onClick={() => isAvailable && setHorario(h)}
-                        disabled={!isAvailable}
-                        className={
-                          styles.timeBtn + (horario === h ? ' ' + styles.selected : '')
-                        }
-                      >
-                        {h}
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-
-              {error && (
-                <div style={{ background: '#dc2626', color: '#fff', padding: 12, borderRadius: 6, marginBottom: 16 }}>
-                  {error}
-                </div>
-              )}
-
-              <button 
-                type="submit" 
-                disabled={submitting}
-                className={styles.submitBtn}
-              >
-                {submitting ? 'Agendando...' : 'Agendar'}
-              </button>
-            </form>
-          </div>
-
-          {/* Agenda do profissional */}
-          <div className="col-12 col-md-6">
-            <div className={styles.cardAgenda}>
-              <h3 style={{ marginBottom: 16, color: '#4F46E5', fontWeight: 700 }}>Agenda do profissional</h3>
-              <div style={{ marginBottom: 16 }}>
-                <span style={{ color: '#6b7280' }}>Horários ocupados em {new Date(data).toLocaleDateString('pt-BR')}</span>
-              </div>
-              {bookedSlots.length === 0 ? (
-                <div style={{ background: '#f3f4f6', borderRadius: 8, padding: 16, textAlign: 'center', color: '#6b7280' }}>
-                  Nenhum horário ocupado nesta data
-                </div>
-              ) : (
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-                  <div style={{ background: '#ede9fe', borderRadius: 8, padding: 12 }}>
-                    <div style={{ color: '#4F46E5', fontWeight: 500 }}>Horários Ocupados</div>
-                    <div style={{ marginTop: 8 }}>
-                      {bookedSlots.map((slot, index) => (
-                        <div key={index} style={{ color: '#ef4444' }}>{slot}</div>
-                      ))}
+        <div className="container">
+          <div className="row">
+            {/* Formulário de agendamento */}
+            <div className="col-12 col-md-6 col-sm-12">
+              <form onSubmit={handleAgendar} className={styles.cardForm}>
+                <h2 style={{ marginBottom: 16, color: '#4F46E5', fontWeight: 800 }}>Agende o seu atendimento</h2>
+                {/* Dados do serviço */}
+                {service && (
+                  <div className={styles.cardService}>
+                    <h3 style={{ marginBottom: 8 }}>{service.title}</h3>
+                    <p style={{ color: '#6b7280', marginBottom: 8 }}>{service.description}</p>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <span>Profissional: {service.provider.name}</span>
+                      <span style={{ fontWeight: 700, fontSize: 18, color: '#4F46E5' }}>{service.price} Kz</span>
                     </div>
                   </div>
+                )}
+
+                <div style={{ marginBottom: 16 }}>
+                  <label>Data</label><br />
+                  <input 
+                    type="date" 
+                    value={data} 
+                    min={new Date().toISOString().split('T')[0]}
+                    onChange={e => setData(e.target.value)} 
+                    className={styles.input}
+                  />
                 </div>
-              )}
+
+                <div style={{ marginBottom: 16 }}>
+                  <label>Atendimento</label><br />
+                  <div className={styles.radioGroup}>
+                    <label>
+                      <input type="radio" checked={local === 'ESTABLISHMENT'} onChange={() => setLocal('ESTABLISHMENT')} /> No estabelecimento
+                    </label>
+                    <label>
+                      <input type="radio" checked={local === 'HOME'} onChange={() => setLocal('HOME')} /> Em casa
+                    </label>
+                  </div>
+                </div>
+
+                <div style={{ marginBottom: 16 }}>
+                  <label>Horário</label><br />
+                  <div className={styles.timeGrid}>
+                    {horarios.map(h => {
+                      const isToday = data === new Date().toISOString().split('T')[0];
+                      const now = new Date();
+                      const [hHour, hMin] = h.split(':').map(Number);
+                      const isPast = isToday && (hHour < now.getHours() || (hHour === now.getHours() && hMin <= now.getMinutes()));
+                      const isAvailable = isTimeAvailable(h) && !isPast;
+                      return (
+                        <button
+                          key={h}
+                          type="button"
+                          onClick={() => isAvailable && setHorario(h)}
+                          disabled={!isAvailable}
+                          className={
+                            styles.timeBtn + (horario === h ? ' ' + styles.selected : '')
+                          }
+                        >
+                          {h}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {error && (
+                  <div style={{ background: '#dc2626', color: '#fff', padding: 12, borderRadius: 6, marginBottom: 16 }}>
+                    {error}
+                  </div>
+                )}
+
+                <button 
+                  type="submit" 
+                  disabled={submitting}
+                  className={styles.submitBtn}
+                >
+                  {submitting ? 'Agendando...' : 'Agendar'}
+                </button>
+              </form>
+            </div>
+
+            {/* Agenda do profissional */}
+            <div className="col-12 col-md-6 col-sm-12">
+              <div className={styles.cardAgenda}>
+                <h3 style={{ marginBottom: 16, color: '#4F46E5', fontWeight: 700 }}>Agenda do profissional</h3>
+                <div style={{ marginBottom: 16 }}>
+                  <span style={{ color: '#6b7280' }}>Horários ocupados em {new Date(data).toLocaleDateString('pt-BR')}</span>
+                </div>
+                {bookedSlots.length === 0 ? (
+                  <div style={{ background: '#f3f4f6', borderRadius: 8, padding: 16, textAlign: 'center', color: '#6b7280' }}>
+                    Nenhum horário ocupado nesta data
+                  </div>
+                ) : (
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+                    <div style={{ background: '#ede9fe', borderRadius: 8, padding: 12 }}>
+                      <div style={{ color: '#4F46E5', fontWeight: 500 }}>Horários Ocupados</div>
+                      <div style={{ marginTop: 8 }}>
+                        {bookedSlots.map((slot, index) => (
+                          <div key={index} style={{ color: '#ef4444' }}>{slot}</div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </div>
