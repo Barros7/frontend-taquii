@@ -305,14 +305,13 @@ export default function PagamentoPage({ params }: { params: Promise<{ appointmen
                             src={
                               m.key === 'qrcode'
                                 ? '/logo/e_kwanza_logo.png'
-                                : '/logo/mcxexpress.webp'
+                                : '/logo/mcx_express.webp'
                             }
                             alt={m.label}
-                            width={32}
-                            height={32}
+                            width={35}
+                            height={35}
                             className={styles.paymentIcon}
                           />
-                          <span className={styles.iconPlaceholder}></span>
                           <span className={styles.label}>{m.label}</span>
                         </label>
                       </div>
