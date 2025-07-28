@@ -276,138 +276,132 @@ export default function PagamentoPage({ params }: { params: Promise<{ appointmen
           </div>
         </div>
 
-        <div className="row g-4 flex-column flex-md-row">
-          {/* Coluna de pagamento */}
-          <div className="col-12 col-md-6">
-            <div className={styles.cardForm}>
-              <h2 style={{ marginBottom: 16, color: '#4F46E5', fontWeight: 800 }}>Forma de Pagamento</h2>
-              <span style={{ color: '#6b7280', fontSize: 14 }}>Escolha a forma de pagamento (E-Kwanza, Referência)</span>
-              <div style={{ margin: '24px 0' }}>
-                <div className={`d-flex flex-row gap-3 ${styles.paymentMethodsGrid}`} style={{flexWrap: 'nowrap'}}>
-                  {metodos.map(m => (
-                    <label
-                      key={m.key}
-                      className={
-                        styles.paymentMethodCard +
-                        (metodo === m.key ? ' ' + styles.selected : '')
-                      }
-                    >
-                      <input
-                        type="radio"
-                        name="paymentMethod"
-                        value={m.key}
-                        checked={metodo === m.key}
-                        onChange={() => setMetodo(m.key as 'reference' | 'qrcode' | 'express')}
-                        className={styles.radio}
-                      />
-                      {/* Ícone do método de pagamento */}
-                      <span className={styles.iconPlaceholder}>
-                        {m.key === 'qrcode' && (
-                          <Image src="/logo/e_kwanza.png" alt="E-Kwanza" width={32} height={32} />
-                        )}
-                        {m.key === 'reference' && (
-                          <Image src="/logo/mcxexpress_logo.webp" alt="Referência" width={32} height={32} />
-                        )}
-                        {m.key === 'express' && (
-                          <Image src="/logo/mcxexpress_logo.webp" alt="Multicaixa Express" width={32} height={32} />
-                        )}
-                      </span>
-                    </label>
-                  ))}
-                </div>
-              </div>
-
-              {/* Renderização dinâmica do método */}
-              {metodo === 'reference' && dadosPagamento && (
-                <div style={{ marginTop: 24 }}>
-                  <h3 style={{ color: '#4F46E5' }}>Pagamento por Referência</h3>
-                  <div style={{ margin: '16px 0', background: '#f3f4f6', borderRadius: 8, padding: 16 }}>
-                    <div>Entidade: <b>{dadosPagamento.entity}</b></div>
-                    <div>Referência: <b>{dadosPagamento.reference}</b></div>
-                    <div>Montante: <b>{dadosPagamento.montante}</b></div>
+        <div className="container">
+          <div className="row g-4 flex-column flex-md-row">
+            {/* Coluna de pagamento */}
+            <div className="col-12 col-md-6">
+              <div className={styles.cardForm}>
+                <h2 style={{ marginBottom: 16, color: '#4F46E5', fontWeight: 800 }}>Forma de Pagamento</h2>
+                <span style={{ color: '#6b7280', fontSize: 14 }}>Escolha a forma de pagamento (E-Kwanza, Referência)</span>
+                <div style={{ margin: '24px 0' }}>
+                  <div className={`row d-flex flex-row gap-3 ${styles.paymentMethodsGrid}`} style={{flexWrap: 'wrap'}}>
+                    {metodos.map(m => (
+                      <div key={m.key} className="col-12 col-md-auto p-0 mb-2">
+                        <label
+                          className={
+                            styles.paymentMethodCard +
+                            (metodo === m.key ? ' ' + styles.selected : '')
+                          }
+                        >
+                          <input
+                            type="radio"
+                            name="paymentMethod"
+                            value={m.key}
+                            checked={metodo === m.key}
+                            onChange={() => setMetodo(m.key as 'reference' | 'qrcode' | 'express')}
+                            className={styles.radio}
+                          />
+                          {/* Substitua por <img src=...> se quiser ícones reais */}
+                          <span className={styles.iconPlaceholder}></span>
+                          <span className={styles.label}>{m.label}</span>
+                        </label>
+                      </div>
+                    ))}
                   </div>
                 </div>
-              )}
-              {metodo === 'qrcode' && dadosPagamento && (
-                <div style={{ marginTop: 24 }}>
-                  <h3 style={{ color: '#4F46E5' }}>E-Kwanza</h3>
-                  <span style={{ color: '#6b7280' }}>Escaneie o Código Qr no Aplicativo</span>
-                  <div style={{ margin: '16px 0', background: '#f3f4f6', borderRadius: 8, padding: 16, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                    {submitting ? (
-                      <div style={{ color: '#6b7280', padding: 20 }}>Gerando QR Code...</div>
-                    ) : dadosPagamento.qrCode ? (
-                      <Image src={dadosPagamento.qrCode} alt="QR Code" width={200} height={200} />
-                    ) : (
-                      <div style={{ color: '#6b7280', padding: 20 }}>QR Code não disponível</div>
-                    )}
-                    <div style={{ marginTop: 12 }}>Valor: <b>{dadosPagamento.valor}</b></div>
+
+                {/* Renderização dinâmica do método */}
+                {metodo === 'reference' && dadosPagamento && (
+                  <div style={{ marginTop: 24 }}>
+                    <h3 style={{ color: '#4F46E5' }}>Pagamento por Referência</h3>
+                    <div style={{ margin: '16px 0', background: '#f3f4f6', borderRadius: 8, padding: 16 }}>
+                      <div>Entidade: <b>{dadosPagamento.entity}</b></div>
+                      <div>Referência: <b>{dadosPagamento.reference}</b></div>
+                      <div>Montante: <b>{dadosPagamento.montante}</b></div>
+                    </div>
                   </div>
-                </div>
-              )}
-              {metodo === 'express' && (
-                <div style={{ marginTop: 24 }}>
-                  <h3 style={{ color: '#4F46E5' }}>Multicaixa Express</h3>
-                  <label>Número de telefone:</label>
-                  <input
-                    type="tel"
-                    required
-                    value={telefone}
-                    onChange={e => setTelefone(e.target.value)}
-                    className={styles.input}
-                    placeholder="Ex: 923000000"
-                  />
-                </div>
-              )}
+                )}
+                {metodo === 'qrcode' && dadosPagamento && (
+                  <div style={{ marginTop: 24 }}>
+                    <h3 style={{ color: '#4F46E5' }}>E-Kwanza</h3>
+                    <span style={{ color: '#6b7280' }}>Escaneie o Código Qr no Aplicativo</span>
+                    <div style={{ margin: '16px 0', background: '#f3f4f6', borderRadius: 8, padding: 16, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                      {submitting ? (
+                        <div style={{ color: '#6b7280', padding: 20 }}>Gerando QR Code...</div>
+                      ) : dadosPagamento.qrCode ? (
+                        <Image src={dadosPagamento.qrCode} alt="QR Code" width={200} height={200} />
+                      ) : (
+                        <div style={{ color: '#6b7280', padding: 20 }}>QR Code não disponível</div>
+                      )}
+                      <div style={{ marginTop: 12 }}>Valor: <b>{dadosPagamento.valor}</b></div>
+                    </div>
+                  </div>
+                )}
+                {metodo === 'express' && (
+                  <div style={{ marginTop: 24 }}>
+                    <h3 style={{ color: '#4F46E5' }}>Multicaixa Express</h3>
+                    <label>Número de telefone:</label>
+                    <input
+                      type="tel"
+                      required
+                      value={telefone}
+                      onChange={e => setTelefone(e.target.value)}
+                      className={styles.input}
+                      placeholder="Ex: 923000000"
+                    />
+                  </div>
+                )}
 
-              {error && (
-                <div style={{ background: '#dc2626', color: '#fff', padding: 12, borderRadius: 6, marginBottom: 16 }}>
-                  {error}
-                </div>
-              )}
+                {error && (
+                  <div style={{ background: '#dc2626', color: '#fff', padding: 12, borderRadius: 6, marginBottom: 16 }}>
+                    {error}
+                  </div>
+                )}
 
-              <div style={{ display: 'flex', gap: 16, marginTop: 32 }}>
-                <button 
-                  type="button" 
-                  onClick={() => router.back()} 
-                  disabled={submitting}
-                  style={{ 
-                    flex: 1, 
-                    background: submitting ? '#6b7280' : '#ef4444', 
-                    color: '#fff', 
-                    padding: 14, 
-                    borderRadius: 8, 
-                    border: 'none', 
-                    fontWeight: 600, 
-                    fontSize: 18,
-                    cursor: submitting ? 'not-allowed' : 'pointer'
-                  }}
-                >
-                  Voltar
-                </button>
-                <button 
-                  type="submit" 
-                  disabled={submitting}
-                  className={styles.submitBtn}
-                >
-                  {submitting ? 'Processando...' : 'Continuar'}
-                </button>
+                <div style={{ display: 'flex', gap: 16, marginTop: 32 }}>
+                  <button 
+                    type="button" 
+                    onClick={() => router.back()} 
+                    disabled={submitting}
+                    style={{ 
+                      flex: 1, 
+                      background: submitting ? '#6b7280' : '#ef4444', 
+                      color: '#fff', 
+                      padding: 14, 
+                      borderRadius: 8, 
+                      border: 'none', 
+                      fontWeight: 600, 
+                      fontSize: 18,
+                      cursor: submitting ? 'not-allowed' : 'pointer'
+                    }}
+                  >
+                    Voltar
+                  </button>
+                  <button 
+                    type="submit" 
+                    disabled={submitting}
+                    className={styles.submitBtn}
+                  >
+                    {submitting ? 'Processando...' : 'Continuar'}
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
-          {/* Coluna de resumo */}
-          <div className="col-12 col-md-6">
-            <div className={styles.cardResumo}>
-              <h3 style={{ marginBottom: 16, color: '#4F46E5', fontWeight: 700 }}>Resumo do agendamento</h3>
-              <span style={{ color: '#6b7280', fontSize: 14 }}>Detalhes do seu agendamento</span>
-              {appointment && (
-                <div style={{ marginTop: 24, background: '#f3f4f6', borderRadius: 8, padding: 16 }}>
-                  <div>{appointment.service.title}</div>
-                  <div style={{ margin: '8px 0' }}>{appointment.provider.name}<br />Profissional</div>
-                  <div>{new Date(appointment.date).toLocaleDateString('pt-BR')}</div>
-                  <div>{new Date(appointment.date).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}</div>
-                  <div style={{ marginTop: 16, fontWeight: 700, fontSize: 20 }}>Total: <span style={{ color: '#4F46E5' }}>{appointment.service.price} Kz</span></div>
-                </div>
-              )}
+            {/* Coluna de resumo */}
+            <div className="col-12 col-md-6">
+              <div className={styles.cardResumo}>
+                <h3 style={{ marginBottom: 16, color: '#4F46E5', fontWeight: 700 }}>Resumo do agendamento</h3>
+                <span style={{ color: '#6b7280', fontSize: 14 }}>Detalhes do seu agendamento</span>
+                {appointment && (
+                  <div style={{ marginTop: 24, background: '#f3f4f6', borderRadius: 8, padding: 16 }}>
+                    <div>{appointment.service.title}</div>
+                    <div style={{ margin: '8px 0' }}>{appointment.provider.name}<br />Profissional</div>
+                    <div>{new Date(appointment.date).toLocaleDateString('pt-BR')}</div>
+                    <div>{new Date(appointment.date).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}</div>
+                    <div style={{ marginTop: 16, fontWeight: 700, fontSize: 20 }}>Total: <span style={{ color: '#4F46E5' }}>{appointment.service.price} Kz</span></div>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </div>
