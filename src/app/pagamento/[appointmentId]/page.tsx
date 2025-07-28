@@ -279,7 +279,7 @@ export default function PagamentoPage({ params }: { params: Promise<{ appointmen
         <div className="container">
           <div className="row">
             {/* Coluna de pagamento */}
-            <div className="col-12 col-md-9 col-sm-12">
+            <div className="col-12 col-md-8 col-sm-12">
               <div className={styles.cardForm}>
                 <h2 style={{ marginBottom: 16, color: '#4F46E5', fontWeight: 800 }}>Forma de Pagamento</h2>
                 <span style={{ color: '#6b7280', fontSize: 14 }}>Escolha a forma de pagamento (E-Kwanza, Referência)</span>
@@ -310,7 +310,7 @@ export default function PagamentoPage({ params }: { params: Promise<{ appointmen
                             alt={m.label}
                             width={50}
                             height={50}
-                            className={styles.paymentIcon}
+                            className={styles.paymentIcon }
                             style={{ borderRadius: '5px' }}
                           />
                           <span className={styles.label}>{m.label}</span>
