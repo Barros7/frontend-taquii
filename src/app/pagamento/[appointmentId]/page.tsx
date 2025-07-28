@@ -380,7 +380,7 @@ export default function PagamentoPage({ params }: { params: Promise<{ appointmen
               </div>
             </div>
             {/* Coluna de resumo */}
-            <div className="col-12 col-md-3 col-sm-12">
+            <div className="col-12 col-md-4 col-sm-12">
               <div className={styles.cardResumo}>
                 <h3 style={{ marginBottom: 16, color: '#4F46E5', fontWeight: 700 }}>Resumo do agendamento</h3>
                 <span style={{ color: '#6b7280', fontSize: 14 }}>Detalhes do seu agendamento</span>
