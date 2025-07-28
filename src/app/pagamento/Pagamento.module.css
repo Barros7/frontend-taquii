@@ -122,13 +122,6 @@
   margin: 0 auto;
 }
 
-.paymentMethodsGrid {
-  display: flex;
-  flex-wrap: wrap; /* Permite quebra de linha */
-  gap: 1rem;
-  margin-top: 0.5rem;
-  justify-content: flex-start;
-}
 .paymentMethodCard {
   flex: 1 1 220px; /* Permite cards encolherem e quebrarem linha */
   max-width: 320px;
