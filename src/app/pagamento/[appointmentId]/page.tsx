@@ -7,6 +7,7 @@ import Header from '@/components/header/Header';
 import { apiService, Appointment, PaymentQRCodeResponse } from '@/services/apiService';
 import Image from 'next/image';
 import { Spinner } from '@/components/Spinner';
+import ErrorMessage from '@/components/ErrorMessage';
 import styles from '../Pagamento.module.css';
 
 const metodos = [
@@ -34,6 +35,8 @@ export default function PagamentoPage({ params }: { params: Promise<{ appointmen
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [appointmentId, setAppointmentId] = useState<string>('');
+
+
 
   // Aguardar params e verificar autenticação
   useEffect(() => {
@@ -362,11 +365,10 @@ export default function PagamentoPage({ params }: { params: Promise<{ appointmen
                   </div>
                 )}
 
-                {error && (
-                  <div style={{ background: '#dc2626', color: '#fff', padding: 12, borderRadius: 6, marginBottom: 16 }}>
-                    {error}
-                  </div>
-                )}
+                <ErrorMessage 
+                  error={error} 
+                  onClear={() => setError(null)}
+                />
 
                 <div style={{ display: 'flex', gap: 16, marginTop: 32 }}>
                   <button 

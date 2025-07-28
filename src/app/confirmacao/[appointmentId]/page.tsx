@@ -19,6 +19,17 @@ export default function ConfirmacaoPage({ params }: { params: Promise<{ appointm
   const [confirming, setConfirming] = useState(false);
   const [appointmentId, setAppointmentId] = useState<string>('');
 
+  // Limpar erro automaticamente após 5 segundos
+  useEffect(() => {
+    if (error) {
+      const timer = setTimeout(() => {
+        setError(null);
+      }, 5000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [error]);
+
   // Aguardar params e verificar autenticação
   useEffect(() => {
     const initParams = async () => {

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import "./register.css";
 
@@ -17,6 +17,21 @@ const RegisterForm: React.FC = () => {
   
   const [errors, setErrors] = useState<{[key: string]: string}>({});
   const [isLoading, setIsLoading] = useState(false);
+
+  // Limpar erro geral automaticamente após 5 segundos
+  useEffect(() => {
+    if (errors.general) {
+      const timer = setTimeout(() => {
+        setErrors(prev => {
+          const newErrors = { ...prev };
+          delete newErrors.general;
+          return newErrors;
+        });
+      }, 5000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [errors.general]);
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);

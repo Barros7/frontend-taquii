@@ -24,6 +24,17 @@ export default function ProfilePage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+
+  // Limpar erro automaticamente após 5 segundos
+  useEffect(() => {
+    if (error) {
+      const timer = setTimeout(() => {
+        setError('');
+      }, 5000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [error]);
   
   const fetchProfile = useCallback(async () => {
     try {

@@ -6,6 +6,7 @@ import { useAuth } from '@/context/AuthContext';
 import Header from '@/components/header/Header';
 import { apiService, Service } from '@/services/apiService';
 import { Spinner } from '@/components/Spinner';
+import ErrorMessage from '@/components/ErrorMessage';
 import styles from '../Agendar.module.css';
 
 const horarios = [
@@ -43,6 +44,8 @@ export default function AgendarPage({ params }: { params: Promise<{ serviceId: s
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [serviceId, setServiceId] = useState<string>('');
+
+
 
   // Aguardar params e verificar autenticação
   useEffect(() => {
@@ -292,11 +295,10 @@ export default function AgendarPage({ params }: { params: Promise<{ serviceId: s
                   </div>
                 </div>
 
-                {error && (
-                  <div style={{ background: '#dc2626', color: '#fff', padding: 12, borderRadius: 6, marginBottom: 16 }}>
-                    {error}
-                  </div>
-                )}
+                <ErrorMessage 
+                  error={error} 
+                  onClear={() => setError(null)}
+                />
 
                 <button 
                   type="submit" 

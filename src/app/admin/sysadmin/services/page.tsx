@@ -31,6 +31,34 @@ export default function ServicesPage() {
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [deleteError, setDeleteError] = useState<string | null>(null);
 
+  // Limpar erros automaticamente após 5 segundos
+  useEffect(() => {
+    if (error) {
+      const timer = setTimeout(() => {
+        setError(null);
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [error]);
+
+  useEffect(() => {
+    if (formError) {
+      const timer = setTimeout(() => {
+        setFormError(null);
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [formError]);
+
+  useEffect(() => {
+    if (deleteError) {
+      const timer = setTimeout(() => {
+        setDeleteError(null);
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [deleteError]);
+
   const fetchServices = async () => {
     setLoading(true);
     setError(null);
