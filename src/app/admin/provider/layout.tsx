@@ -2,12 +2,17 @@
 
 import React from 'react';
 import { usePathname } from 'next/navigation';
+import { useAuth } from '@/context/AuthContext';
+import { useRouter } from 'next/navigation';
+import ProtectedRoute from '@/components/ProtectedRoute';
 import styles from './provider-layout.module.css';
 import { MenuItem } from '@/types/admin';
 import Link from 'next/link';
 
 const ProviderLayout = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname();
+  const { user, loading } = useAuth();
+  const router = useRouter();
 
   const menuItems: MenuItem[] = [
     { path: '/admin/provider', label: 'Dashboard', icon: '📊' },
@@ -20,8 +25,19 @@ const ProviderLayout = ({ children }: { children: React.ReactNode }) => {
     { path: '/admin/provider/settings', label: 'Configurações', icon: '⚙️' },
   ];
 
+  // Verificar se usuário é prestador
+  if (!loading && (!user || user.userType !== 'PROVIDER')) {
+    router.push('/login');
+    return null;
+  }
+
+  if (loading) {
+    return <div>Carregando...</div>;
+  }
+
   return (
-    <div className={styles.providerLayout}>
+    <ProtectedRoute allowedTypes={['PROVIDER']}>
+      <div className={styles.providerLayout}>
       <aside className={styles.sidebar}>
         <div className={styles.logo}>
           <h2>Taqui Provider</h2>
@@ -53,6 +69,7 @@ const ProviderLayout = ({ children }: { children: React.ReactNode }) => {
         </div>
       </main>
     </div>
+    </ProtectedRoute>
   );
 };
 

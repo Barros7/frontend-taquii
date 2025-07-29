@@ -2,6 +2,10 @@
 
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/context/AuthContext';
+import { useRouter } from 'next/navigation';
+import ProtectedRoute from '@/components/ProtectedRoute';
+import ErrorMessage from '@/components/ErrorMessage';
+import Image from 'next/image';
 import styles from './services.module.css';
 
 interface Service {
@@ -12,10 +16,12 @@ interface Service {
   duration: number;
   averageRating: number;
   providerId: string;
+  imageUrlService?: string;
 }
 
 const ServicesPage = () => {
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
+  const router = useRouter();
   const [services, setServices] = useState<Service[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedService, setSelectedService] = useState<Service | null>(null);
@@ -25,8 +31,15 @@ const ServicesPage = () => {
     title: '',
     description: '',
     price: '',
-    duration: ''
+    duration: '',
+    categoryId: '',
+    imageUrlService: ''
   });
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string>('');
+  const [categories, setCategories] = useState<Array<{id: string, name: string}>>([]);
+  const [error, setError] = useState<string | null>(null);
+  const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
     if (!user?.id) return;
@@ -41,22 +54,73 @@ const ServicesPage = () => {
       }
     };
 
+    const fetchCategories = async () => {
+      try {
+        const response = await fetch('/api/v1/categories');
+        const data = await response.json();
+        setCategories(data);
+      } catch (error) {
+        console.error('Error fetching categories:', error);
+      }
+    };
+
     fetchServices();
+    fetchCategories();
   }, [user, apiUrl]);
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setImageFile(file);
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        setImagePreview(e.target?.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const uploadImage = async (file: File): Promise<string> => {
+    const formData = new FormData();
+    formData.append('image', file);
+
+    const response = await fetch('/api/v1/services/upload-image', {
+      method: 'POST',
+      body: formData,
+      credentials: 'include'
+    });
+
+    if (!response.ok) {
+      throw new Error('Erro ao fazer upload da imagem');
+    }
+
+    const data = await response.json();
+    return data.imageUrl;
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError(null);
+    setSubmitting(true);
+    
     try {
+      let imageUrl = formData.imageUrlService;
+      
+      // Upload da imagem se houver arquivo novo
+      if (imageFile) {
+        imageUrl = await uploadImage(imageFile);
+      }
+
       const serviceData = {
         ...formData,
         price: parseFloat(formData.price),
         duration: parseInt(formData.duration),
-        providerId: user?.id
+        imageUrlService: imageUrl
       };
 
       const url = selectedService 
-        ? `${apiUrl}/services/${selectedService.id}`
-        : '${apiUrl}/services';
+        ? `/api/v1/services/${selectedService.id}`
+        : '/api/v1/services';
       
       const method = selectedService ? 'PUT' : 'POST';
 
@@ -70,12 +134,21 @@ const ServicesPage = () => {
       });
       
       if (!response.ok) {
-        throw new Error('Failed to save service');
+        const errorData = await response.json().catch(() => ({ message: 'Erro ao salvar serviço' }));
+        throw new Error(errorData.message || 'Erro ao salvar serviço');
       }
+
+      // Recarregar lista de serviços
+      const updatedResponse = await fetch(`/api/v1/services?providerId=${user?.id}`);
+      const updatedData = await updatedResponse.json();
+      setServices(updatedData);
 
       handleCloseModal();
     } catch (error) {
       console.error('Error saving service:', error);
+      setError(error instanceof Error ? error.message : 'Erro ao salvar serviço');
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -85,7 +158,9 @@ const ServicesPage = () => {
       title: service.title,
       description: service.description,
       price: service.price.toString(),
-      duration: service.duration.toString()
+      duration: service.duration.toString(),
+      categoryId: '', // Será preenchido quando implementarmos a busca de categorias do serviço
+      imageUrlService: service.imageUrlService || ''
     });
     setIsModalOpen(true);
   };
@@ -116,13 +191,28 @@ const ServicesPage = () => {
       title: '',
       description: '',
       price: '',
-      duration: ''
+      duration: '',
+      categoryId: '',
+      imageUrlService: ''
     });
     setIsModalOpen(false);
+    setImageFile(null);
+    setImagePreview('');
   };
 
+  // Verificar se usuário é prestador
+  if (!loading && (!user || user.userType !== 'PROVIDER')) {
+    router.push('/login');
+    return null;
+  }
+
+  if (loading) {
+    return <div>Carregando...</div>;
+  }
+
   return (
-    <div className={styles.servicesPage}>
+    <ProtectedRoute allowedTypes={['PROVIDER']}>
+      <div className={styles.servicesPage}>
       <div className={styles.header}>
         <h1>Meus Serviços</h1>
         <button 
@@ -132,6 +222,11 @@ const ServicesPage = () => {
           Adicionar Serviço
         </button>
       </div>
+
+      <ErrorMessage 
+        error={error} 
+        onClear={() => setError(null)}
+      />
 
       <div className={styles.servicesGrid}>
         {services.map(service => (
@@ -224,12 +319,48 @@ const ServicesPage = () => {
                   />
                 </div>
               </div>
+              <div className={styles.formGroup}>
+                <label htmlFor="categoryId">Categoria</label>
+                <select
+                  id="categoryId"
+                  value={formData.categoryId}
+                  onChange={(e) => setFormData({ ...formData, categoryId: e.target.value })}
+                  required
+                >
+                  <option value="">Selecione uma categoria</option>
+                  {categories.map(category => (
+                    <option key={category.id} value={category.id}>
+                      {category.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div className={styles.formGroup}>
+                <label htmlFor="image">Imagem do Serviço</label>
+                <input
+                  type="file"
+                  id="image"
+                  accept="image/*"
+                  onChange={handleImageChange}
+                />
+                {imagePreview && (
+                  <div style={{ marginTop: 10 }}>
+                    <Image 
+                      src={imagePreview} 
+                      alt="Preview" 
+                      width={100}
+                      height={100}
+                      style={{ objectFit: 'cover', borderRadius: 8 }}
+                    />
+                  </div>
+                )}
+              </div>
               <div className={styles.formActions}>
                 <button type="button" onClick={handleCloseModal} className={styles.cancelButton}>
                   Cancelar
                 </button>
-                <button type="submit" className={styles.saveButton}>
-                  {selectedService ? 'Salvar' : 'Criar'}
+                <button type="submit" className={styles.saveButton} disabled={submitting}>
+                  {submitting ? 'Salvando...' : (selectedService ? 'Salvar' : 'Criar')}
                 </button>
               </div>
             </form>
@@ -237,6 +368,7 @@ const ServicesPage = () => {
         </div>
       )}
     </div>
+    </ProtectedRoute>
   );
 };
 
