@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
 import { useRouter } from 'next/navigation';
 import ProtectedRoute from '@/components/ProtectedRoute';
+import LogoutButton from '@/components/dashboard/LogoutButton';
 import styles from './provider-layout.module.css';
 import { MenuItem } from '@/types/admin';
 import Link from 'next/link';
@@ -60,7 +61,8 @@ const ProviderLayout = ({ children }: { children: React.ReactNode }) => {
           <div className={styles.headerContent}>
             <h1>Painel do Prestador</h1>
             <div className={styles.userInfo}>
-              <span>Prestador</span>
+              <span>Olá, {user?.name || 'Prestador'}</span>
+              <LogoutButton />
             </div>
           </div>
         </header>
