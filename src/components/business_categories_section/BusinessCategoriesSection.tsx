@@ -74,12 +74,12 @@ const BusinessCategoriesSection = () => {
                         />
                       ) : (
                         <div className="placeholder-icon mb-3">
-                          <span style={{ fontSize: '2em' }}>💼</span>
+                          <span style={{ fontSize: '1.5em' }}>💼</span>
                         </div>
                       )}
                       <p
                         className="card-title text-center card-title-custom"
-                        style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '90%' }}
+                        style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '100%' }}
                       >
                         {category.name}
                       </p>
