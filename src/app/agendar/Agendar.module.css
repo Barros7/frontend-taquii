@@ -6,13 +6,15 @@
 
 .stepper {
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
   gap: 1.5rem;
   font-size: 1rem;
   color: #4F46E5;
   margin-bottom: 2rem;
   justify-content: center;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  padding: 0 1rem;
 }
 
 .step {
@@ -20,6 +22,8 @@
   align-items: center;
   gap: 0.5rem;
   font-weight: 600;
+  flex-shrink: 0;
+  min-width: fit-content;
 }
 
 .stepCircle {
@@ -44,6 +48,7 @@
   height: 2px;
   width: 40px;
   background: #e0e7ff;
+  flex-shrink: 0;
 }
 
 .cardForm {
@@ -166,7 +171,34 @@
     padding: 1.5rem 0.7rem;
   }
   .stepper {
-    font-size: 0.95rem;
-    gap: 0.7rem;
+    font-size: 0.85rem;
+    gap: 0.5rem;
+    padding: 0 0.5rem;
+  }
+  .stepCircle {
+    width: 28px;
+    height: 28px;
+    font-size: 0.9rem;
+  }
+  .stepLine {
+    width: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .stepper {
+    font-size: 0.8rem;
+    gap: 0.3rem;
+  }
+  .stepCircle {
+    width: 24px;
+    height: 24px;
+    font-size: 0.8rem;
+  }
+  .stepLine {
+    width: 15px;
+  }
+  .step {
+    gap: 0.3rem;
   }
 } 
