@@ -4,6 +4,10 @@
 
 Melhorar a responsividade do Stepper para que os 3 passos (Agendamento, Pagamento, Confirmação) fiquem na mesma linha em dispositivos mobile, mantendo a legibilidade e usabilidade.
 
+**Páginas afetadas:**
+- ✅ **Página de Agendamento** (`/agendar/[serviceId]`)
+- ✅ **Página de Pagamento** (`/pagamento/[appointmentId]`)
+
 ## ✅ **Problemas Identificados**
 
 ### **1. Layout Original**
@@ -144,4 +148,14 @@ O Stepper agora:
 4. **✅ Oferece scroll horizontal** como fallback para telas muito pequenas
 5. **✅ Preserva a identidade visual** com cores e estilos consistentes
 
-**Os usuários mobile agora veem todo o progresso de uma vez, melhorando a experiência de agendamento!** 🎉 
+**Os usuários mobile agora veem todo o progresso de uma vez, melhorando a experiência de agendamento e pagamento!** 🎉
+
+## 📋 **Arquivos Modificados**
+
+### **1. Página de Agendamento**
+- **CSS**: `frontend-taqui/src/app/agendar/Agendar.module.css`
+- **Melhorias**: Layout flexível, responsividade mobile-first
+
+### **2. Página de Pagamento**
+- **CSS**: `frontend-taqui/src/app/pagamento/Pagamento.module.css`
+- **Melhorias**: Mesmas otimizações aplicadas com sucesso 
