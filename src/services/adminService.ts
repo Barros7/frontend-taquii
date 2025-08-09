@@ -19,7 +19,7 @@ export const adminService = {
   // Obter estatísticas do dashboard de admin
   getStats: async (): Promise<AdminStats> => {
     try {
-      const response = await fetch(`/admin/stats`, {
+      const response = await fetch(`/api/v1/admin/stats`, {
         credentials: 'include',
       });
 
@@ -37,7 +37,7 @@ export const adminService = {
   // Obter atividades recentes
   getRecentActivities: async (): Promise<RecentActivity[]> => {
     try {
-      const response = await fetch(`/admin/activities`, {
+      const response = await fetch(`/api/v1/admin/activities`, {
         credentials: 'include',
       });
 
@@ -60,7 +60,7 @@ export const adminService = {
     customerRating: number;
   }> => {
     try {
-      const response = await fetch(`/admin/provider/${providerId}/stats`, {
+      const response = await fetch(`/api/v1/admin/provider/${providerId}/stats`, {
         credentials: 'include',
       });
 

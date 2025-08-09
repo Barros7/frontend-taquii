@@ -15,6 +15,21 @@ interface User {
   active: boolean;
 }
 
+  interface UserDetails extends User {
+  profileImage?: string | null;
+  createdAt?: string;
+  updatedAt?: string;
+  role?: string | null;
+  bio?: string | null;
+  specialties?: string[];
+  availability?: Record<string, boolean> | null;
+  businessAddress?: string | null;
+  workingHours?: Record<string, string | number | boolean> | null;
+  notificationPreferences?: Record<string, unknown> | null;
+  paymentSettings?: Record<string, unknown> | null;
+  commercialCertificateUrl?: string | null;
+}
+
 type UserType = 'all' | 'customer' | 'provider';
 
 export default function UsersPage() {
@@ -26,6 +41,7 @@ export default function UsersPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalMode, setModalMode] = useState<'create' | 'edit'>('create');
   const [selectedUser, setSelectedUser] = useState<User | undefined>();
+  const [viewUser, setViewUser] = useState<UserDetails | null>(null);
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
   const [userToDelete, setUserToDelete] = useState<User | null>(null);
 
@@ -143,6 +159,17 @@ export default function UsersPage() {
     setIsModalOpen(true);
   };
 
+  const openViewModal = async (user: User) => {
+    try {
+      const res = await fetch(`/api/v1/users/${user.id}`, { credentials: 'include' });
+      if (!res.ok) throw new Error('Falha ao carregar ficha do usuário');
+      const data: UserDetails = await res.json();
+      setViewUser(data);
+    } catch (e) {
+      setError(e instanceof Error ? e.message : 'Erro ao abrir ficha');
+    }
+  };
+
   const openDeleteConfirm = (user: User) => {
     setUserToDelete(user);
     setDeleteConfirmOpen(true);
@@ -215,6 +242,12 @@ export default function UsersPage() {
                   Editar
                 </button>
                 <button 
+                  className={styles.actionButton}
+                  onClick={() => openViewModal(user)}
+                >
+                  Ficha
+                </button>
+                <button 
                   className={`${styles.actionButton} ${styles.deleteButton}`}
                   onClick={() => openDeleteConfirm(user)}
                 >
@@ -233,6 +266,85 @@ export default function UsersPage() {
         user={selectedUser}
         mode={modalMode}
       />
+
+      {viewUser && (
+        <div className={styles.modalOverlay}>
+          <div className={styles.modal} style={{ maxWidth: 900 }}>
+            <div className={styles.modalHeader}>
+              <h2>Ficha do Utilizador</h2>
+              <button onClick={() => setViewUser(null)} className={styles.closeButton}>&times;</button>
+            </div>
+            <div className={styles.modalBody} style={{ maxHeight: '70vh', overflowY: 'auto' }}>
+              <div style={{ display: 'flex', gap: 16, alignItems: 'center', marginBottom: 16 }}>
+                {viewUser.profileImage && (
+                  <img src={viewUser.profileImage} alt="Avatar" style={{ width: 64, height: 64, borderRadius: '50%', objectFit: 'cover' }} />
+                )}
+                <div>
+                  <div><b>{viewUser.name}</b> — {viewUser.userType}</div>
+                  <div style={{ color: '#64748b' }}>{viewUser.email} • {viewUser.phone}</div>
+                  <div style={{ color: '#64748b', fontSize: 12 }}>Criado: {viewUser.createdAt ? new Date(viewUser.createdAt).toLocaleString('pt-PT') : '-'}</div>
+                  <div style={{ color: '#64748b', fontSize: 12 }}>Atualizado: {viewUser.updatedAt ? new Date(viewUser.updatedAt).toLocaleString('pt-PT') : '-'}</div>
+                </div>
+              </div>
+              {viewUser.bio && (
+                <div style={{ marginBottom: 12 }}>
+                  <div style={{ fontWeight: 600 }}>Bio</div>
+                  <div style={{ color: '#334155' }}>{viewUser.bio}</div>
+                </div>
+              )}
+              {viewUser.specialties && viewUser.specialties.length > 0 && (
+                <div style={{ marginBottom: 12 }}>
+                  <div style={{ fontWeight: 600 }}>Especialidades</div>
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+                    {viewUser.specialties.map((s, i) => (
+                      <span key={i} className={styles.status}>{s}</span>
+                    ))}
+                  </div>
+                </div>
+              )}
+              {viewUser.businessAddress && (
+                <div style={{ marginBottom: 12 }}>
+                  <div style={{ fontWeight: 600 }}>Endereço Comercial</div>
+                  <div style={{ color: '#334155' }}>{viewUser.businessAddress}</div>
+                </div>
+              )}
+              {viewUser.availability && (
+                <div style={{ marginBottom: 12 }}>
+                  <div style={{ fontWeight: 600 }}>Disponibilidade</div>
+                  <pre style={{ background: '#f1f5f9', padding: 12, borderRadius: 8 }}>{JSON.stringify(viewUser.availability, null, 2)}</pre>
+                </div>
+              )}
+              {viewUser.workingHours && (
+                <div style={{ marginBottom: 12 }}>
+                  <div style={{ fontWeight: 600 }}>Horário de Funcionamento</div>
+                  <pre style={{ background: '#f1f5f9', padding: 12, borderRadius: 8 }}>{JSON.stringify(viewUser.workingHours, null, 2)}</pre>
+                </div>
+              )}
+              {viewUser.notificationPreferences && (
+                <div style={{ marginBottom: 12 }}>
+                  <div style={{ fontWeight: 600 }}>Notificações</div>
+                  <pre style={{ background: '#f1f5f9', padding: 12, borderRadius: 8 }}>{JSON.stringify(viewUser.notificationPreferences, null, 2)}</pre>
+                </div>
+              )}
+              {viewUser.paymentSettings && (
+                <div style={{ marginBottom: 12 }}>
+                  <div style={{ fontWeight: 600 }}>Pagamentos</div>
+                  <pre style={{ background: '#f1f5f9', padding: 12, borderRadius: 8 }}>{JSON.stringify(viewUser.paymentSettings, null, 2)}</pre>
+                </div>
+              )}
+              {viewUser.commercialCertificateUrl && (
+                <div style={{ marginTop: 12 }}>
+                  <div style={{ fontWeight: 600 }}>Certidão Comercial</div>
+                  <a href={viewUser.commercialCertificateUrl} target="_blank" rel="noreferrer">Abrir PDF</a>
+                </div>
+              )}
+            </div>
+            <div className={styles.modalFooter}>
+              <button className={styles.cancelButton} onClick={() => setViewUser(null)}>Fechar</button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {deleteConfirmOpen && userToDelete && (
         <div className={styles.modalOverlay}>

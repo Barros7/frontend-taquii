@@ -1,50 +1,66 @@
 "use client"
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import styles from './dashboard.module.css';
+import { adminService, type AdminStats, type RecentActivity } from '@/services/adminService';
+import ProtectedRoute from '@/components/ProtectedRoute';
 
 const DashboardPage = () => {
-  // Mock data - In a real application, this would come from an API
-  const stats = {
-    totalAppointments: 156,
-    activeUsers: 45,
-    totalRevenue: '125.990 Kz',
-    pendingPayments: 12,
-  };
+  const [stats, setStats] = useState<AdminStats | null>(null);
+  const [recentActivities, setRecentActivities] = useState<RecentActivity[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  const recentActivities = [
-    { id: 1, type: 'appointment', description: 'Novo agendamento criado', time: '5 min atrás' },
-    { id: 2, type: 'payment', description: 'Pagamento recebido', time: '15 min atrás' },
-    { id: 3, type: 'user', description: 'Novo usuário registrado', time: '1 hora atrás' },
-  ];
+  useEffect(() => {
+    const load = async () => {
+      try {
+        const [s, a] = await Promise.all([
+          adminService.getStats(),
+          adminService.getRecentActivities(),
+        ]);
+        setStats(s);
+        setRecentActivities(a);
+      } catch (err) {
+        console.error('Erro ao carregar dashboard:', err);
+        setError('Falha ao carregar dados do dashboard');
+      } finally {
+        setLoading(false);
+      }
+    };
+    load();
+  }, []);
+
+  if (loading) return <div className={styles.dashboard}>Carregando...</div>;
+  if (error) return <div className={styles.dashboard}>{error}</div>;
 
   return (
+    <ProtectedRoute allowedTypes={['ADMIN']}>
     <div className={styles.dashboard}>
       <div className={styles.statsGrid}>
         <div className={styles.statCard}>
           <h3>Total de Agendamentos</h3>
-          <p className={styles.statValue}>{stats.totalAppointments}</p>
+          <p className={styles.statValue}>{stats?.totalAppointments ?? 0}</p>
           <Link href="/admin/appointements" className={styles.statLink}>
             Ver detalhes →
           </Link>
         </div>
         <div className={styles.statCard}>
           <h3>Usuários Ativos</h3>
-          <p className={styles.statValue}>{stats.activeUsers}</p>
+          <p className={styles.statValue}>{stats?.activeUsers ?? 0}</p>
           <Link href="/admin/users" className={styles.statLink}>
             Ver detalhes →
           </Link>
         </div>
         <div className={styles.statCard}>
           <h3>Receita Total</h3>
-          <p className={styles.statValue}>{stats.totalRevenue}</p>
+          <p className={styles.statValue}>{stats?.totalRevenue ?? '0 Kz'}</p>
           <Link href="/admin/payments" className={styles.statLink}>
             Ver detalhes →
           </Link>
         </div>
         <div className={styles.statCard}>
           <h3>Pagamentos Pendentes</h3>
-          <p className={styles.statValue}>{stats.pendingPayments}</p>
+          <p className={styles.statValue}>{stats?.pendingPayments ?? 0}</p>
           <Link href="/admin/payments" className={styles.statLink}>
             Ver detalhes →
           </Link>
@@ -88,6 +104,7 @@ const DashboardPage = () => {
         </div>
       </div>
     </div>
+    </ProtectedRoute>
   );
 };
 

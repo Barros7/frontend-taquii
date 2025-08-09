@@ -1,6 +1,7 @@
 "use client"
 
-import React, { useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
+import { useAuth } from '@/context/AuthContext';
 import styles from './profile.module.css';
 
 type DayOfWeek = 'monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday' | 'saturday' | 'sunday';
@@ -16,22 +17,25 @@ interface Profile {
 }
 
 const ProfilePage = () => {
+  const { user } = useAuth();
+  const defaultAvailability: Record<DayOfWeek, boolean> = useMemo(() => ({
+    monday: true,
+    tuesday: true,
+    wednesday: true,
+    thursday: true,
+    friday: true,
+    saturday: true,
+    sunday: false,
+  }), []);
+
   const [profile, setProfile] = useState<Profile>({
-    name: 'Maria Silva',
-    email: 'maria@email.com',
-    phone: '+244 912 345 678',
-    role: 'Proprietária',
-    bio: 'Especialista em cortes modernos e tratamentos capilares com mais de 10 anos de experiência.',
-    specialties: ['Corte de Cabelo', 'Coloração', 'Tratamentos Capilares'],
-    availability: {
-      monday: true,
-      tuesday: true,
-      wednesday: true,
-      thursday: true,
-      friday: true,
-      saturday: true,
-      sunday: false
-    }
+    name: '',
+    email: '',
+    phone: '',
+    role: '',
+    bio: '',
+    specialties: [],
+    availability: defaultAvailability,
   });
 
   const [isEditing, setIsEditing] = useState(false);
@@ -54,8 +58,52 @@ const ProfilePage = () => {
     }));
   };
 
-  const handleSave = () => {
-    setProfile(editedProfile);
+  useEffect(() => {
+    const load = async () => {
+      const res = await fetch('/api/v1/users/profile', { credentials: 'include' });
+      if (!res.ok) return;
+      const data = await res.json();
+      const merged: Profile = {
+        name: data.name || '',
+        email: data.email || '',
+        phone: data.phone || '',
+        role: data.role || '',
+        bio: data.bio || '',
+        specialties: Array.isArray(data.specialties) ? data.specialties : [],
+        availability: (data.availability as Record<DayOfWeek, boolean>) || defaultAvailability,
+      };
+      setProfile(merged);
+      setEditedProfile(merged);
+    };
+    load();
+  }, [user, defaultAvailability]);
+
+  const handleSave = async () => {
+    const payload = {
+      name: editedProfile.name,
+      phone: editedProfile.phone,
+      role: editedProfile.role,
+      bio: editedProfile.bio,
+      specialties: editedProfile.specialties,
+      availability: editedProfile.availability,
+    };
+    const res = await fetch('/api/v1/users/profile', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
+      body: JSON.stringify(payload),
+    });
+    if (!res.ok) return;
+    const data = await res.json();
+    setProfile({
+      name: data.name,
+      email: data.email,
+      phone: data.phone,
+      role: data.role || '',
+      bio: data.bio || '',
+      specialties: data.specialties || [],
+      availability: (data.availability as Record<DayOfWeek, boolean>) || defaultAvailability,
+    });
     setIsEditing(false);
   };
 

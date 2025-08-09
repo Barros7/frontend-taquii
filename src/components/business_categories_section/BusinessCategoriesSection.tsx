@@ -58,7 +58,7 @@ const BusinessCategoriesSection = () => {
             ? Array.from({ length: 6 }).map((_, i) => <SkeletonCard key={i} />)
             : categories.length > 0 ? (
                 categories.map((category) => (
-                  <div className="col-4 col-sm-2 col-md-2 py-2" key={category.id}>
+                  <div className="col-6 col-sm-4 col-md-3 col-lg-2 py-2" key={category.id}>
                     <Link
                       href={`/empresas?search=${encodeURIComponent(category.name)}`}
                       className="hiperlink card card-custom d-flex flex-column align-items-center justify-content-center"
@@ -77,10 +77,7 @@ const BusinessCategoriesSection = () => {
                           <span style={{ fontSize: '1.5em' }}>💼</span>
                         </div>
                       )}
-                      <p
-                        className="card-title text-center card-title-custom"
-                        style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '100%' }}
-                      >
+                      <p className="card-title text-center card-title-custom category-name">
                         {category.name}
                       </p>
                     </Link>

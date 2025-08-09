@@ -113,6 +113,7 @@ const RegisterForm: React.FC = () => {
       const res = await fetch(`/api/v1/auth/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
         body: JSON.stringify(userData),
       });
 
@@ -125,9 +126,23 @@ const RegisterForm: React.FC = () => {
       }
 
       if (data.user) {
-        console.log('Register successful, user data:', data.user);
-        // Redirecionar para login após registro bem-sucedido
-        router.push('/login?message=Registro realizado com sucesso! Faça login para continuar.');
+        // Após registrar, já estamos autenticados via cookie; redirecionar por tipo
+        const meRes = await fetch('/api/v1/auth/me', { credentials: 'include' });
+        if (meRes.ok) {
+          const me = await meRes.json();
+          switch (me.userType) {
+            case 'ADMIN':
+              router.replace('/admin/sysadmin');
+              break;
+            case 'PROVIDER':
+              router.replace('/admin/provider');
+              break;
+            default:
+              router.replace('/');
+          }
+          return;
+        }
+        router.replace('/');
       }
           } catch (err) {
         const errorMessage = err instanceof Error ? err.message : 'Erro ao fazer o registro';

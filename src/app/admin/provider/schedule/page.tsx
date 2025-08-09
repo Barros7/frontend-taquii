@@ -32,25 +32,22 @@ const SchedulePage = () => {
   const [selectedAppointment, setSelectedAppointment] = useState<Appointment | null>(null);
   const [currentMonth, setCurrentMonth] = useState(new Date());
 
-  const apiUrl = process.env.NEXT_PUBLIC_API_URL; // Acessível aqui também
+  // usamos rewrite /api
 
   // Função fetchAppointments memoizada com useCallback
   const fetchAppointments = useCallback(async () => {
     try {
       if (!user?.id) return;
       
-      const response = await fetch(
-        `${apiUrl}/appointments?providerId=${user.id}&date=${selectedDate}`,
-        {
-          credentials: 'include'
-        }
-      );
+      const response = await fetch(`/api/v1/appointments?providerId=${user.id}&date=${selectedDate}`, {
+        credentials: 'include'
+      });
       const data = await response.json();
       setAppointments(data);
     } catch (error) {
       console.error('Error fetching appointments:', error);
     }
-  }, [user?.id, selectedDate, apiUrl]);
+  }, [user?.id, selectedDate]);
 
   // useEffect que depende da função fetchAppointments memoizada
   useEffect(() => {
@@ -60,7 +57,7 @@ const SchedulePage = () => {
 
   const handleStatusUpdate = async (appointmentId: string, newStatus: Appointment['status']) => {
     try {
-      const response = await fetch(`/appointments/${appointmentId}/status`, {
+      const response = await fetch(`/api/v1/appointments/${appointmentId}/status`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -85,7 +82,7 @@ const SchedulePage = () => {
     }
 
     try {
-      const response = await fetch(`/appointments/${appointmentId}/cancel`, {
+      const response = await fetch(`/api/v1/appointments/${appointmentId}/cancel`, {
         method: 'PUT',
         credentials: 'include'
       });

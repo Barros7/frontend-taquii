@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
 import Header from '@/components/header/Header';
 import { apiService, Service } from '@/services/apiService';
-import { Spinner } from '@/components/Spinner';
+// import ServiceCatalogSkeleton from '@/components/service_catalog_skeleton/ServiceCatalogSkeleton';
 import ErrorMessage from '@/components/ErrorMessage';
 import styles from '../Agendar.module.css';
 
@@ -156,7 +156,8 @@ export default function AgendarPage({ params }: { params: Promise<{ serviceId: s
       
     } catch (err: unknown) {
       console.error('Erro ao criar agendamento:', err);
-      setError(err instanceof Error ? err.message : 'Erro ao criar agendamento');
+      const message = err instanceof Error ? err.message : 'Erro ao criar agendamento';
+      setError(message);
     } finally {
       setSubmitting(false);
     }
@@ -171,8 +172,33 @@ export default function AgendarPage({ params }: { params: Promise<{ serviceId: s
     return (
       <>
         <Header />
-        <div className={styles.agendarBg} style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <Spinner />
+        <div className={styles.agendarBg} style={{ minHeight: '100vh' }}>
+          <div className="container py-4">
+            <div className="row g-4">
+              <div className="col-12 col-md-6 col-sm-12">
+                <div className={styles.skeletonCard}>
+                  <div className={styles.skeletonLine} style={{ width: '60%', marginBottom: 12 }} />
+                  <div className={styles.skeletonLine} style={{ width: '100%', height: 60, marginBottom: 8 }} />
+                  <div className={styles.skeletonLine} style={{ width: '100%', height: 14, marginBottom: 8 }} />
+                  <div className={styles.skeletonLine} style={{ width: '80%', height: 14, marginBottom: 16 }} />
+                  <div className="d-flex gap-2" style={{ flexWrap: 'wrap' }}>
+                    {Array.from({ length: 9 }).map((_, i) => (
+                      <div key={i} className={styles.skeletonLine} style={{ width: 64, height: 36 }} />
+                    ))}
+                  </div>
+                </div>
+              </div>
+              <div className="col-12 col-md-6 col-sm-12">
+                <div className={styles.skeletonCard}>
+                  <div className="d-flex align-items-center gap-2" style={{ marginBottom: 12 }}>
+                    <div className={styles.skeletonCircle} />
+                    <div className={styles.skeletonLine} style={{ width: '40%' }} />
+                  </div>
+                  <div className={styles.skeletonLine} style={{ width: '100%', height: 160 }} />
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </>
     );

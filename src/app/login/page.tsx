@@ -125,8 +125,11 @@ function LoginForm() {
                   >
                     {isLoggingIn ? <Spinner /> : 'Entrar'}
                   </button>
-                  <div className="text-center mt-3">
-                    Não tem uma conta? <a href="/register" className="text-decoration-none">Faça o registo aqui!</a>
+                  <div className="text-center mt-3 d-flex flex-column gap-2">
+                    <a href="/forgot-password" className="text-decoration-none">Esqueci minha senha</a>
+                    <span>
+                      Não tem uma conta? <a href="/register" className="text-decoration-none">Faça o registo aqui!</a>
+                    </span>
                   </div>
                 </form>
               </div>

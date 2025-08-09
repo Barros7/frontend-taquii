@@ -316,6 +316,51 @@
   gap: 1rem;
 }
 
+.mockupGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+}
+
+.kpiCard {
+  background: var(--white);
+  border: 1px solid var(--gray-200);
+  border-radius: 10px;
+  padding: 0.75rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.kpiLabel {
+  font-size: 0.8rem;
+  color: var(--gray-600);
+}
+
+.kpiValue {
+  font-weight: 800;
+  color: var(--primary-color);
+}
+
+.chartBar {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  align-items: end;
+  gap: 6px;
+  height: 120px;
+  margin-top: 0.5rem;
+}
+
+.bar {
+  background: linear-gradient(180deg, rgba(79,70,229,0.9), rgba(79,70,229,0.5));
+  border-radius: 6px 6px 0 0;
+  transition: transform .2s ease;
+}
+
+.bar:hover {
+  transform: translateY(-4px);
+}
+
 .mockupCard {
   background: var(--gray-100);
   border-radius: 12px;
@@ -527,6 +572,10 @@
     padding: 1.5rem;
   }
 
+  .mockupGrid {
+    grid-template-columns: 1fr 1fr;
+  }
+
   .mockupHeader {
     justify-content: center;
   }
@@ -586,6 +635,10 @@
 
   .providerMockup {
     padding: 1.25rem;
+  }
+
+  .mockupGrid {
+    grid-template-columns: 1fr;
   }
 
   .mockupCardValue {

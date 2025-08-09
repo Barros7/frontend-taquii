@@ -6,7 +6,7 @@ import { useAuth } from '@/context/AuthContext';
 import Header from '@/components/header/Header';
 import { apiService, Appointment, PaymentQRCodeResponse } from '@/services/apiService';
 import Image from 'next/image';
-import { Spinner } from '@/components/Spinner';
+// usaremos skeletons locais em vez de Spinner
 import ErrorMessage from '@/components/ErrorMessage';
 import styles from '../Pagamento.module.css';
 
@@ -222,8 +222,29 @@ export default function PagamentoPage({ params }: { params: Promise<{ appointmen
     return (
       <>
         <Header />
-        <div className={styles.pagamentoBg} style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <Spinner />
+        <div className={styles.pagamentoBg} style={{ minHeight: '100vh' }}>
+          <div className="container py-4">
+            <div className="row g-4">
+              <div className="col-12 col-md-8 col-sm-12">
+                <div className={styles.skeletonCard}>
+                  <div className={styles.skeletonLine} style={{ width: '50%', marginBottom: 12 }} />
+                  <div className={styles.skeletonLine} style={{ width: '100%', height: 40, marginBottom: 12 }} />
+                  <div className="d-flex gap-2" style={{ flexWrap: 'wrap', marginTop: 12 }}>
+                    {Array.from({ length: 3 }).map((_, i) => (
+                      <div key={i} className={styles.skeletonLine} style={{ width: 220, height: 96 }} />
+                    ))}
+                  </div>
+                  <div className={styles.skeletonLine} style={{ width: '80%', height: 18, marginTop: 16 }} />
+                </div>
+              </div>
+              <div className="col-12 col-md-4 col-sm-12">
+                <div className={styles.skeletonCard}>
+                  <div className={styles.skeletonLine} style={{ width: '60%', marginBottom: 12 }} />
+                  <div className={styles.skeletonLine} style={{ width: '100%', height: 160 }} />
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </>
     );

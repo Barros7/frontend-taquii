@@ -82,14 +82,17 @@
         min-height: 100px;
     }
     .card-title-custom {
-        font-size: 0.9rem;
-        font-weight: 500;
+        font-size: 0.95rem;
+        font-weight: 600;
         white-space: normal;
         word-break: break-word;
-        overflow: visible;
+        overflow-wrap: anywhere;
         text-align: center;
         max-width: 100%;
-        color: #555;
+        color: #333;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
     }
     .image-product, .placeholder-icon {
         width: 50px;
@@ -104,6 +107,12 @@
         font-size: 0.9rem;
         margin-bottom: 1.5rem;
     }
+}
+
+/* Não truncar nomes de categorias quando marcado explicitamente */
+.category-name {
+  white-space: normal !important;
+  overflow: visible !important;
 }
 
 .skeleton-card {

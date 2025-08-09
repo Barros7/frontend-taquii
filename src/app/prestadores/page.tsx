@@ -1,3 +1,5 @@
+"use client";
+
 import React from 'react';
 import PrestadoresHeader from '@/components/prestadores/PrestadoresHeader';
 import PrestadoresHero from '@/components/prestadores/PrestadoresHero';
@@ -7,8 +9,6 @@ import Testemunhos from '@/components/prestadores/Testemunhos';
 import CtaReforcada from '@/components/prestadores/CtaReforcada';
 import FaqPrestadores from '@/components/prestadores/FaqPrestadores';
 import styles from './prestadores.module.css';
-
-
 
 export default function PrestadoresPage() {
   return (
@@ -24,4 +24,4 @@ export default function PrestadoresPage() {
       </main>
     </div>
   );
-} 
+}

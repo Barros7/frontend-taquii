@@ -1,6 +1,7 @@
 "use client"
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useAuth } from '@/context/AuthContext';
 import styles from './settings.module.css';
 
 // 1. Definição das Interfaces para os estados
@@ -40,6 +41,7 @@ interface PaymentSettings {
 
 
 const SettingsPage = () => {
+  const { user } = useAuth();
   const [activeTab, setActiveTab] = useState('profile');
   const [businessProfile, setBusinessProfile] = useState<BusinessProfile>({
     name: 'Salão da Maria',
@@ -107,6 +109,44 @@ const SettingsPage = () => {
       ...prev,
       [field]: value
     }));
+  };
+
+  useEffect(() => {
+    const load = async () => {
+      const res = await fetch('/api/v1/users/profile', { credentials: 'include' });
+      if (!res.ok) return;
+      const data = await res.json();
+      setBusinessProfile(prev => ({
+        ...prev,
+        name: data.name || prev.name,
+        email: data.email || prev.email,
+        phone: data.phone || prev.phone,
+        address: data.businessAddress || prev.address,
+        description: data.bio || prev.description,
+        workingHours: (data.workingHours as WorkingHours) || prev.workingHours,
+      }));
+      if (data.notificationPreferences) setNotifications(data.notificationPreferences as Notifications);
+      if (data.paymentSettings) setPaymentSettings(data.paymentSettings as PaymentSettings);
+    };
+    load();
+  }, [user]);
+
+  const saveAll = async () => {
+    const payload = {
+      name: businessProfile.name,
+      phone: businessProfile.phone,
+      bio: businessProfile.description,
+      businessAddress: businessProfile.address,
+      workingHours: businessProfile.workingHours,
+      notificationPreferences: notifications,
+      paymentSettings: paymentSettings,
+    };
+    await fetch('/api/v1/users/profile', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
+      body: JSON.stringify(payload),
+    });
   };
 
   return (
@@ -312,7 +352,7 @@ const SettingsPage = () => {
           )}
 
           <div className={styles.actions}>
-            <button className={styles.saveButton}>
+            <button className={styles.saveButton} onClick={saveAll}>
               Salvar Alterações
             </button>
           </div>

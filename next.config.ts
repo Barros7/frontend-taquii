@@ -21,10 +21,12 @@ const nextConfig = {
     ];
   },
   async rewrites() {
+    const isDev = process.env.NODE_ENV !== 'production';
+    const apiBase = process.env.NEXT_PUBLIC_API_BASE || (isDev ? 'http://localhost:8000' : 'https://backend-taquii.onrender.com');
     return [
       {
         source: '/api/:path*',
-        destination: 'https://backend-taquii.onrender.com/api/:path*',
+        destination: `${apiBase}/api/:path*`,
       },
     ];
   }

@@ -40,6 +40,7 @@ const ServicesPage = () => {
   const [categories, setCategories] = useState<Array<{id: string, name: string}>>([]);
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
+  const [formError, setFormError] = useState<string | null>(null);
 
   useEffect(() => {
     if (!user?.id) return;
@@ -100,7 +101,7 @@ const ServicesPage = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError(null);
+    setFormError(null);
     setSubmitting(true);
     
     try {
@@ -111,12 +112,26 @@ const ServicesPage = () => {
         imageUrl = await uploadImage(imageFile);
       }
 
-      const serviceData = {
-        ...formData,
+      // Monta payload sem enviar categoryId vazio
+      type ServicePayload = {
+        title: string;
+        description: string;
+        price: number;
+        duration: number;
+        imageUrlService?: string;
+        categoryId?: string;
+      };
+
+      const serviceData: ServicePayload = {
+        title: formData.title,
+        description: formData.description,
         price: parseFloat(formData.price),
         duration: parseInt(formData.duration),
         imageUrlService: imageUrl
       };
+      if (formData.categoryId) {
+        serviceData.categoryId = formData.categoryId;
+      }
 
       const url = selectedService 
         ? `/api/v1/services/${selectedService.id}`
@@ -135,7 +150,14 @@ const ServicesPage = () => {
       
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({ message: 'Erro ao salvar serviço' }));
-        throw new Error(errorData.message || 'Erro ao salvar serviço');
+        let message = 'Erro ao salvar serviço';
+          if (Array.isArray(errorData?.message)) {
+          // Zod error array -> junta mensagens
+            message = errorData.message.map((e: { message?: string }) => e.message || JSON.stringify(e)).join('; ');
+        } else if (typeof errorData?.message === 'string') {
+          message = errorData.message;
+        }
+        throw new Error(message);
       }
 
       // Recarregar lista de serviços
@@ -146,7 +168,9 @@ const ServicesPage = () => {
       handleCloseModal();
     } catch (error) {
       console.error('Error saving service:', error);
-      setError(error instanceof Error ? error.message : 'Erro ao salvar serviço');
+      const message = error instanceof Error ? error.message : 'Erro ao salvar serviço';
+      setFormError(message);
+      setError(message);
     } finally {
       setSubmitting(false);
     }
@@ -177,11 +201,16 @@ const ServicesPage = () => {
       });
 
       if (!response.ok) {
-        throw new Error('Failed to delete service');
+        const errorData = await response.json().catch(() => ({}));
+        const message = (errorData && errorData.message) ? errorData.message : `Failed to delete service (status ${response.status})`;
+        throw new Error(message);
       }
 
+      // Atualiza lista localmente sem refetch
+      setServices(prev => prev.filter(s => s.id !== id));
     } catch (error) {
       console.error('Error deleting service:', error);
+      setError(error instanceof Error ? error.message : 'Erro ao excluir serviço');
     }
   };
 
@@ -276,6 +305,18 @@ const ServicesPage = () => {
                 ×
               </button>
             </div>
+            {formError && (
+              <div style={{
+                margin: '0 24px',
+                color: '#842029',
+                background: '#f8d7da',
+                border: '1px solid #f5c2c7',
+                borderRadius: 6,
+                padding: '10px 12px'
+              }}>
+                {formError}
+              </div>
+            )}
             <form onSubmit={handleSubmit} className={styles.form}>
               <div className={styles.formGroup}>
                 <label htmlFor="title">Título</label>

@@ -6,6 +6,7 @@ import styles from './provider.module.css';
 import { adminService } from '@/services/adminService';
 import { useAuth } from '@/context/AuthContext';
 import { Spinner } from '@/components/Spinner';
+import ProtectedRoute from '@/components/ProtectedRoute';
 
 const ProviderDashboard = () => {
   const { user, loading: authLoading } = useAuth();
@@ -60,6 +61,7 @@ const ProviderDashboard = () => {
   }
 
   return (
+    <ProtectedRoute allowedTypes={['PROVIDER']}>
     <div className={styles.dashboard}>
       <div className={styles.welcomeSection}>
         <h1>Bem-vindo, {user?.name || 'Prestador'}</h1>
@@ -107,6 +109,7 @@ const ProviderDashboard = () => {
         {/* Add your schedule list component here */}
       </div>
     </div>
+    </ProtectedRoute>
   );
 };
 

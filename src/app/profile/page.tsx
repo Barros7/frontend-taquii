@@ -5,6 +5,7 @@ import { useAuth } from '@/context/AuthContext';
 import { useRouter } from 'next/navigation';
 import styles from './profile.module.css';
 import { Spinner } from '@/components/Spinner';
+import type { Appointment } from '@/services/apiService';
 
 interface UserProfile {
   id: string;
@@ -24,6 +25,7 @@ export default function ProfilePage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const [appointments, setAppointments] = useState<Appointment[]>([]);
 
   // Limpar erro automaticamente após 5 segundos
   useEffect(() => {
@@ -38,7 +40,7 @@ export default function ProfilePage() {
   
   const fetchProfile = useCallback(async () => {
     try {
-      const response = await fetch(`/api/v1/users/profile`);
+      const response = await fetch(`/api/v1/users/profile`, { credentials: 'include' });
       const data = await response.json();
       setProfile(data);
     } catch (error) {
@@ -48,14 +50,26 @@ export default function ProfilePage() {
       setLoading(false);
     }
   }, []);
+
+  const fetchAppointments = useCallback(async () => {
+    try {
+      const response = await fetch(`/api/v1/appointments?clientId=${user?.id}`);
+      if (!response.ok) throw new Error('Falha ao carregar agendamentos');
+      const data = await response.json();
+      setAppointments(data);
+    } catch (error) {
+      console.error('Erro ao carregar agendamentos:', error);
+    }
+  }, [user?.id]);
   
   useEffect(() => {
     if (!user) {
       router.push('/login');
     } else {
       fetchProfile();
+      fetchAppointments();
     }
-  }, [user, router, fetchProfile]);
+  }, [user, router, fetchProfile, fetchAppointments]);
 
   if(!user) {
     console.log("Não tem sessão iniciada.");
@@ -83,7 +97,8 @@ export default function ProfilePage() {
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(data)
+        body: JSON.stringify(data),
+        credentials: 'include'
       });
       
       if (!response.ok) throw new Error('Failed to update profile');
@@ -210,6 +225,25 @@ export default function ProfilePage() {
             </button>
           </div>
         </form>
+      </div>
+      <div className={styles.profileCard}>
+        <h2 className={styles.subtitle}>Meus Agendamentos</h2>
+        {appointments.length === 0 ? (
+          <p>Nenhum agendamento encontrado.</p>
+        ) : (
+          <ul className={styles.appointmentList}>
+            {appointments.map((appt) => (
+              <li key={appt.id} className={styles.appointmentItem}>
+                <div>
+                  <strong>{appt.service.title}</strong> — {new Date(appt.date).toLocaleString('pt-PT')}
+                </div>
+                <div>
+                  Status: {appt.status} • Prestador: {appt.provider.name}
+                </div>
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
     </div>
   );

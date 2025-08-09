@@ -122,7 +122,13 @@ export const apiService = {
       
       if (!response.ok) {
         const errorDetail = await response.json().catch(() => ({ message: response.statusText || 'Erro desconhecido' }));
-        throw new Error(`Erro ao criar agendamento: ${response.status} - ${errorDetail.message}`);
+        let message: string | undefined;
+        if (Array.isArray((errorDetail as { message?: string | string[] }).message)) {
+          message = ((errorDetail as unknown as { message: string[] }).message).join('; ');
+        } else {
+          message = (errorDetail as { message?: string }).message;
+        }
+        throw new Error(message || `Erro ao criar agendamento (${response.status})`);
       }
       
       return await response.json();

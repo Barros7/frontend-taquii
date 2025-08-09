@@ -87,34 +87,43 @@ export default function PrestadoresHero() {
             <div className={styles.providerMockup}>
               <div className={styles.mockupHeader}>
                 <div className={styles.mockupLogo}>T</div>
-                <div className={styles.mockupTitle}>Taqui Serviço</div>
+                <div className={styles.mockupTitle}>Dashboard do Prestador</div>
               </div>
 
               <div className={styles.mockupContent}>
                 <div className={styles.mockupCard}>
-                  <div className={styles.mockupCardTitle}>Ganhos do Mês</div>
-                  <div className={styles.mockupCardValue}>R$ 3.250</div>
+                  <div className={styles.mockupCardTitle}>Receitas (30 dias)</div>
+                  <div className={styles.chartBar}>
+                    <div className={styles.bar} style={{height: '50%'}}></div>
+                    <div className={styles.bar} style={{height: '70%'}}></div>
+                    <div className={styles.bar} style={{height: '40%'}}></div>
+                    <div className={styles.bar} style={{height: '85%'}}></div>
+                    <div className={styles.bar} style={{height: '60%'}}></div>
+                    <div className={styles.bar} style={{height: '90%'}}></div>
+                    <div className={styles.bar} style={{height: '65%'}}></div>
+                  </div>
                 </div>
-                
-                <div className={styles.mockupCard}>
-                  <div className={styles.mockupCardTitle}>Serviços Realizados</div>
-                  <div className={styles.mockupCardValue}>24</div>
+
+                <div className={styles.mockupGrid}>
+                  <div className={styles.kpiCard}>
+                    <span className={styles.kpiLabel}>Novos Clientes</span>
+                    <span className={styles.kpiValue}>+48</span>
+                  </div>
+                  <div className={styles.kpiCard}>
+                    <span className={styles.kpiLabel}>Agendamentos</span>
+                    <span className={styles.kpiValue}>72</span>
+                  </div>
+                  <div className={styles.kpiCard}>
+                    <span className={styles.kpiLabel}>Ticket Médio</span>
+                    <span className={styles.kpiValue}>Kz 6.200</span>
+                  </div>
                 </div>
               </div>
 
               <div className={styles.testimonialPreview}>
                 <div className={styles.testimonialText}>
-                  &ldquo;A plataforma revolucionou meu negócio. Agora tenho clientes fixos e minha renda triplicou!&rdquo;
+                  &ldquo;Minha carteira de clientes cresceu 3x em 2 meses usando o Taqui.&rdquo;
                 </div>
-                
-                <div className={styles.testimonialAuthor}>
-                  <div className={styles.avatar}>M</div>
-                  <div className={styles.authorInfo}>
-                    <div className={styles.authorName}>Maria Silva</div>
-                    <div className={styles.authorRole}>Cabeleireira</div>
-                  </div>
-                </div>
-
                 <div className={styles.cardStats}>
                   <span>⭐ 4.9</span>
                   <span>• 127 avaliações</span>
