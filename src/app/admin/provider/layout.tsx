@@ -28,7 +28,8 @@ const ProviderLayout = ({ children }: { children: React.ReactNode }) => {
 
   // Verificar se usuário é prestador
   if (!loading && (!user || user.userType !== 'PROVIDER')) {
-    router.push('/login');
+    const current = typeof window !== 'undefined' ? window.location.pathname + window.location.search : '/admin/provider';
+    router.push(`/login?callbackUrl=${encodeURIComponent(current)}`);
     return null;
   }
 

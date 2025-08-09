@@ -11,7 +11,7 @@ function LoginForm() {
   const { login, user, error, loading } = useAuth();
   const router = useRouter();
   const searchParams = useSearchParams();
-  const next = searchParams?.get('next');
+  const callbackUrl = searchParams?.get('callbackUrl');
 
   const [formData, setFormData] = useState({
     phone: '',
@@ -22,8 +22,8 @@ function LoginForm() {
 
   useEffect(() => {   
     if (user) {      
-      if (next) {
-        router.replace(next);
+      if (callbackUrl) {
+        router.replace(callbackUrl);
       } else {
         switch (user.userType) {
           case 'ADMIN':
@@ -42,7 +42,7 @@ function LoginForm() {
     } else {
       console.log('LoginPage: no user, not redirecting');
     }
-  }, [user, router, next]);
+  }, [user, router, callbackUrl]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

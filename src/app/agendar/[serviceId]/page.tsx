@@ -60,7 +60,8 @@ export default function AgendarPage({ params }: { params: Promise<{ serviceId: s
   // Verificar se usuário está autenticado
   useEffect(() => {
     if (!authLoading && !user) {
-      router.push('/login');
+      const current = window.location.pathname + window.location.search;
+      router.push(`/login?callbackUrl=${encodeURIComponent(current)}`);
     }
   }, [authLoading, user, router]);
 

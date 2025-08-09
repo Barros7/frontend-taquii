@@ -15,7 +15,8 @@ const LogoutButton = () => {
     setIsLoggingOut(true);
     try {
       await logout();
-      router.push('/login');
+      const current = '/';
+      router.push(`/login?callbackUrl=${encodeURIComponent(current)}`);
     } catch (error) {
       console.error('Erro ao fazer logout:', error);
     } finally {

@@ -64,7 +64,8 @@ export default function ProfilePage() {
   
   useEffect(() => {
     if (!user) {
-      router.push('/login');
+      const current = window.location.pathname + window.location.search;
+      router.push(`/login?callbackUrl=${encodeURIComponent(current)}`);
     } else {
       fetchProfile();
       fetchAppointments();
