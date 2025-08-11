@@ -51,6 +51,11 @@ export default function Header() {
                 </Link>
               </li>
               <li className={styles.menuItem}>
+                <Link href="/prestadores" className={styles.menuLink}>
+                  Para Prestadores
+                </Link>
+              </li>
+              <li className={styles.menuItem}>
                 <Link href="/#faqs" className={styles.menuLink}>
                   FAQs
                 </Link>

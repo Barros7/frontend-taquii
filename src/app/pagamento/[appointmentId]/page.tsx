@@ -19,7 +19,7 @@ const metodos = [
 export default function PagamentoPage({ params }: { params: Promise<{ appointmentId: string }> }) {
   const router = useRouter();
   const { user, loading: authLoading } = useAuth();
-  const [metodo, setMetodo] = useState<'reference' | 'qrcode' | 'express'>('qrcode');
+  const [metodo, setMetodo] = useState<'reference' | 'qrcode' | 'express' | ''>('');
   const [dadosPagamento, setDadosPagamento] = useState<{
     entity: string;
     reference: string;
@@ -79,7 +79,7 @@ export default function PagamentoPage({ params }: { params: Promise<{ appointmen
     fetchAppointment();
   }, [appointmentId, authLoading]);
 
-  // Gerar QR Code quando método for selecionado
+  // Gerar QR Code apenas quando solicitado
   const generateQRCode = useCallback(async () => {
     if (!appointment) return;
 
@@ -134,7 +134,7 @@ export default function PagamentoPage({ params }: { params: Promise<{ appointmen
     }
   }, [appointment]);
 
-  // Gerar código de referência quando método for selecionado
+  // Gerar código de referência apenas quando solicitado
   const generateReferenceCode = useCallback(async () => {
     if (!appointment) return;
 
@@ -193,24 +193,30 @@ export default function PagamentoPage({ params }: { params: Promise<{ appointmen
     }
   }, [appointment]);
 
+  // Limpar visualização ao trocar método
   useEffect(() => {
-    if (metodo === 'qrcode' && appointment && !dadosPagamento?.qrCode) {
-      // Limpar dados de referência se existirem
-      if (dadosPagamento?.reference) {
-        setDadosPagamento(null);
-      }
-      generateQRCode();
-    }
-  }, [metodo, appointment, generateQRCode, dadosPagamento?.qrCode, dadosPagamento?.reference]);
+    setDadosPagamento(null);
+    setError(null);
+  }, [metodo]);
 
-  useEffect(() => {
-    if (metodo === 'reference' && appointment && !dadosPagamento?.entity) {
-      if (dadosPagamento?.qrCode) {
-        setDadosPagamento(null);
-      }
-      generateReferenceCode();
+  const handlePagar = async () => {
+    if (!metodo) {
+      setError('Selecione um método de pagamento');
+      return;
     }
-  }, [metodo, appointment, generateReferenceCode, dadosPagamento?.entity, dadosPagamento?.qrCode]);
+    if (metodo === 'qrcode') {
+      await generateQRCode();
+      return;
+    }
+    if (metodo === 'reference') {
+      await generateReferenceCode();
+      return;
+    }
+    if (metodo === 'express') {
+      setError('Multicaixa Express indisponível neste fluxo.');
+      return;
+    }
+  };
 
   // Debug: monitorar mudanças no estado dadosPagamento
   useEffect(() => {
@@ -393,12 +399,13 @@ export default function PagamentoPage({ params }: { params: Promise<{ appointmen
                 />
 
                 <div style={{ display: 'flex', gap: 16, marginTop: 32 }}>
-                  <button 
-                    type="submit" 
-                    disabled={submitting}
+                  <button
+                    type="button"
+                    onClick={handlePagar}
+                    disabled={submitting || !metodo}
                     className={styles.submitBtn}
                   >
-                    {submitting ? 'Processando...' : 'Continuar'}
+                    {submitting ? 'Processando...' : 'Pagar'}
                   </button>
                 </div>
               </div>
