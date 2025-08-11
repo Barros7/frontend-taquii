@@ -1,5 +1,6 @@
 "use client";
 import React, { useEffect, useState, useCallback } from "react"; // Adicionado useCallback
+import Image from 'next/image';
 import styles from "./users.module.css";
 import UserModal from "./UserModal";
 import { Spinner } from '@/components/Spinner';
@@ -277,7 +278,13 @@ export default function UsersPage() {
             <div className={styles.modalBody} style={{ maxHeight: '70vh', overflowY: 'auto' }}>
               <div style={{ display: 'flex', gap: 16, alignItems: 'center', marginBottom: 16 }}>
                 {viewUser.profileImage && (
-                  <img src={viewUser.profileImage} alt="Avatar" style={{ width: 64, height: 64, borderRadius: '50%', objectFit: 'cover' }} />
+                  <Image 
+                    src={viewUser.profileImage} 
+                    alt="Avatar" 
+                    width={64} 
+                    height={64} 
+                    style={{ borderRadius: '50%', objectFit: 'cover' }}
+                  />
                 )}
                 <div>
                   <div><b>{viewUser.name}</b> — {viewUser.userType}</div>

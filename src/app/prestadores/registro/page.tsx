@@ -13,7 +13,6 @@ export default function ProviderRegistrationFormPage() {
   const [selectedProvince, setSelectedProvince] = useState('');
   const [selectedMunicipality, setSelectedMunicipality] = useState('');
   const [selectedCommune, setSelectedCommune] = useState('');
-  const [selectedNeighborhood, setSelectedNeighborhood] = useState('');
 
   const municipalities = useMemo(() => {
     const prov = provinces.find(p => p.name === selectedProvince);
@@ -25,10 +24,7 @@ export default function ProviderRegistrationFormPage() {
     return mun ? mun.communes : [];
   }, [municipalities, selectedMunicipality]);
 
-  const neighborhoods = useMemo(() => {
-    const c = communes.find(co => co.name === selectedCommune);
-    return c ? c.neighborhoods : [];
-  }, [communes, selectedCommune]);
+  // neighborhoods list is not used in this version (bairro campo livre)
 
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
@@ -107,7 +103,9 @@ export default function ProviderRegistrationFormPage() {
   };
 
   return (
-    <div className="container py-5">
+    <>
+      <PrestadoresHeader />
+      <div className="container py-5">
       <h1 className="mb-4" style={{ color: '#6b7280' }}>Registro de Prestador</h1>
       {error && <div className="alert alert-danger">{error}</div>}
       {success && <div className="alert alert-success">{success}</div>}
@@ -218,6 +216,7 @@ export default function ProviderRegistrationFormPage() {
         </div>
       </form>
     </div>
+    </>
   );
 }
 
