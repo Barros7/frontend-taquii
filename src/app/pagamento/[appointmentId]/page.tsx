@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
 import Header from '@/components/header/Header';
-import { apiService, Appointment, PaymentQRCodeResponse } from '@/services/apiService';
+import { apiService, Appointment, PaymentQRCodeResponse, MulticaixaExpressResponse } from '@/services/apiService';
 import Image from 'next/image';
 // usaremos skeletons locais em vez de Spinner
 import ErrorMessage from '@/components/ErrorMessage';
@@ -26,6 +26,8 @@ export default function PagamentoPage({ params }: { params: Promise<{ appointmen
     montante: string;
     valor: string;
     qrCode: string | null;
+    multicaixaId?: string;
+    multicaixaStatus?: string;
   } | null>(null);
   const [telefone, setTelefone] = useState('');
   
@@ -193,6 +195,51 @@ export default function PagamentoPage({ params }: { params: Promise<{ appointmen
     }
   }, [appointment]);
 
+  // Processar pagamento por Multicaixa Express
+  const processMulticaixaExpressPayment = useCallback(async () => {
+    if (!appointment || !telefone.trim()) return;
+
+    try {
+      setSubmitting(true);
+      setError(null);
+      
+      // Validar formato do telefone (deve ter 9 dígitos e começar com 9)
+      const phoneRegex = /^9\d{8}$/;
+      if (!phoneRegex.test(telefone.trim())) {
+        setError('Número de telefone inválido. Deve ter 9 dígitos e começar com 9 (ex: 923000000)');
+        return;
+      }
+
+      // Dados para processar pagamento Multicaixa Express
+      const paymentData = {
+        clientId: appointment.clientId,
+        providerId: appointment.providerId,
+        serviceId: appointment.serviceId,
+        appointmentId: appointment.id,
+        mobileNumber: telefone.trim(),
+      };
+
+      // Processar pagamento via API
+      const result: MulticaixaExpressResponse = await apiService.processMulticaixaExpressPayment(paymentData);
+      
+      // Atualizar dados de pagamento com informações do Multicaixa Express
+      setDadosPagamento({
+        entity: 'Multicaixa Express',
+        reference: result.data.id,
+        montante: `${appointment.service.price} Kz`,
+        valor: `${appointment.service.price} Kz`,
+        qrCode: null,
+        multicaixaId: result.data.id,
+        multicaixaStatus: result.data.status,
+      });
+
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Erro ao processar pagamento Multicaixa Express');
+    } finally {
+      setSubmitting(false);
+    }
+  }, [appointment, telefone]);
+
   // Limpar visualização ao trocar método
   useEffect(() => {
     setDadosPagamento(null);
@@ -213,7 +260,11 @@ export default function PagamentoPage({ params }: { params: Promise<{ appointmen
       return;
     }
     if (metodo === 'express') {
-      setError('Multicaixa Express indisponível neste fluxo.');
+      if (!telefone.trim()) {
+        setError('Digite o número de telefone para Multicaixa Express');
+        return;
+      }
+      await processMulticaixaExpressPayment();
       return;
     }
   };
@@ -381,15 +432,42 @@ export default function PagamentoPage({ params }: { params: Promise<{ appointmen
                 {metodo === 'express' && (
                   <div style={{ marginTop: 24 }}>
                     <h3 style={{ color: '#4F46E5' }}>Multicaixa Express</h3>
-                    <label>Número de telefone:</label>
-                    <input
-                      type="tel"
-                      required
-                      value={telefone}
-                      onChange={e => setTelefone(e.target.value)}
-                      className={styles.input}
-                      placeholder="Ex: 923000000"
-                    />
+                    <div style={{ marginBottom: 16 }}>
+                      <label style={{ display: 'block', marginBottom: 8, color: '#6b7280' }}>
+                        Número de telefone:
+                      </label>
+                      <input
+                        type="tel"
+                        required
+                        value={telefone}
+                        onChange={e => setTelefone(e.target.value)}
+                        className={styles.input}
+                        placeholder="Ex: 923000000"
+                        maxLength={9}
+                        style={{ width: '100%' }}
+                      />
+                      <small style={{ color: '#6b7280', fontSize: 12 }}>
+                        Digite o número de telefone com 9 dígitos (ex: 923000000)
+                      </small>
+                    </div>
+                    
+                    {/* Exibir resultado do pagamento se disponível */}
+                    {dadosPagamento && dadosPagamento.multicaixaId && (
+                      <div style={{ margin: '16px 0', background: '#f3f4f6', borderRadius: 8, padding: 16 }}>
+                        <div style={{ marginBottom: 8 }}>
+                          <strong>Status:</strong> {dadosPagamento.multicaixaStatus === 'PENDING' ? 'Pendente' : dadosPagamento.multicaixaStatus}
+                        </div>
+                        <div style={{ marginBottom: 8 }}>
+                          <strong>ID da Transação:</strong> {dadosPagamento.multicaixaId}
+                        </div>
+                        <div style={{ marginBottom: 8 }}>
+                          <strong>Valor:</strong> {dadosPagamento.valor}
+                        </div>
+                        <div style={{ fontSize: 14, color: '#059669', marginTop: 12 }}>
+                          ✓ Pagamento processado com sucesso! Verifique o status no seu aplicativo Multicaixa Express.
+                        </div>
+                      </div>
+                    )}
                   </div>
                 )}
 

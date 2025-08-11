@@ -69,6 +69,16 @@ export interface PaymentQRCodeResponse {
   statusText: string;
 }
 
+export interface MulticaixaExpressResponse {
+  data: {
+    id: string;
+    status: string;
+    message?: string;
+  };
+  status: number;
+  statusText: string;
+}
+
 export const apiService = {
   // Buscar serviço por ID
   getService: async (serviceId: string): Promise<Service> => {
@@ -196,6 +206,36 @@ export const apiService = {
       return await response.json();
     } catch (error) {
       console.error('Erro em updatePaymentStatus:', error);
+      throw error;
+    }
+  },
+
+  // Processar pagamento por Multicaixa Express
+  processMulticaixaExpressPayment: async (paymentData: {
+    clientId: string;
+    providerId: string;
+    serviceId: string;
+    appointmentId: string;
+    mobileNumber: string;
+  }): Promise<MulticaixaExpressResponse> => {
+    try {
+      const response = await fetch(`/api/v1/payments/multicaixaExpressPayment`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(paymentData),
+        credentials: 'include',
+      });
+      
+      if (!response.ok) {
+        const errorDetail = await response.json().catch(() => ({ message: response.statusText || 'Erro desconhecido' }));
+        throw new Error(`Erro ao processar pagamento Multicaixa Express: ${response.status} - ${errorDetail.message}`);
+      }
+      
+      return await response.json();
+    } catch (error) {
+      console.error('Erro em processMulticaixaExpressPayment:', error);
       throw error;
     }
   },
