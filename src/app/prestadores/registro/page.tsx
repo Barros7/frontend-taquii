@@ -73,28 +73,31 @@ export default function ProviderRegistrationFormPage() {
       if (profileImage && profileImage.size) formData.append('profileImage', profileImage);
       if (commercialCertificate && commercialCertificate.size) formData.append('commercialCertificate', commercialCertificate);
 
-      const res = await fetch('/api/v1/users/providers/register', {
+      const response = await fetch('/api/v1/users/providers/register', {
         method: 'POST',
         body: formData,
         credentials: 'include',
       });
 
-      if (!res.ok) {
-        const data = await res.json().catch(() => ({ message: 'Erro ao registrar prestador' }));
+      if (response.ok) {
+        const result = await response.json();
+        
+        // Mostrar mensagem de sucesso
+        setSuccess(result.message || 'Prestador registrado com sucesso!');
+        
+        // Redirecionar para login após 2 segundos
+        setTimeout(() => {
+          router.push('/login?message=' + encodeURIComponent('Prestador registrado com sucesso! Faça login para continuar.'));
+        }, 2000);
+        
+      } else {
+        const data = await response.json().catch(() => ({ message: 'Erro ao registrar prestador' }));
         const message = (data as { message?: string }).message || 'Erro ao registrar prestador';
         throw new Error(message);
       }
 
-      setSuccess('Registro enviado com sucesso! Aguarde validação.');
       form.reset();
 
-      try {
-        const me = await fetch('/api/v1/auth/me', { credentials: 'include' });
-        if (me.ok) {
-          const meData = await me.json();
-          if (meData?.userType === 'PROVIDER') router.push('/admin/provider');
-        }
-      } catch {}
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Erro ao enviar registro');
     } finally {

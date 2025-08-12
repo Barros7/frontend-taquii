@@ -111,26 +111,34 @@ export default function ServiceCatalog({ categoryName, categoryDescription }: Se
         {/* Filtros de busca */}
         <div className="card mb-4 shadow-sm">
           <div className="card-body">
-            <div className="d-flex flex-column flex-md-row gap-3 mb-3 align-items-center">
-              <input
-                type="text"
-                placeholder="🔍 Procurar por empresa ou profissional"
-                className="form-control flex-grow-1"
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-              />
-              <select
-                className="form-select w-50"
-                value={selectedProvince}
-                onChange={(e) => setSelectedProvince(e.target.value)}
-              >
-                <option value="">Selecionar Província</option>
-                {angolanProvinces.map((province) => (
-                  <option key={province} value={province}>
-                    {province}
-                  </option>
-                ))}
-              </select>
+            {/* Layout responsivo para filtros */}
+            <div className="row g-3">
+              {/* Campo de busca - ocupa toda a largura em mobile */}
+              <div className="col-12 col-md-8">
+                <input
+                  type="text"
+                  placeholder="🔍 Procurar por empresa ou profissional"
+                  className="form-control"
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                />
+              </div>
+              
+              {/* Select de província - ocupa toda a largura em mobile */}
+              <div className="col-12 col-md-4">
+                <select
+                  className="form-select"
+                  value={selectedProvince}
+                  onChange={(e) => setSelectedProvince(e.target.value)}
+                >
+                  <option value="">Selecionar Província</option>
+                  {angolanProvinces.map((province) => (
+                    <option key={province} value={province}>
+                      {province}
+                    </option>
+                  ))}
+                </select>
+              </div>
             </div>
 
             {/* Sub-categorias (pode ser ajustado para filtrar também, se desejar) */}

@@ -17,6 +17,7 @@ const RegisterForm: React.FC = () => {
   
   const [errors, setErrors] = useState<{[key: string]: string}>({});
   const [isLoading, setIsLoading] = useState(false);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
   // Limpar erro geral automaticamente após 5 segundos
   useEffect(() => {
@@ -55,101 +56,38 @@ const RegisterForm: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setErrors({});
     setIsLoading(true);
-
-
-    // Validação de campos obrigatórios
-    if (!formData.name.trim()) {
-      throw new Error('Nome é obrigatório');
-    }
-    
-    if (!formData.email.trim()) {
-      throw new Error('Email é obrigatório');
-    }
-    
-    if (!formData.phone.trim()) {
-      throw new Error('Telefone é obrigatório');
-    }
-    
-    if (!formData.password) {
-      throw new Error('Senha é obrigatória');
-    }
-    
-    if (!formData.confirmPassword) {
-      throw new Error('Confirmação de senha é obrigatória');
-    }
-
-    // Validação de formato de email
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(formData.email)) {
-      throw new Error('Email inválido');
-    }
-
-    // Validação de tamanho mínimo da senha
-    if (formData.password.length < 6) {
-      throw new Error('A senha deve ter pelo menos 6 caracteres');
-    }
-
-    // Validação de confirmação de senha
-    if (formData.password !== formData.confirmPassword) {
-      throw new Error('As senhas não coincidem');
-    }
-
-    // Validação de tamanho mínimo do nome
-    if (formData.name.trim().length < 3) {
-      throw new Error('O nome deve ter pelo menos 3 caracteres');
-    }
-
-    const userData = {
-      name: formData.name,
-      phone: formData.phone,
-      email: formData.email,
-      password: formData.password,
-      confirmPassword: formData.confirmPassword,
-    };
+    setErrors({});
 
     try {
-      const res = await fetch(`/api/v1/auth/register`, {
+      const response = await fetch('/api/v1/auth/register', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
-        body: JSON.stringify(userData),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
       });
 
-      const data = await res.json();
-
-      if (!res.ok) {
-        console.error('Register failed:', data);
-        const errorMessage = data.message || data.error || 'Erro ao fazer o registro';
-        throw new Error(errorMessage);
+      if (!response.ok) {
+        const errorDetail = await response.json().catch(() => ({ message: response.statusText || 'Erro desconhecido' }));
+        throw new Error(errorDetail.message || 'Erro ao registrar');
       }
 
-      if (data.user) {
-        // Após registrar, já estamos autenticados via cookie; redirecionar por tipo
-        const meRes = await fetch('/api/v1/auth/me', { credentials: 'include' });
-        if (meRes.ok) {
-          const me = await meRes.json();
-          switch (me.userType) {
-            case 'ADMIN':
-              router.replace('/admin/sysadmin');
-              break;
-            case 'PROVIDER':
-              router.replace('/admin/provider');
-              break;
-            default:
-              router.replace('/');
-          }
-          return;
-        }
-        router.replace('/');
-      }
-          } catch (err) {
-        const errorMessage = err instanceof Error ? err.message : 'Erro ao fazer o registro';
-        setErrors({ general: errorMessage });
-      } finally {
-        setIsLoading(false);
-      }
+      const result = await response.json();
+      
+      // Mostrar mensagem de sucesso e redirecionar para login
+      setSuccessMessage(result.message || 'Registro realizado com sucesso!');
+      
+      // Redirecionar para login após 2 segundos
+      setTimeout(() => {
+        router.push('/login?message=' + encodeURIComponent('Registro realizado com sucesso! Faça login para continuar.'));
+      }, 2000);
+
+    } catch (err: unknown) {
+      setErrors({ general: err instanceof Error ? err.message : 'Erro ao registrar' });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -157,6 +95,13 @@ const RegisterForm: React.FC = () => {
       <div className="card">
         <div className="card-body p-5">
           <h2 className="text-center mb-4">Registrar</h2>
+          
+          {successMessage && (
+            <div className="alert alert-success" role="alert">
+              {successMessage}
+            </div>
+          )}
+          
           <form onSubmit={handleSubmit}>
             {errors.general && (
               <div className="alert alert-danger" role="alert">

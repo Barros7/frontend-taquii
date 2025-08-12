@@ -12,6 +12,7 @@ function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const callbackUrl = searchParams?.get('callbackUrl');
+  const successMessage = searchParams?.get('message');
 
   const [formData, setFormData] = useState({
     phone: '',
@@ -82,6 +83,11 @@ function LoginForm() {
             <div className="card shadow">
               <div className="card-body p-5">
                 <h2 className="text-center mb-4">Login</h2>
+                {successMessage && (
+                  <div className="alert alert-success" role="alert">
+                    {decodeURIComponent(successMessage)}
+                  </div>
+                )}
                 {(formError || error) && (
                   <div className="alert alert-danger" role="alert">
                     {formError || error}

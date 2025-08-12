@@ -11,3 +11,86 @@
 .card-title {
     font-size: 20px;
 }
+
+/* Estilos responsivos para filtros */
+@media (max-width: 768px) {
+  .card-body {
+    padding: 1rem;
+  }
+  
+  .form-control,
+  .form-select {
+    font-size: 16px; /* Evita zoom em iOS */
+    padding: 0.75rem;
+    border-radius: 8px;
+  }
+  
+  .form-control::placeholder {
+    font-size: 14px;
+  }
+  
+  .form-select {
+    background-size: 16px 12px;
+    padding-right: 2.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .card-body {
+    padding: 0.75rem;
+  }
+  
+  .form-control,
+  .form-select {
+    padding: 0.625rem;
+    font-size: 15px;
+  }
+  
+  .form-control::placeholder {
+    font-size: 13px;
+  }
+  
+  /* Melhorar espaçamento entre filtros em mobile */
+  .row.g-3 {
+    --bs-gutter-y: 0.75rem;
+  }
+  
+  /* Garantir que os filtros ocupem toda a largura em mobile */
+  .col-12 {
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
+
+/* Melhorar acessibilidade dos filtros */
+.form-control:focus,
+.form-select:focus {
+  border-color: #4F46E5;
+  box-shadow: 0 0 0 0.2rem rgba(79, 70, 229, 0.25);
+}
+
+/* Estilo para filtros ativos */
+.form-control:not(:placeholder-shown),
+.form-select:not([value=""]) {
+  border-color: #4F46E5;
+  background-color: #f8f9ff;
+}
+
+/* Animação suave para transições */
+.form-control,
+.form-select {
+  transition: all 0.2s ease-in-out;
+}
+
+/* Melhorar contraste em dispositivos com tela de baixa resolução */
+@media (max-width: 768px) and (max-resolution: 1.5dppx) {
+  .form-control,
+  .form-select {
+    border-width: 2px;
+  }
+  
+  .form-control:focus,
+  .form-select:focus {
+    border-width: 2px;
+  }
+}
