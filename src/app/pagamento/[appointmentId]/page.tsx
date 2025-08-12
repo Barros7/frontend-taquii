@@ -364,7 +364,7 @@ export default function PagamentoPage({ params }: { params: Promise<{ appointmen
             <div className="col-12 col-md-8 col-sm-12">
               <div className={styles.cardForm}>
                 <h2 style={{ marginBottom: 16, color: '#4F46E5', fontWeight: 800 }}>Forma de Pagamento</h2>
-                <span style={{ color: '#6b7280', fontSize: 14 }}>Escolha a forma de pagamento (E-Kwanza, Referência)</span>
+                <span style={{ color: '#6b7280', fontSize: 14 }}>Escolha a forma de pagamento (E-Kwanza, Referência, Multicaixa Express)</span>
                 <div className="container" style={{ margin: '24px 0' }}>
                   <div className={`row`}>
                     {metodos.map(m => (
