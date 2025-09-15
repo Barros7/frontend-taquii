@@ -43,7 +43,7 @@ const Footer: React.FC = () => {
           <div className={styles.footerSection}>
             <h3 className={styles.sectionTitle}>Contatos</h3>
             <p className={styles.contactInfo}>(+244) 937 315 418</p>
-            <p className={styles.contactInfo}>info@taqui.com</p>
+            <p className={styles.contactInfo}>info@taquiservico.com</p>
             <p className={styles.contactInfo}>Rua Principal da Seta Nova, Benguela</p>
           </div>
 

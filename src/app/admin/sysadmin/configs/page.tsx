@@ -13,7 +13,7 @@ export default function ConfigsPage() {
         </div>
         <div className={styles.formGroup}>
           <label className={styles.label}>Email de Suporte:</label>
-          <input className={styles.input} type="email" value="suporte@taqui.com" readOnly />
+          <input className={styles.input} type="email" value="info@taquiservico.com" readOnly />
         </div>
         <div className={styles.formGroup}>
           <label className={styles.label}>Moeda:</label>
