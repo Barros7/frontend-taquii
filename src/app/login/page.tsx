@@ -22,7 +22,10 @@ function LoginForm() {
   const [isLoggingIn, setIsLoggingIn] = useState(false);
 
   useEffect(() => {   
-    if (user) {      
+    console.log('callbackUrl', callbackUrl);
+    console.log('user', user);
+    // Só faz redirect se user existir e callbackUrl não for undefined
+    if (user && callbackUrl !== undefined) {
       if (callbackUrl) {
         router.replace(callbackUrl);
       } else {
@@ -40,8 +43,6 @@ function LoginForm() {
             router.replace('/login');
         }
       }
-    } else {
-      console.log('LoginPage: no user, not redirecting');
     }
   }, [user, router, callbackUrl]);
 

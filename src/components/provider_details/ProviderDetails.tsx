@@ -56,7 +56,7 @@ export const ProviderDetails: React.FC<IProviderDetails> = ({ provider }) => {
 
   const handleBack = () => router.back();
   const handleAgendar = () => router.push(`/agendar/${provider.id}`);
-  const handleCall = () => window.open(`tel:${provider.phone || DUMMY_PHONE}`);
+  const handleCall = () => window.open(`tel:+244937315418`);
 
   return (
     <div>

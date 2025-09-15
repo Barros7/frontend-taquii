@@ -55,7 +55,7 @@ export default function PrestadoresHeader() {
                 </Link>
               </li>
               <li className={styles.menuItem}>
-                <Link href="/register" className={styles.ctaButton}>
+                <Link href="/prestadores/registro" className={styles.ctaButton}>
                   Criar Conta Grátis
                 </Link>
               </li>

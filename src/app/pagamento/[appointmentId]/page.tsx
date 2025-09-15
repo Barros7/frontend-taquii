@@ -173,7 +173,7 @@ export default function PagamentoPage({ params }: { params: Promise<{ appointmen
       }
 
       const result = await response.json();
-      console.log('Entity capturada:', result.responseStatus?.reference?.entity);
+
       // Atualizar dados de pagamento com informações da referência
       setDadosPagamento({
         entity: result.responseStatus?.reference?.entity,
@@ -181,11 +181,6 @@ export default function PagamentoPage({ params }: { params: Promise<{ appointmen
         montante: `${appointment.service.price} Kz`,
         valor: `${appointment.service.price} Kz`,
         qrCode: null,
-      });
-      console.log('Estado dadosPagamento atualizado:', {
-        entity: result.responseStatus?.reference?.entity,
-        reference: result.responseStatus?.reference?.referenceNumber,
-        montante: `${appointment.service.price} Kz`,
       });
 
     } catch (err: unknown) {

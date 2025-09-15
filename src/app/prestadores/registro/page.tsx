@@ -109,34 +109,34 @@ export default function ProviderRegistrationFormPage() {
     <>
       <PrestadoresHeader />
       <div className="container py-5">
-      <h1 className="mb-4" style={{ color: '#6b7280' }}>Registro de Prestador</h1>
+      <h6 className="my-5" style={{ color: '#6b7280' }}>Registrar Empresa</h6>
       {error && <div className="alert alert-danger">{error}</div>}
       {success && <div className="alert alert-success">{success}</div>}
       <form onSubmit={handleSubmit} encType="multipart/form-data">
         <div className="row g-3">
-          <div className="col-md-6">
+          <div className="col-md-4">
             <label className="form-label" style={{ color: '#6b7280' }}>Nome do Comerciante</label>
             <input name="name" className="form-control" required />
           </div>
-          <div className="col-md-6">
+          <div className="col-md-4">
             <label className="form-label" style={{ color: '#6b7280' }}>E-mail do Comerciante</label>
             <input type="email" name="email" className="form-control" required />
           </div>
-          <div className="col-md-6">
+          <div className="col-md-4">
             <label className="form-label" style={{ color: '#6b7280' }}>Telefone do Comerciante</label>
             <input name="phone" className="form-control" required />
           </div>
-          <div className="col-md-6">
+          <div className="col-md-4">
             <label className="form-label" style={{ color: '#6b7280' }}>Senha do Comerciante</label>
             <input type="password" name="password" className="form-control" required />
           </div>
 
-          <div className="col-md-6">
+          <div className="col-md-4">
             <label className="form-label" style={{ color: '#6b7280' }}>Número de BI/Passaporte do Representante Legal</label>
             <input name="documentNumber" className="form-control" />
           </div>
-          <div className="col-md-6">
-            <label className="form-label" style={{ color: '#6b7280' }}>NIF</label>
+          <div className="col-md-4">
+            <label className="form-label" style={{ color: '#6b7280' }}>NIF (apenas empresa)</label>
             <input name="nifNumber" className="form-control" />
           </div>
           
@@ -154,15 +154,7 @@ export default function ProviderRegistrationFormPage() {
           <div className="col-12">
             <h5 style={{ color: '#6b7280' }}>Endereço do Prestador</h5>
           </div>
-          <div className="col-md-6">
-            <label className="form-label" style={{ color: '#6b7280' }}>Endereço</label>
-            <input name="addressName" className="form-control" />
-          </div>
-          
-          <div className="col-md-6">
-            <label className="form-label">Bairro</label>
-            <input name="neighborhood" className="form-control" />
-          </div>
+
           <div className="col-md-4">
             <label className="form-label" style={{ color: '#6b7280' }}>Província</label>
             <select
@@ -211,8 +203,19 @@ export default function ProviderRegistrationFormPage() {
             </select>
           </div>
 
-          <div className="col-12">
-            <button className="btn btn-primary" type="submit" disabled={loading}>
+          <div className="col-md-4">
+            <label className="form-label" style={{ color: '#6b7280' }}>Endereço</label>
+            <input name="addressName" className="form-control" />
+          </div>
+          
+          <div className="col-md-4">
+            <label className="form-label">Bairro</label>
+            <input name="neighborhood" className="form-control" />
+          </div>
+
+          <div className="col-md-4">
+            <label className="form-label">Registrar</label>
+            <button className="btn btn-primary w-100" type="submit" disabled={loading}>
               {loading ? 'Registando...' : 'Fazer Registo'}
             </button>
           </div>
