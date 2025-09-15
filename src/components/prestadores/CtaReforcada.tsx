@@ -21,7 +21,7 @@ export default function CtaReforcada() {
             <div className={styles.benefits}>
               <div className={styles.benefit}>
                 <div className={styles.benefitIcon}>✓</div>
-                <span>Cadastro 100% gratuito</span>
+                <span>Registro 100% gratuito</span>
               </div>
               <div className={styles.benefit}>
                 <div className={styles.benefitIcon}>✓</div>

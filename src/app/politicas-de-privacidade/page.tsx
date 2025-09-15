@@ -167,7 +167,7 @@ const PrivacyPolicy: React.FC = () => {
                 </p>
                 <ul>
                     <li>Por email: info@taquiservico.com</li>
-                    <li>Visitando a nossa página do facebook: <Link href="https://www.facebook.com/profile.php?id=61560147640900">Facebook</Link></li>
+                    <li>Visitando a nossa página do facebook: <Link href="https://www.facebook.com/taqui.servico/">Facebook</Link></li>
                     <li>Por telefone: (244) 952 408 038 | (244) 937 315 418</li>
                 </ul>
                 </section>

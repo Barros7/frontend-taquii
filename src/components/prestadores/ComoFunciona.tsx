@@ -42,7 +42,7 @@ export default function ComoFunciona() {
             Como funciona em <span className={styles.highlight}>4 passos simples</span>
           </h2>
           <p className={styles.subtitle}>
-            Do cadastro ao primeiro cliente em menos de 10 minutos
+            Do registro ao primeiro cliente em menos de 10 minutos
           </p>
         </div>
 

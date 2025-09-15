@@ -21,7 +21,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: 'Seja um Prestador - Taqui Serviço | Ganhe mais com seus serviços',
   description: 'Cadastre-se como prestador no Taqui Serviço. Mais clientes, menos complicações. Divulgue, agende e receba – tudo num só lugar.',
-  keywords: 'prestador de serviços, cadastro, Taqui Serviço, agendamento, pagamentos',
+  keywords: 'prestador de serviços, registro, Taqui Serviço, agendamento, pagamentos',
 };
 
 export default function PrestadoresLayout({

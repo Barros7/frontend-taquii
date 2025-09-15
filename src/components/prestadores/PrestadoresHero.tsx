@@ -40,7 +40,7 @@ export default function PrestadoresHero() {
             <div className={styles.features}>
               <div className={styles.feature}>
                 <span className={styles.featureIcon}>✅</span>
-                <span>Cadastro gratuito</span>
+                <span>Registro gratuito</span>
               </div>
               <div className={styles.feature}>
                 <span className={styles.featureIcon}>💰</span>
@@ -78,7 +78,7 @@ export default function PrestadoresHero() {
               </Link>
               
               <p className={styles.ctaSubtext}>
-                Cadastro gratuito • Sem taxas ocultas • Suporte 24/7
+                Registro gratuito • Sem taxas ocultas • Suporte 24/7
               </p>
             </div>
           </div>
@@ -120,23 +120,10 @@ export default function PrestadoresHero() {
                 </div>
               </div>
 
-              <div className={styles.testimonialPreview}>
-                <div className={styles.testimonialText}>
-                  &ldquo;Minha carteira de clientes cresceu 3x em 2 meses usando o Taqui.&rdquo;
-                </div>
-                <div className={styles.cardStats}>
-                  <span>⭐ 4.9</span>
-                  <span>• 127 avaliações</span>
-                </div>
-              </div>
             </div>
           </div>
         </div>
 
-        <div className={styles.scrollIndicator}>
-          <span className={styles.scrollText}>Role para saber mais</span>
-          <div className={styles.scrollDot}></div>
-        </div>
       </div>
     </section>
   );

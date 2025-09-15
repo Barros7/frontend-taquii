@@ -7,7 +7,7 @@ const faqs = [
   {
     id: 1,
     pergunta: "Preciso pagar para usar a plataforma?",
-    resposta: "Não! O cadastro é 100% gratuito. Você pode criar seu perfil, adicionar serviços e começar a receber clientes sem nenhum custo inicial. Só cobramos uma pequena comissão quando você recebe um agendamento confirmado."
+    resposta: "Não! O registro é 100% gratuito. Você pode criar seu perfil, adicionar serviços e começar a receber clientes sem nenhum custo inicial. Só cobramos uma pequena comissão quando você recebe um agendamento confirmado."
   },
   {
     id: 2,
