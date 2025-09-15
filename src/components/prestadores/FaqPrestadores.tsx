@@ -95,10 +95,10 @@ export default function FaqPrestadores() {
               Nossa equipe está pronta para te ajudar. Entre em contato conosco.
             </p>
             <div className={styles.ctaButtons}>
-              <a href="/register" className={styles.primaryButton}>
+              <a href="/prestadores/registro" className={styles.primaryButton}>
                 Criar conta gratuita
               </a>
-              <a href="mailto:suporte@taquiservico.com" className={styles.secondaryButton}>
+              <a href="mailto:info@taquiservico.com" className={styles.secondaryButton}>
                 Falar com suporte
               </a>
             </div>

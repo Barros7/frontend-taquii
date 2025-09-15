@@ -84,7 +84,7 @@ export default function ComoFunciona() {
               Junte-se a centenas de prestadores que já estão crescendo com o Taqui Serviço
             </p>
             <div className={styles.ctaButtons}>
-              <a href="/register" className={styles.primaryButton}>
+              <a href="/prestadores/registro" className={styles.primaryButton}>
                 Criar conta gratuita
               </a>
               <a href="#testemunhos" className={styles.secondaryButton}>
