@@ -86,7 +86,7 @@ export default function ServiceCard({ provider }: ServiceCardProps) {
         
         {/* Price Label */}
         <div className={styles.priceLabel}>
-          Desde {price}€
+          Desde {price}Kz
         </div>
       </div>
 
