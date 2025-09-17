@@ -52,7 +52,7 @@ export default function Header() {
               </li>
               <li className={styles.menuItem}>
                 <Link href="/prestadores" className={styles.menuLink}>
-                  Para Prestadores
+                  Para Empresas
                 </Link>
               </li>
               <li className={styles.menuItem}>
